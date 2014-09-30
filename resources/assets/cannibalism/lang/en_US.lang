@@ -1,0 +1,13 @@
+itemGroup.cannibalism=Cannibalism
+
+item.woodenKnife.name=Wooden Knife
+item.diamondKnife.name=Diamond Knife
+item.goldKnife.name=Golden Knife
+item.ironKnife.name=Iron Knife
+item.stoneKnife.name=Stone Knife
+item.flintKnife.name=Flint Knife
+
+item.villagerFlesh.name=Villager Flesh
+item.playerFlesh.name=Player Flesh
+item.villagerFleshCooked.name=Cooked Villager Flesh
+item.playerFleshCooked.name=Cooked Player Flesh
