@@ -66,7 +66,8 @@ public class ItemKnife extends ItemSword{
 				interact = true;
 			}
 			if(entityLiving instanceof EntityChicken){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);
+				entityLiving.setDead(); //Insurance
+				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);						
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
