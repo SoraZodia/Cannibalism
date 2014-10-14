@@ -1,5 +1,6 @@
 package com.sorazodia.cannibalism.items;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
@@ -38,6 +39,7 @@ public class ItemKnife extends ItemSword{
 			if(player.isSneaking() && !interact){
 				player.swingItem();
 				player.attackEntityFrom(DamageSource.causePlayerDamage(player), 10.0F);
+				spawnBlood(player, world);
 				playSound(world, player);
 				player.dropItem(ItemList.playerFlesh, 1);
 				stack.damageItem(damage++, player);
@@ -56,6 +58,7 @@ public class ItemKnife extends ItemSword{
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entityLiving)
     {
 		int damage = 1;
+		World world = entityLiving.worldObj;
 		
 		if(!entityLiving.worldObj.isRemote){
 			if(entityLiving instanceof EntityCow){
@@ -67,7 +70,7 @@ public class ItemKnife extends ItemSword{
 			}
 			if(entityLiving instanceof EntityChicken){
 				entityLiving.setDead(); //Insurance
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);						
+				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
@@ -100,4 +103,10 @@ public class ItemKnife extends ItemSword{
 		return interact;
     }
 	
+	private void spawnBlood(EntityLivingBase entityLiving, World world){
+		for(int x = 0 ; x < 10 ; x++){
+			world.spawnParticle("largesmoke", entityLiving.posX + Math.random(), 
+					entityLiving.posY + Math.random(), entityLiving.posZ + Math.random(), 0.0D, 0.0D, 0.0D);
+		}
+	}
 }
