@@ -1,6 +1,5 @@
 package com.sorazodia.cannibalism.items;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
@@ -16,14 +15,9 @@ import net.minecraft.world.World;
 
 import com.sorazodia.cannibalism.config.ConfigHandler;
 import com.sorazodia.cannibalism.items.manager.ItemList;
-import com.sorazodia.cannibalism.main.Cannibalism;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemKnife extends ItemSword{
 
-	private float screamPinch = (float)0.7;
 	private boolean interact = false;
 	
 	public ItemKnife(ToolMaterial material) {
@@ -38,7 +32,7 @@ public class ItemKnife extends ItemSword{
 			int damage = 1;
 			if(player.isSneaking() && !interact){
 				player.swingItem();
-				cutDamage(player, player, 6.0F);
+				cutDamage(player, player, getDamage(5.0F,6.0F));
 				//spawnBlood(player, world);
 				playSound(world, player);
 				player.dropItem(ItemList.playerFlesh, 1);
@@ -58,11 +52,10 @@ public class ItemKnife extends ItemSword{
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entityLiving)
     {
 		int damage = 1;
-		World world = entityLiving.worldObj;
 		
 		if(!entityLiving.worldObj.isRemote){
 			if(entityLiving instanceof EntityCow){
-				cutDamage(player, entityLiving, 6.0F);
+				cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
 				entityLiving.dropItem(Items.beef, 1);
 				entityLiving.dropItem(Items.leather, 1);
 				stack.damageItem(damage++, player);
@@ -74,25 +67,25 @@ public class ItemKnife extends ItemSword{
 				interact = true;
 			}
 			if(entityLiving instanceof EntityPig){
-				cutDamage(player, entityLiving, 6.0F);
+				cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
 				entityLiving.dropItem(Items.porkchop, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityVillager){
-				cutDamage(player, entityLiving, 6.0F);
+				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
 				entityLiving.dropItem(ItemList.villagerFlesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			} 
 			if(entityLiving instanceof EntityZombie){
-				cutDamage(player, entityLiving, 6.0F);
+				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
 				entityLiving.dropItem(Items.rotten_flesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityPlayer){
-				cutDamage(player, entityLiving, 6.0F);
+				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
 				player.dropItem(ItemList.playerFlesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
@@ -111,5 +104,10 @@ public class ItemKnife extends ItemSword{
 			entityLiving.worldObj.spawnParticle("largesmoke", entityLiving.posX + Math.random(), 
 					entityLiving.posY + Math.random(), entityLiving.posZ + Math.random(), 0.0D, 0.0D, 0.0D);
 		}
+	}
+	
+	private float getDamage(float min, float max){
+		float damage = min + (float)(Math.random()*((max-min)+1));
+		return damage;
 	}
 }
