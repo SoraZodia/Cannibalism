@@ -38,8 +38,8 @@ public class ItemKnife extends ItemSword{
 			int damage = 1;
 			if(player.isSneaking() && !interact){
 				player.swingItem();
-				player.attackEntityFrom(DamageSource.causePlayerDamage(player), 10.0F);
-				spawnBlood(player, world);
+				cutDamage(player, player, 6.0F);
+				//spawnBlood(player, world);
 				playSound(world, player);
 				player.dropItem(ItemList.playerFlesh, 1);
 				stack.damageItem(damage++, player);
@@ -62,38 +62,37 @@ public class ItemKnife extends ItemSword{
 		
 		if(!entityLiving.worldObj.isRemote){
 			if(entityLiving instanceof EntityCow){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 6.0F);
+				cutDamage(player, entityLiving, 6.0F);
 				entityLiving.dropItem(Items.beef, 1);
 				entityLiving.dropItem(Items.leather, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityChicken){
-				entityLiving.setDead(); //Insurance
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);
+				cutDamage(player, entityLiving, 4.0F);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityPig){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 6.0F);
+				cutDamage(player, entityLiving, 6.0F);
 				entityLiving.dropItem(Items.porkchop, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityVillager){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 10.0F);
+				cutDamage(player, entityLiving, 6.0F);
 				entityLiving.dropItem(ItemList.villagerFlesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
-			}
+			} 
 			if(entityLiving instanceof EntityZombie){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 10.0F);
+				cutDamage(player, entityLiving, 6.0F);
 				entityLiving.dropItem(Items.rotten_flesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
 			if(entityLiving instanceof EntityPlayer){
-				entityLiving.attackEntityFrom(DamageSource.causePlayerDamage(player), 10.0F);
+				cutDamage(player, entityLiving, 6.0F);
 				player.dropItem(ItemList.playerFlesh, 1);
 				stack.damageItem(damage++, player);
 				interact = true;
@@ -103,9 +102,13 @@ public class ItemKnife extends ItemSword{
 		return interact;
     }
 	
+	private void cutDamage(EntityPlayer player, EntityLivingBase entity, float damage){
+		entity.attackEntityFrom(DamageSource.causePlayerDamage(player).setDamageBypassesArmor(), damage);
+	}
+	
 	private void spawnBlood(EntityLivingBase entityLiving, World world){
 		for(int x = 0 ; x < 10 ; x++){
-			world.spawnParticle("largesmoke", entityLiving.posX + Math.random(), 
+			entityLiving.worldObj.spawnParticle("largesmoke", entityLiving.posX + Math.random(), 
 					entityLiving.posY + Math.random(), entityLiving.posZ + Math.random(), 0.0D, 0.0D, 0.0D);
 		}
 	}
