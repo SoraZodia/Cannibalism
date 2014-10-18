@@ -1,0 +1,13 @@
+itemGroup.cannibalism=카니발리즘[Cannibalism]
+
+item.woodenKnife.name=나무 식칼
+item.diamondKnife.name=다이아몬드 식칼
+item.goldKnife.name=금 식칼
+item.ironKnife.name=철 식칼
+item.stoneKnife.name=돌 식칼
+item.flintKnife.name=부싯돌 식칼
+
+item.villagerFlesh.name=주민 고기
+item.playerFlesh.name=플레이어 고기
+item.villagerFleshCooked.name=조리 된 주민 고기
+item.playerFleshCooked.name=조리 된 플레이어 고기
