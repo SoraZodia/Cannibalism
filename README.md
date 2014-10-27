@@ -5,7 +5,7 @@ Adds in the aspect of eating villagers... or yourself
 
 License 
 ===========
-    Copyright (C) 2014 sorazodia
+    Copyright (C) 2014 SoraZodia
 
     This program is free software: you can redistribute it and/or modify
 
