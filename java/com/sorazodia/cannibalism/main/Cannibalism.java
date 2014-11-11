@@ -27,7 +27,6 @@ public static final String NAME = "Cannibalism";
 public static Cannibalism cannibalism;
 
 public static ConfigHandler config;
-
 public static CannibalismTab cannibalismTab = new CannibalismTab();
 
 @EventHandler
@@ -39,19 +38,18 @@ public void preInit(FMLPreInitializationEvent preEvent){
 	GameRegistryItems.init(MODID, cannibalismTab);	
 	ItemRegistry.init();
 	config.syncConfig();
-	MinecraftForge.EVENT_BUS.register(new DeathEvent());
-	FMLCommonHandler.instance().bus().register(new ConfigEvent());
-	
      }//PreInit End, because {} are so hard to differentiate o_O
 
 @EventHandler
 public void preInit(FMLInitializationEvent event){
 	
-	FMLLog.info("[Cannibalism] Initializating Recipes");
+	FMLLog.info("[Cannibalism] Initializating Recipes and Events");
 	RecipesRegistry.init();
 	CookingRegistry.init();
+	MinecraftForge.EVENT_BUS.register(new DeathEvent());
+	FMLCommonHandler.instance().bus().register(new ConfigEvent());
 	FMLLog.info("[Cannibalism] Completed");
 	
-     }//PreInit End, because {} are so hard to differentiate o_O
+     }//Init End, because {} are so hard to differentiate o_O
 
 }

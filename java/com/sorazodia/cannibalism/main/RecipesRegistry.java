@@ -1,13 +1,15 @@
 package com.sorazodia.cannibalism.main;
 
-import com.sorazodia.cannibalism.items.manager.ItemList;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import com.sorazodia.cannibalism.items.manager.ItemList;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipesRegistry {
 
@@ -15,7 +17,6 @@ public class RecipesRegistry {
 	private static Item gold = Items.gold_ingot;
 	private static Item iron = Items.iron_ingot;
 	private static Item flint = Items.flint;
-	private static Item stick = Items.stick;
 	private static Block cobblestone = Blocks.cobblestone;
 	private static Block stone = Blocks.stone;
 	private static Block woodPlank = Blocks.planks;
@@ -27,26 +28,33 @@ public class RecipesRegistry {
 	private static ItemStack ironKnife = new ItemStack(ItemList.ironKnife);
 	private static ItemStack diamondKnife = new ItemStack(ItemList.diamondKnife);
 	
+	private static String stickVanilla  = "stickWood";
+	private static String stickTConsturct = "rodWood";
+	
 	public static void init(){
-		GameRegistry.addShapedRecipe(woodenKnife, " x ","  y", 'x', woodPlank, 'y', stick);
-		GameRegistry.addShapedRecipe(woodenKnife, "x  "," y ", 'x', woodPlank, 'y', stick);
+		shapedOreSimplifer(woodenKnife, " x ","  y", 'x', woodPlank, 'y', stickVanilla);
+		shapedOreSimplifer(woodenKnife, "x  "," y ", 'x', woodPlank, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(flintKnife, " x ","  y", 'x', flint, 'y', stick);
-		GameRegistry.addShapedRecipe(flintKnife, "x  "," y ", 'x', flint, 'y', stick);
+		shapedOreSimplifer(flintKnife, " x ","  y", 'x', flint, 'y', stickVanilla);
+		shapedOreSimplifer(flintKnife, "x  "," y ", 'x', flint, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(stoneKnife, " x ","  y", 'x', cobblestone, 'y', stick);
-		GameRegistry.addShapedRecipe(stoneKnife, "x  "," y ", 'x', cobblestone, 'y', stick);
+		shapedOreSimplifer(stoneKnife, " x ","  y", 'x', cobblestone, 'y', stickVanilla);
+		shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', cobblestone, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(stoneKnife, " x ","  y", 'x', stone, 'y', stick);
-		GameRegistry.addShapedRecipe(stoneKnife, "x  "," y ", 'x', stone, 'y', stick);
+		shapedOreSimplifer(stoneKnife, " x ","  y", 'x', stone, 'y', stickVanilla);
+		shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', stone, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(goldKnife, " x ","  y", 'x', gold, 'y', stick);
-		GameRegistry.addShapedRecipe(goldKnife, "x  "," y ", 'x', gold, 'y', stick);
+		shapedOreSimplifer(goldKnife, " x ","  y", 'x', gold, 'y', stickVanilla);
+		shapedOreSimplifer(goldKnife, "x  "," y ", 'x', gold, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(ironKnife, " x ","  y", 'x', iron, 'y', stick);
-		GameRegistry.addShapedRecipe(ironKnife, "x  "," y ", 'x', iron, 'y', stick);
+		shapedOreSimplifer(ironKnife, " x ","  y", 'x', iron, 'y', stickVanilla);
+		shapedOreSimplifer(ironKnife, "x  "," y ", 'x', iron, 'y', stickVanilla);
 		
-		GameRegistry.addShapedRecipe(diamondKnife, " x ","  y", 'x', diamond, 'y', stick);
-		GameRegistry.addShapedRecipe(diamondKnife, "x  "," y ", 'x', diamond, 'y', stick);
+		shapedOreSimplifer(diamondKnife, " x ","  y", 'x', diamond, 'y', stickVanilla);
+		shapedOreSimplifer(diamondKnife, "x  "," y ", 'x', diamond, 'y', stickVanilla);
+	}
+	
+	private static void shapedOreSimplifer(ItemStack output, Object... input){
+		GameRegistry.addRecipe(new ShapedOreRecipe(output, input));
 	}
 }

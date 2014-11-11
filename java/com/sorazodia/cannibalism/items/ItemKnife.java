@@ -13,6 +13,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+import com.sorazodia.api.ICutable;
 import com.sorazodia.cannibalism.config.ConfigHandler;
 import com.sorazodia.cannibalism.items.manager.ItemList;
 
@@ -33,7 +34,7 @@ public class ItemKnife extends ItemSword{
 			if(player.isSneaking() && !interact){
 				player.swingItem();
 				cutDamage(player, player, getDamage(5.0F,6.0F));
-				//spawnBlood(player, world);
+				spawnBlood(player, world);
 				playSound(world, player);
 				player.dropItem(ItemList.playerFlesh, 1);
 				stack.damageItem(damage++, player);
@@ -90,6 +91,11 @@ public class ItemKnife extends ItemSword{
 				stack.damageItem(damage++, player);
 				interact = true;
 			}
+			if(entityLiving instanceof ICutable){
+				ICutable target = (ICutable)entityLiving;
+				target.cut();
+				interact = true;
+			}
 		}
 		
 		return interact;
@@ -101,13 +107,14 @@ public class ItemKnife extends ItemSword{
 	
 	private void spawnBlood(EntityLivingBase entityLiving, World world){
 		for(int x = 0 ; x < 10 ; x++){
-			entityLiving.worldObj.spawnParticle("largesmoke", entityLiving.posX + Math.random(), 
-					entityLiving.posY + Math.random(), entityLiving.posZ + Math.random(), 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("magicCrit", entityLiving.posX * Math.random(), 
+					-entityLiving.posY * Math.random(), entityLiving.posZ * Math.random(), entityLiving.posX * 0.02D, 
+					-entityLiving.posY * 0.02D, entityLiving.posZ * 0.02D);
 		}
 	}
 	
 	private float getDamage(float min, float max){
-		float damage = min + (float)(Math.random()*((max-min)+1));
+		float damage = min + (float)(Math.random()*((max-min) + 1));
 		return damage;
 	}
 }
