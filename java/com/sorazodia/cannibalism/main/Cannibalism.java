@@ -2,11 +2,11 @@ package com.sorazodia.cannibalism.main;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.sorazodia.api.GameRegistryItems;
 import com.sorazodia.cannibalism.config.ConfigHandler;
 import com.sorazodia.cannibalism.events.ConfigEvent;
 import com.sorazodia.cannibalism.events.DeathEvent;
 import com.sorazodia.cannibalism.tab.CannibalismTab;
+import com.sorazodia.registryhelper.GameRegistryItems;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;

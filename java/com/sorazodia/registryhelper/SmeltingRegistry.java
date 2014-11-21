@@ -1,4 +1,4 @@
-package com.sorazodia.api;
+package com.sorazodia.registryhelper;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

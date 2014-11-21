@@ -1,4 +1,4 @@
-package com.sorazodia.api;
+package com.sorazodia.registryhelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;

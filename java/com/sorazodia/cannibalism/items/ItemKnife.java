@@ -13,7 +13,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-import com.sorazodia.api.ICutable;
+import com.sorazodia.cannibalism.api.ICutable;
 import com.sorazodia.cannibalism.config.ConfigHandler;
 import com.sorazodia.cannibalism.items.manager.ItemList;
 
