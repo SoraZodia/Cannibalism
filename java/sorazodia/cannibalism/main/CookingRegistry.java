@@ -1,7 +1,7 @@
-package com.sorazodia.cannibalism.main;
+package sorazodia.cannibalism.main;
 
-import com.sorazodia.cannibalism.items.manager.ItemList;
-import com.sorazodia.registryhelper.SmeltingRegistry;
+import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.registryhelper.SmeltingRegistry;
 
 public class CookingRegistry {
 

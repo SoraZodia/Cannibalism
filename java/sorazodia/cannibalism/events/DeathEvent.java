@@ -1,14 +1,12 @@
-package com.sorazodia.cannibalism.events;
+package sorazodia.cannibalism.events;
 
 import java.util.Random;
 
+import sorazodia.cannibalism.items.manager.ItemList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-
-import com.sorazodia.cannibalism.items.manager.ItemList;
-
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

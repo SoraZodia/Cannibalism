@@ -1,4 +1,4 @@
-package com.sorazodia.cannibalism.events;
+package sorazodia.cannibalism.events;
 
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

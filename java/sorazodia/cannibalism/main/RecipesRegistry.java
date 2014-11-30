@@ -1,15 +1,13 @@
-package com.sorazodia.cannibalism.main;
+package sorazodia.cannibalism.main;
 
+import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.registryhelper.OreDicRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import com.sorazodia.cannibalism.items.manager.ItemList;
-import com.sorazodia.registryhelper.OreDicRecipe;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipesRegistry {

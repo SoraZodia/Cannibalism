@@ -1,4 +1,4 @@
-package com.sorazodia.cannibalism.api;
+package sorazodia.cannibalism.api;
 
 public interface ICutable {
 	

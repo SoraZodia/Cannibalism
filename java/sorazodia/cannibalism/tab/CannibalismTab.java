@@ -1,7 +1,6 @@
-package com.sorazodia.cannibalism.tab;
+package sorazodia.cannibalism.tab;
 
-import com.sorazodia.cannibalism.items.manager.ItemList;
-
+import sorazodia.cannibalism.items.manager.ItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;

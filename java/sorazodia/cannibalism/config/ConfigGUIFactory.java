@@ -1,4 +1,4 @@
-package com.sorazodia.cannibalism.config;
+package sorazodia.cannibalism.config;
 
 import cpw.mods.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;

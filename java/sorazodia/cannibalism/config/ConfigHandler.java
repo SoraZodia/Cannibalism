@@ -1,4 +1,4 @@
-package com.sorazodia.cannibalism.config;
+package sorazodia.cannibalism.config;
 
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

@@ -1,13 +1,11 @@
-package com.sorazodia.cannibalism.main;
+package sorazodia.cannibalism.main;
 
+import sorazodia.cannibalism.config.ConfigHandler;
+import sorazodia.cannibalism.events.ConfigEvent;
+import sorazodia.cannibalism.events.DeathEvent;
+import sorazodia.cannibalism.tab.CannibalismTab;
+import sorazodia.registryhelper.GameRegistryItems;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.sorazodia.cannibalism.config.ConfigHandler;
-import com.sorazodia.cannibalism.events.ConfigEvent;
-import com.sorazodia.cannibalism.events.DeathEvent;
-import com.sorazodia.cannibalism.tab.CannibalismTab;
-import com.sorazodia.registryhelper.GameRegistryItems;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -15,7 +13,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid=Cannibalism.MODID, version=Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = "com.sorazodia.cannibalism.config.ConfigGUIFactory")
+@Mod(modid=Cannibalism.MODID, version=Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = "sorazodia.cannibalism.config.ConfigGUIFactory")
 public class Cannibalism {
 
 //@MOD variables

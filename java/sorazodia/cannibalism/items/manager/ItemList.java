@@ -1,11 +1,10 @@
-package com.sorazodia.cannibalism.items.manager;
+package sorazodia.cannibalism.items.manager;
 
+import sorazodia.cannibalism.items.ItemFoodMeat;
+import sorazodia.cannibalism.items.ItemKnife;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
-
-import com.sorazodia.cannibalism.items.ItemFoodMeat;
-import com.sorazodia.cannibalism.items.ItemKnife;
 
 public class ItemList {
 	

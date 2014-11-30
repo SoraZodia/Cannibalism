@@ -1,4 +1,4 @@
-package com.sorazodia.cannibalism.items;
+package sorazodia.cannibalism.items;
 
 import net.minecraft.item.ItemFood;
 

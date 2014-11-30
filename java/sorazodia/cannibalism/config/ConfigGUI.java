@@ -1,7 +1,6 @@
-package com.sorazodia.cannibalism.config;
+package sorazodia.cannibalism.config;
 
-import com.sorazodia.cannibalism.main.Cannibalism;
-
+import sorazodia.cannibalism.main.Cannibalism;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
