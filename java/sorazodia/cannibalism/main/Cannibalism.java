@@ -3,8 +3,9 @@ package sorazodia.cannibalism.main;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.events.ConfigEvent;
 import sorazodia.cannibalism.events.DeathEvent;
+import sorazodia.cannibalism.events.EntityEvents;
 import sorazodia.cannibalism.tab.CannibalismTab;
-import sorazodia.registryhelper.GameRegistryItems;
+import sorazodia.registryhelper.GameItemsRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -28,23 +29,26 @@ public static ConfigHandler config;
 public static CannibalismTab cannibalismTab = new CannibalismTab();
 
 @EventHandler
-public void preInit(FMLPreInitializationEvent preEvent){
+public void preInit(FMLPreInitializationEvent preEvent)
+{
 	
 	FMLLog.info("[Cannibalism] Initializating Mod");
 	FMLLog.info("[Cannibalism] Adding Items and Syncing Config");
 	config = new ConfigHandler(preEvent);
-	GameRegistryItems.init(MODID, cannibalismTab);	
+	GameItemsRegistry.init(MODID, cannibalismTab);	
 	ItemRegistry.init();
 	config.syncConfig();
      }//PreInit End, because {} are so hard to differentiate o_O
 
 @EventHandler
-public void preInit(FMLInitializationEvent event){
+public void init(FMLInitializationEvent event)
+{
 	
 	FMLLog.info("[Cannibalism] Initializating Recipes and Events");
 	RecipesRegistry.init();
 	CookingRegistry.init();
 	MinecraftForge.EVENT_BUS.register(new DeathEvent());
+	MinecraftForge.EVENT_BUS.register(new EntityEvents());
 	FMLCommonHandler.instance().bus().register(new ConfigEvent());
 	FMLLog.info("[Cannibalism] Completed");
 	

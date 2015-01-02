@@ -10,19 +10,23 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class DeathEvent {
-
+public class DeathEvent 
+{
 	private Random rand = new Random();
 	private int amount = rand.nextInt(3)+1;
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.NORMAL)
-	public void onVillagerDeath(LivingDeathEvent livingDeath){
+	public void onVillagerDeath(LivingDeathEvent livingDeath)
+	{
 		EntityLivingBase living = livingDeath.entityLiving;
-		if(!living.worldObj.isRemote){
-			if(living instanceof EntityPlayer){
+		if(!living.worldObj.isRemote)
+		{
+			if(living instanceof EntityPlayer)
+			{
 				living.dropItem(ItemList.playerFlesh, amount);
 			}
-			if(living instanceof EntityVillager){
+			if(living instanceof EntityVillager)
+			{
 				living.dropItem(ItemList.villagerFlesh, amount);
 			}
 		}

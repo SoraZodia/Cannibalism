@@ -1,5 +1,6 @@
 package sorazodia.cannibalism.mechanic;
 
-public class PseudoPotion {
+public class PseudoPotion 
+{
 
 }

@@ -6,16 +6,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class CannibalismTab extends CreativeTabs{
+public class CannibalismTab extends CreativeTabs
+{
 
-	public CannibalismTab() {
+	public CannibalismTab()
+	{
 		super("cannibalism");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
-        return ItemList.ironKnife;
-    }
-	
+	public Item getTabIconItem()
+	{
+		return ItemList.ironKnife;
+	}
+
 }

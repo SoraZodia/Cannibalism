@@ -10,7 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class RecipesRegistry {
+public class RecipesRegistry 
+{
 
 	private static String diamond = "gemDiamond";
 	private static String gold = "ingotGold";
@@ -30,7 +31,8 @@ public class RecipesRegistry {
 	private static String stickVanilla  = "stickWood";
 	private static String stickTConsturct = "rodWood";
 	
-	public static void init(){
+	public static void init()
+	{
 		OreDicRecipe.shapedOreSimplifer(woodenKnife, " x ","  y", 'x', woodPlank, 'y', stickVanilla);
 		OreDicRecipe.shapedOreSimplifer(woodenKnife, "x  "," y ", 'x', woodPlank, 'y', stickVanilla);
 		
