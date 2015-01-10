@@ -22,7 +22,8 @@ public class ItemKnife extends ItemSword
 
 	private boolean interact = false;
 	private EntityLivingBase target;
-
+    private float tick;
+	
 	public ItemKnife(ToolMaterial material) 
 	{
 		super(material);
@@ -56,71 +57,79 @@ public class ItemKnife extends ItemSword
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entityLiving)
 	{
-		if(entityLiving instanceof EntityCow)
+		
+		if(player.ticksExisted - tick > 10)
 		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote)
+			tick = player.ticksExisted;
+			if(entityLiving instanceof EntityCow)
 			{
-				cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
-				entityLiving.dropItem(Items.beef, 1);
-				entityLiving.dropItem(Items.leather, 1);
+				interact = true;
+				if(!entityLiving.worldObj.isRemote)
+				{
+					cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
+					entityLiving.dropItem(Items.beef, 1);
+					entityLiving.dropItem(Items.leather, 1);
+				}
+			}
+			if(entityLiving instanceof EntityChicken)
+			{
+				interact = true;
+				if(!entityLiving.worldObj.isRemote) cutDamage(player, entityLiving, 10.0F);
+			}
+			if(entityLiving instanceof EntityPig)
+			{
+				interact = true;
+				if(!entityLiving.worldObj.isRemote)
+				{
+					cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
+					entityLiving.dropItem(Items.porkchop, 1);
+				}
+			}
+			if(entityLiving instanceof EntityVillager)
+			{
+				interact = true;
+				if(!entityLiving.worldObj.isRemote)
+				{
+					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
+					entityLiving.dropItem(ItemList.villagerFlesh, 1);
+				}
+			} 
+			if(entityLiving instanceof EntityZombie)
+			{
+				interact = true;
+				if(!entityLiving.worldObj.isRemote)
+				{
+					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
+					entityLiving.dropItem(Items.rotten_flesh, 1);
+				}
+			}
+			if(entityLiving instanceof EntityPlayer)
+			{
+				interact = true;
+				if(!entityLiving.worldObj.isRemote)
+				{
+					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
+					player.dropItem(ItemList.playerFlesh, 1);
+				}
+			}
+			if(entityLiving instanceof ICutable)
+			{
+				interact = true;
+				ICutable target = (ICutable)entityLiving;
+				if(!entityLiving.worldObj.isRemote) target.cut();
 			}
 		}
-		if(entityLiving instanceof EntityChicken)
+		
+		if(interact && !player.worldObj.isRemote)
 		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote) cutDamage(player, entityLiving, 4.0F);
+			stack.damageItem(1, player);
 		}
-		if(entityLiving instanceof EntityPig)
-		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote)
-			{
-				cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
-				entityLiving.dropItem(Items.porkchop, 1);
-			}
-		}
-		if(entityLiving instanceof EntityVillager)
-		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote)
-			{
-				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-				entityLiving.dropItem(ItemList.villagerFlesh, 1);
-			}
-		} 
-		if(entityLiving instanceof EntityZombie)
-		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote)
-			{
-				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-				entityLiving.dropItem(Items.rotten_flesh, 1);
-			}
-		}
-		if(entityLiving instanceof EntityPlayer)
-		{
-			interact = true;
-			if(!entityLiving.worldObj.isRemote)
-			{
-				cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-				player.dropItem(ItemList.playerFlesh, 1);
-			}
-		}
-		if(entityLiving instanceof ICutable)
-		{
-			interact = true;
-			ICutable target = (ICutable)entityLiving;
-			if(!entityLiving.worldObj.isRemote) target.cut();
-		}
-
-		if(interact && !player.worldObj.isRemote)stack.damageItem(1, player);
 		if(interact && player.worldObj.isRemote)
 		{
 			player.swingItem();
 			spawnBlood(entityLiving, entityLiving.worldObj, 0);
 		}
-
+		
 		return interact;
 	}
 

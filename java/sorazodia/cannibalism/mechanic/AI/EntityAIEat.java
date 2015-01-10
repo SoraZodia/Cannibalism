@@ -1,24 +1,30 @@
 package sorazodia.cannibalism.mechanic.AI;
 
+import sorazodia.cannibalism.mechanic.CannibalismNBT;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class EntityAIEat extends EntityAIBase
 {
-	// May not be needed
+	
 	private EntityLivingBase entity;
+	private CannibalismNBT nbt;
 
 	public EntityAIEat(EntityLivingBase living)
 	{
 		entity = living;
+		nbt = CannibalismNBT.getNBT(living);
 	}
 
 	@Override
 	public boolean shouldExecute()
 	{
 		boolean execute = false;
-		if (entity.ticksExisted % 20 == 0)
-			execute = true;
+		if(nbt.getNBTValue("hunger") <= 50)
+		{
+			
+		}
+
 		return execute;
 	}
 

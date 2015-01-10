@@ -10,7 +10,7 @@ public class EntityAICannibalize extends EntityAIBase
 	
 	public EntityAICannibalize(EntityLivingBase living)
 	{
-	entity = living;	
+		entity = living;	
 	}
 	
 	@Override
