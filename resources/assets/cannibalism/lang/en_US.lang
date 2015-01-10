@@ -11,3 +11,8 @@ item.villagerFlesh.name=Villager Flesh
 item.playerFlesh.name=Player Flesh
 item.villagerFleshCooked.name=Cooked Villager Flesh
 item.playerFleshCooked.name=Cooked Player Flesh
+
+item.villagerPoptart.name=Villager Poptart
+item.playerPoptart.name=Player Poptart
+item.villagerPoptartCooked.name=Cooked Villager Poptart
+item.playerPoptartCooked.name=Cooked Player Poptart

@@ -1,12 +1,11 @@
 package sorazodia.cannibalism.main;
 
+import net.minecraftforge.common.MinecraftForge;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.events.ConfigEvent;
 import sorazodia.cannibalism.events.DeathEvent;
-import sorazodia.cannibalism.events.EntityEvents;
 import sorazodia.cannibalism.tab.CannibalismTab;
 import sorazodia.registryhelper.GameItemsRegistry;
-import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -19,7 +18,7 @@ public class Cannibalism {
 
 //@MOD variables
 public static final String MODID = "cannibalism";
-public static final String VERSION = "1.0.1";
+public static final String VERSION = "1.0.2";
 public static final String NAME = "Cannibalism";
 
 @Mod.Instance(MODID)
@@ -48,7 +47,6 @@ public void init(FMLInitializationEvent event)
 	RecipesRegistry.init();
 	CookingRegistry.init();
 	MinecraftForge.EVENT_BUS.register(new DeathEvent());
-	MinecraftForge.EVENT_BUS.register(new EntityEvents());
 	FMLCommonHandler.instance().bus().register(new ConfigEvent());
 	FMLLog.info("[Cannibalism] Completed");
 	
