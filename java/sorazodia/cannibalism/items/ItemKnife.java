@@ -66,7 +66,7 @@ public class ItemKnife extends ItemSword
 				interact = true;
 				if(!entityLiving.worldObj.isRemote)
 				{
-					cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
+					cutDamage(player, entityLiving, getDamage(2.5F,3.0F));
 					entityLiving.dropItem(Items.beef, 1);
 					entityLiving.dropItem(Items.leather, 1);
 				}
@@ -81,7 +81,7 @@ public class ItemKnife extends ItemSword
 				interact = true;
 				if(!entityLiving.worldObj.isRemote)
 				{
-					cutDamage(player, entityLiving, getDamage(3.0F,4.0F));
+					cutDamage(player, entityLiving, getDamage(2.5F,3.0F));
 					entityLiving.dropItem(Items.porkchop, 1);
 				}
 			}
@@ -116,7 +116,7 @@ public class ItemKnife extends ItemSword
 			{
 				interact = true;
 				ICutable target = (ICutable)entityLiving;
-				if(!entityLiving.worldObj.isRemote) target.cut();
+				if(!entityLiving.worldObj.isRemote) target.cut(player);
 			}
 		}
 		
@@ -153,7 +153,7 @@ public class ItemKnife extends ItemSword
 
 	private void spawnBlood(EntityLivingBase entityLiving, World world, float yDeceaseBy)
 	{
-		for(int repeat = 0; repeat < 36; repeat++)
+		for(int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
 			world.spawnParticle("reddust", entityLiving.posX + Math.random()-Math.random(), entityLiving.posY - yDeceaseBy, entityLiving.posZ + Math.random()-Math.random(), 
 					0.0F, 0.0F,0.0F);
