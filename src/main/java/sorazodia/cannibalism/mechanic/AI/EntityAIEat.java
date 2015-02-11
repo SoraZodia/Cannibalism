@@ -1,6 +1,6 @@
 package sorazodia.cannibalism.mechanic.AI;
 
-import sorazodia.cannibalism.mechanic.CannibalismNBT;
+import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 

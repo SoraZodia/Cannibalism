@@ -1,14 +1,14 @@
 package sorazodia.cannibalism.main;
 
 import net.minecraftforge.common.MinecraftForge;
-import sorazodia.cannibalism.apitest.EntityRegistation;
-import sorazodia.cannibalism.apitest.TestEntity;
+import sorazodia.api.potionregistry.PotionEventHandler;
+import sorazodia.api.potionregistry.PseudoPotion;
+import sorazodia.api.potionregistry.TestPotion;
 import sorazodia.cannibalism.config.ConfigHandler;
-import sorazodia.cannibalism.events.ConfigEvent;
-import sorazodia.cannibalism.events.DeathEvent;
-import sorazodia.cannibalism.events.EntityEvents;
+import sorazodia.cannibalism.mechanic.events.ConfigEvent;
+import sorazodia.cannibalism.mechanic.events.DeathEvent;
+import sorazodia.cannibalism.mechanic.events.EntityEvents;
 import sorazodia.cannibalism.tab.CannibalismTab;
-import sorazodia.registryhelper.GameItemsRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -33,15 +33,13 @@ public class Cannibalism {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
 	{
-
 		FMLLog.info("[Cannibalism] Initializating Mod");
 		FMLLog.info("[Cannibalism] Adding Items and Syncing Config");
-		config = new ConfigHandler(preEvent);
-		GameItemsRegistry.init(MODID, cannibalismTab);	
-		//EntityRegistation.registerEntity(TestEntity.class, "Test", cannibalism);
+		config = new ConfigHandler(preEvent);		
 		ItemRegistry.init();
-		config.syncConfig();
-	}//PreInit End, because {} are so hard to differentiate o_O
+		MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
+		PseudoPotion.registerPotion(MODID, new TestPotion());
+	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
@@ -55,6 +53,6 @@ public class Cannibalism {
 		FMLCommonHandler.instance().bus().register(new ConfigEvent());
 		FMLLog.info("[Cannibalism] Completed");
 
-	}//Init End, because {} are so hard to differentiate o_O
+	}
 
 }

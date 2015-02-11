@@ -1,4 +1,4 @@
-package sorazodia.cannibalism.events;
+package sorazodia.cannibalism.mechanic.events;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class DeathEvent
 	private int amount = rand.nextInt(3)+1;
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.NORMAL)
-	public void onVillagerDeath(LivingDeathEvent livingDeath)
+	public void onDeath(LivingDeathEvent livingDeath)
 	{
 		EntityLivingBase living = livingDeath.entityLiving;
 		if(!living.worldObj.isRemote)

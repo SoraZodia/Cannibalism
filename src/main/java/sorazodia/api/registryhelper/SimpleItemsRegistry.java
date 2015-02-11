@@ -1,4 +1,4 @@
-package sorazodia.registryhelper;
+package sorazodia.api.registryhelper;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  * 
  * @author SoraZodia
  */
-public class GameItemsRegistry
+public class SimpleItemsRegistry
 {
 
 	private static String MODID;

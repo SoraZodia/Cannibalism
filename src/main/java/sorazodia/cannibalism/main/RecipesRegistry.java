@@ -1,14 +1,10 @@
 package sorazodia.cannibalism.main;
 
-import sorazodia.cannibalism.items.manager.ItemList;
-import sorazodia.registryhelper.OreDicRecipe;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
+import sorazodia.api.registryhelper.OreDicRecipe;
+import sorazodia.cannibalism.items.manager.ItemList;
 
 public class RecipesRegistry 
 {
@@ -34,24 +30,24 @@ public class RecipesRegistry
 	public static void init()
 	{
 		OreDicRecipe.shapedOreSimplifer(woodenKnife, " x ","  y", 'x', woodPlank, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(woodenKnife, "x  "," y ", 'x', woodPlank, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(woodenKnife, "x  "," y ", 'x', woodPlank, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(flintKnife, " x ","  y", 'x', flint, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(flintKnife, "x  "," y ", 'x', flint, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(flintKnife, "x  "," y ", 'x', flint, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(stoneKnife, " x ","  y", 'x', cobblestone, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', cobblestone, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', cobblestone, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(stoneKnife, " x ","  y", 'x', stone, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', stone, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(stoneKnife, "x  "," y ", 'x', stone, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(goldKnife, " x ","  y", 'x', gold, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(goldKnife, "x  "," y ", 'x', gold, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(goldKnife, "x  "," y ", 'x', gold, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(ironKnife, " x ","  y", 'x', iron, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(ironKnife, "x  "," y ", 'x', iron, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(ironKnife, "x  "," y ", 'x', iron, 'y', stickTConsturct);
 		
 		OreDicRecipe.shapedOreSimplifer(diamondKnife, " x ","  y", 'x', diamond, 'y', stickVanilla);
-		OreDicRecipe.shapedOreSimplifer(diamondKnife, "x  "," y ", 'x', diamond, 'y', stickVanilla);
+		OreDicRecipe.shapedOreSimplifer(diamondKnife, "x  "," y ", 'x', diamond, 'y', stickTConsturct);
 	}
 }

@@ -1,6 +1,5 @@
 package sorazodia.cannibalism.items.manager;
 
-import scala.util.Random;
 import sorazodia.cannibalism.items.ItemFoodMeat;
 import sorazodia.cannibalism.items.ItemKnife;
 import net.minecraft.item.Item;
@@ -10,7 +9,7 @@ import net.minecraftforge.common.util.EnumHelper;
 public class ItemList 
 {
 	
-	private static final ToolMaterial FLINT = new EnumHelper().addToolMaterial("FLINT", 1, 100, 3.0F, 2.5F, 5);
+	private static final ToolMaterial FLINT = EnumHelper.addToolMaterial("FLINT", 1, 100, 3.0F, 2.5F, 5);
 	
 	//Knife variables + names
 	public static ItemKnife woodenKnife = (ItemKnife) new ItemKnife(Item.ToolMaterial.WOOD);

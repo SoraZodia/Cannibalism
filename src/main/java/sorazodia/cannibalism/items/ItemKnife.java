@@ -1,9 +1,5 @@
 package sorazodia.cannibalism.items;
 
-import sorazodia.cannibalism.api.ICutable;
-import sorazodia.cannibalism.config.ConfigHandler;
-import sorazodia.cannibalism.items.manager.ItemList;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
@@ -16,12 +12,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import sorazodia.api.potionregistry.PseudoPotion;
+import sorazodia.cannibalism.api.ICutable;
+import sorazodia.cannibalism.config.ConfigHandler;
+import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.main.Cannibalism;
+import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
 public class ItemKnife extends ItemSword
 {
 
 	private boolean interact = false;
-	private EntityLivingBase target;
     private float tick;
 	
 	public ItemKnife(ToolMaterial material) 
@@ -40,7 +41,11 @@ public class ItemKnife extends ItemSword
 		if(!world.isRemote && player.isSneaking() && !interact){
 			cutDamage(player, player, getDamage(5.5F,5.5F));
 			playSound(world, player);
-			player.dropItem(ItemList.playerFlesh, 1);
+			ItemStack playerMeat = new ItemStack(ItemList.playerFlesh, 1);
+			MeatOriginNBT.addNameToNBT(playerMeat, player.getDisplayName());
+			MeatOriginNBT.getNameFromNBT(playerMeat);
+			PseudoPotion.applyEffect(player, Cannibalism.MODID,"test", 10, 1);
+			player.entityDropItem(playerMeat, 0.0F);
 			stack.damageItem(1, player);
 		}
 		interact = false;

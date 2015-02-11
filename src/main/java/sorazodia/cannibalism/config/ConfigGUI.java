@@ -12,7 +12,7 @@ public class ConfigGUI extends GuiConfig
 	public ConfigGUI(GuiScreen parent) 
 	{
 		super(parent,
-				new ConfigElement(
+				new ConfigElement<ConfigGUI>(
 						ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
 						Cannibalism.MODID, false, false, title);
 	}

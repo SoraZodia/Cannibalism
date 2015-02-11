@@ -1,4 +1,4 @@
-package sorazodia.cannibalism.events;
+package sorazodia.cannibalism.mechanic.events;
 
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;

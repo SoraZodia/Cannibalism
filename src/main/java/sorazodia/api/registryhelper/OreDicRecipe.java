@@ -1,4 +1,4 @@
-package sorazodia.registryhelper;
+package sorazodia.api.registryhelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;

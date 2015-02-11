@@ -1,4 +1,4 @@
-package sorazodia.cannibalism.mechanic;
+package sorazodia.cannibalism.mechanic.nbt;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,19 +9,17 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class CannibalismNBT implements IExtendedEntityProperties
 {
 	public static final String NBTNAME = "cannibalismVariables";
-	private float risk = 100;
 	private float sanity = 100;
 	private float hunger = 100;
 
 	public CannibalismNBT(){
-		this.risk = this.hunger = this.sanity = 100;
+		this.hunger = this.sanity = 100;
 	}
 	
 	@Override
 	public void saveNBTData(NBTTagCompound compound) 
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setFloat("risk", risk);
 		nbt.setFloat("hunger", hunger);
 		nbt.setFloat("sanity", sanity);
 		compound.setTag(NBTNAME, nbt);
@@ -31,7 +29,6 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	public void loadNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound nbt = compound.getCompoundTag(NBTNAME);
-		risk = nbt.getFloat("risk");
 		hunger = nbt.getFloat("hunger");
 		sanity = nbt.getFloat("sanity");
 	}
@@ -44,11 +41,7 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	public void changeNBTValue(String nbtName, float amount)
 	{
 		switch(nbtName)
-		{
-		case "risk": 
-			risk += amount;
-            break;
-            
+		{            
 		case "hunger":
 			hunger += amount;
 			break;
@@ -63,10 +56,6 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	{
 		switch(nbtName)
 		{
-		case "risk": 
-			risk = amount;
-            break;
-            
 		case "hunger":
 			hunger = amount;
 			break;
@@ -83,10 +72,6 @@ public class CannibalismNBT implements IExtendedEntityProperties
 		
 		switch(nbtName)
 		{
-		case "risk": 
-			value = risk;
-            break;
-            
 		case "hunger":
 			value = hunger;
 			break;
