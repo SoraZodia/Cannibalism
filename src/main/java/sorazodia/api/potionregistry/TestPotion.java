@@ -1,5 +1,7 @@
 package sorazodia.api.potionregistry;
 
+import net.minecraft.entity.EntityLivingBase;
+
 public class TestPotion extends Potion
 {
 	int spam = 0;
@@ -11,7 +13,7 @@ public class TestPotion extends Potion
 	}
 
 	@Override
-	public void effect(int powerLevel)
+	public void effect(EntityLivingBase target, int powerLevel)
 	{		
 		System.out.println("Spam yo" + spam++);
 	}

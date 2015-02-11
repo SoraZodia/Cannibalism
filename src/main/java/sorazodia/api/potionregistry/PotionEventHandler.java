@@ -13,18 +13,19 @@ public class PotionEventHandler
 	@SubscribeEvent
 	public void entityUpdate(LivingUpdateEvent event)
 	{
-		if(PotionNBTList.getNBT(event.entityLiving) != null)
+		EntityLivingBase target = event.entityLiving;
+		if(PotionNBTList.getNBT(target) != null)
 		{
-			PotionNBTList list = PotionNBTList.getNBT(event.entityLiving);
+			PotionNBTList list = PotionNBTList.getNBT(target);
 			NBTTagList potions = list.getNBTList();
-			if(event.entityLiving.ticksExisted % 20 == 0 && list.getNBTList().tagCount() > 0)
+			if(target.ticksExisted % 20 == 0 && list.getNBTList().tagCount() > 0)
 			{
 			    for(int x = 0; x < potions.tagCount(); x++)
 			    {
 			    	int powerLevel = list.getCompoundFromList(x).getInteger("powerLevel");
 			    	float duration = list.getCompoundFromList(x).getFloat("duration");
 			    	list.getCompoundFromList(x).setFloat("duration", duration - 1);
-			    	PotionEffectManager.getPotionList().get(list.getCompoundFromList(x).getString("name")).effect(powerLevel);
+			    	PotionEffectManager.getPotionList().get(list.getCompoundFromList(x).getString("name")).effect(target, powerLevel);
 			    	if(duration <= 0)
 			    		potions.removeTag(x);
 			    }
