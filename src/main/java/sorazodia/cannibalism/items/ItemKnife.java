@@ -8,22 +8,20 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import sorazodia.api.potionregistry.PseudoPotion;
 import sorazodia.cannibalism.api.ICutable;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.items.manager.ItemList;
-import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
 public class ItemKnife extends ItemSword
 {
 
 	private boolean interact = false;
-    private float tick;
 	
 	public ItemKnife(ToolMaterial material) 
 	{
@@ -34,18 +32,15 @@ public class ItemKnife extends ItemSword
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
 		player.setItemInUse(stack, getMaxItemUseDuration(stack));
-		if(player.isSneaking() && world.isRemote && !interact){
+		if(player.isSneaking() && !interact){
 			spawnBlood(player, world, 1);
+			playSound(world, player);
 			player.swingItem();
 		}
-		if(!world.isRemote && player.isSneaking() && !interact){
-			cutDamage(player, player, getDamage(5.5F,5.5F));
-			playSound(world, player);
+		if(!world.isRemote && player.isSneaking() && !interact){		
 			ItemStack playerMeat = new ItemStack(ItemList.playerFlesh, 1);
-			MeatOriginNBT.addNameToNBT(playerMeat, player.getDisplayName());
-			MeatOriginNBT.getNameFromNBT(playerMeat);
-			PseudoPotion.applyEffect(player, Cannibalism.MODID,"test", 10, 1);
-			player.entityDropItem(playerMeat, 0.0F);
+			setMeatName(playerMeat, player.getDisplayName() + "'s Flesh");			
+			dropItems(player, player, getDamage(5.0F, 5.5F), playerMeat);			
 			stack.damageItem(1, player);
 		}
 		interact = false;
@@ -53,6 +48,12 @@ public class ItemKnife extends ItemSword
 		return stack;
 	}	
 
+	private void setMeatName(ItemStack meat, String name)
+	{
+		MeatOriginNBT.addNameToNBT(meat, name);
+		MeatOriginNBT.getNameFromNBT(meat);
+	}
+	
 	private void playSound(World world, EntityPlayer player)
 	{
 		if(ConfigHandler.doScream())world.playSoundEffect(player.posX, player.posY, player.posZ, "mob.ghast.scream", 1.0F, ConfigHandler.getPinch());
@@ -63,79 +64,71 @@ public class ItemKnife extends ItemSword
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entityLiving)
 	{
 		
-		if(player.ticksExisted - tick > 9)
+		if(entityLiving.hurtTime < 1 && entityLiving.getHealth() > 0)
 		{
-			tick = player.ticksExisted;
-			if(entityLiving instanceof EntityCow)
+			if (entityLiving instanceof EntityCow)
 			{
-				interact = true;
-				if(!entityLiving.worldObj.isRemote)
-				{
-					cutDamage(player, entityLiving, getDamage(2.5F,3.0F));
-					entityLiving.dropItem(Items.beef, 1);
-					entityLiving.dropItem(Items.leather, 1);
-				}
+				dropItems(player, entityLiving, getDamage(2.5F, 3.0F), Items.beef, Items.leather);				
 			}
-			if(entityLiving instanceof EntityChicken)
+			if (entityLiving instanceof EntityChicken)
 			{
-				interact = true;
-				if(!entityLiving.worldObj.isRemote) cutDamage(player, entityLiving, 10.0F);
+				cutDamage(player, entityLiving, 10.0F);
 			}
-			if(entityLiving instanceof EntityPig)
+			if (entityLiving instanceof EntityPig)
 			{
-				interact = true;
-				if(!entityLiving.worldObj.isRemote)
-				{
-					cutDamage(player, entityLiving, getDamage(2.5F,3.0F));
-					entityLiving.dropItem(Items.porkchop, 1);
-				}
+				dropItems(player, entityLiving, getDamage(2.5F, 3.0F), Items.porkchop);
 			}
-			if(entityLiving instanceof EntityVillager)
+			if (entityLiving instanceof EntityVillager)
 			{
-				interact = true;
-				if(!entityLiving.worldObj.isRemote)
-				{
-					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-					entityLiving.dropItem(ItemList.villagerFlesh, 1);
-				}
-			} 
-			if(entityLiving instanceof EntityZombie)
-			{
-				interact = true;
-				if(!entityLiving.worldObj.isRemote)
-				{
-					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-					entityLiving.dropItem(Items.rotten_flesh, 1);
-				}
+				dropItems(player, entityLiving, getDamage(5.0F, 6.0F), ItemList.villagerFlesh);
 			}
-			if(entityLiving instanceof EntityPlayer)
+			if (entityLiving instanceof EntityZombie)
+			{
+				dropItems(player, entityLiving, getDamage(5.0F, 6.0F), Items.rotten_flesh);
+			}
+			if (entityLiving instanceof EntityPlayer)
+			{
+				dropItems(player, entityLiving, getDamage(5.0F, 5.5F), ItemList.playerFlesh);
+			}
+			if (entityLiving instanceof ICutable)
 			{
 				interact = true;
-				if(!entityLiving.worldObj.isRemote)
-				{
-					cutDamage(player, entityLiving, getDamage(5.0F,6.0F));
-					player.dropItem(ItemList.playerFlesh, 1);
-				}
+				ICutable target = (ICutable) entityLiving;
+				target.cut(player);
 			}
-			if(entityLiving instanceof ICutable)
-			{
-				interact = true;
-				ICutable target = (ICutable)entityLiving;
-				if(!entityLiving.worldObj.isRemote) target.cut(player);
-			}
-		}
-		
-		if(interact && !player.worldObj.isRemote)
-		{
-			stack.damageItem(1, player);
-		}
-		if(interact && player.worldObj.isRemote)
+	
+	  }
+
+		if (interact)
 		{
 			player.swingItem();
+			stack.damageItem(1, player);
 			spawnBlood(entityLiving, entityLiving.worldObj, 0);
 		}
-		
+
 		return interact;
+	}
+	
+	private void dropItems(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack... drops)
+	{
+		interact = true;
+		if (!entity.worldObj.isRemote)
+		{
+		cutDamage(player, entity, damage);
+		for(ItemStack item: drops)
+			entity.entityDropItem(item, 0.0F);
+		}
+	}
+	
+	private void dropItems(EntityPlayer player, EntityLivingBase entity, float damage, Item... drops)
+	{
+		interact = true;
+		if(!entity.worldObj.isRemote)
+		{
+		cutDamage(player, entity, damage);
+		for(Item item: drops)
+			entity.entityDropItem(new ItemStack(item), 0.0F);
+		}
 	}
 
 	private void cutDamage(EntityPlayer player, EntityLivingBase entity, float damage)

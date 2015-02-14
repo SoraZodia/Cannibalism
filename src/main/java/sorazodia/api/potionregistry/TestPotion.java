@@ -16,6 +16,7 @@ public class TestPotion extends Potion
 	public void effect(EntityLivingBase target, int powerLevel)
 	{		
 		System.out.println("Spam yo" + spam++);
+		target.getEntityData().getTagList("Attributes", 2).getCompoundTagAt(2).setDouble("generic.movementSpeed", 1);
 	}
 
 }
