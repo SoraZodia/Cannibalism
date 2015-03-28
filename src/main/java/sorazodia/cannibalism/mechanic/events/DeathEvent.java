@@ -13,11 +13,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class DeathEvent 
 {
 	private Random rand = new Random();
-	private int amount = rand.nextInt(3)+1;
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.NORMAL)
 	public void onDeath(LivingDeathEvent livingDeath)
 	{
+		int amount = rand.nextInt(3)+1;
 		EntityLivingBase living = livingDeath.entityLiving;
 		if(!living.worldObj.isRemote)
 		{

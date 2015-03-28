@@ -17,6 +17,7 @@ public class ItemRegistry
 		SimpleItemsRegistry.registerItems(ItemList.goldKnife, ItemList.goldKnifeName);
 		SimpleItemsRegistry.registerItems(ItemList.ironKnife, ItemList.ironKnifeName);		
 		SimpleItemsRegistry.registerItems(ItemList.diamondKnife, ItemList.diamondKnifeName);
+		SimpleItemsRegistry.registerItems(ItemList.devKnife, ItemList.devKnifeName, "flintKnife");
 		
 		//initializate the flesh
 		SimpleItemsRegistry.registerEasterItems(ItemList.playerFlesh, ItemList.playerFleshName, "playerPoptart");

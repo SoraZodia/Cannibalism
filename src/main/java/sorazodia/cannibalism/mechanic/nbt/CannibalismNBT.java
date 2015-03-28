@@ -9,19 +9,20 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class CannibalismNBT implements IExtendedEntityProperties
 {
 	public static final String NBTNAME = "cannibalismVariables";
-	private float sanity = 100;
-	private float hunger = 100;
+	private float wendigoLevel;
+	private boolean spawnWendigo;
 
 	public CannibalismNBT(){
-		this.hunger = this.sanity = 100;
+		this.wendigoLevel = 0;
+		this.spawnWendigo = false;
 	}
 	
 	@Override
 	public void saveNBTData(NBTTagCompound compound) 
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setFloat("hunger", hunger);
-		nbt.setFloat("sanity", sanity);
+		nbt.setFloat("wendigo", wendigoLevel);
+		nbt.setBoolean("wendigoExist", spawnWendigo);
 		compound.setTag(NBTNAME, nbt);
 	}
 
@@ -29,8 +30,8 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	public void loadNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound nbt = compound.getCompoundTag(NBTNAME);
-		hunger = nbt.getFloat("hunger");
-		sanity = nbt.getFloat("sanity");
+		wendigoLevel = nbt.getFloat("wendigo");
+		spawnWendigo = nbt.getBoolean("levelIncre");
 	}
 
 	@Override
@@ -38,50 +39,19 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	{
 	}
 	
-	public void changeNBTValue(String nbtName, float amount)
+	public void changeWendigoValue(float amount)
 	{
-		switch(nbtName)
-		{            
-		case "hunger":
-			hunger += amount;
-			break;
-			
-		case "sanity":
-			sanity += amount;
-			break;
-		}
+		wendigoLevel += amount;
 	}
 	
-	public void setNBTValue(String nbtName, float amount)
+	public void setWendigoValue(float amount)
 	{
-		switch(nbtName)
-		{
-		case "hunger":
-			hunger = amount;
-			break;
-			
-		case "sanity":
-			sanity = amount;
-			break;
-		}
+		wendigoLevel = amount;
 	}
 	
-	public float getNBTValue(String nbtName)
+	public float getWendigoValue()
 	{
-		float value = 0;
-		
-		switch(nbtName)
-		{
-		case "hunger":
-			value = hunger;
-			break;
-			
-		case "sanity":
-			value = sanity;
-			break;
-		}
-		
-		return value;
+		return wendigoLevel;
 	}
 
 	public static final CannibalismNBT getNBT(EntityLivingBase entity)
@@ -89,6 +59,16 @@ public class CannibalismNBT implements IExtendedEntityProperties
 		return (CannibalismNBT) entity.getExtendedProperties(NBTNAME);
 	}
 	
+	public boolean wendigoSpawned()
+	{
+		return spawnWendigo;
+	}
+
+	public void setWedigoSpawn(boolean doSpawn)
+	{
+		spawnWendigo = doSpawn;
+	}
+
 	public static final void register(EntityLivingBase entity)
 	{
 		entity.registerExtendedProperties(NBTNAME, new CannibalismNBT());

@@ -1,10 +1,11 @@
 package sorazodia.cannibalism.items.manager;
 
-import sorazodia.cannibalism.items.ItemFoodMeat;
-import sorazodia.cannibalism.items.ItemKnife;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+import sorazodia.cannibalism.items.ItemDevKnife;
+import sorazodia.cannibalism.items.ItemFlesh;
+import sorazodia.cannibalism.items.ItemKnife;
 
 public class ItemList 
 {
@@ -30,17 +31,20 @@ public class ItemList
 	public static ItemKnife diamondKnife = (ItemKnife) new ItemKnife(Item.ToolMaterial.EMERALD);
 	public static String diamondKnifeName = "diamondKnife";
 	
+	public static ItemKnife devKnife = (ItemDevKnife) new ItemDevKnife();
+	public static String devKnifeName = "knifeOfTesting";
+	
 	//Flesh variables + names
-	public static ItemFoodMeat playerFlesh = (ItemFoodMeat) new ItemFoodMeat(4, 1.0F);	
+	public static ItemFlesh playerFlesh = (ItemFlesh) new ItemFlesh(4, 0.3F);	
 	public static String playerFleshName = "playerFlesh";
 	
-	public static ItemFoodMeat villagerFlesh = (ItemFoodMeat) new ItemFoodMeat(4, 1.0F);
+	public static ItemFlesh villagerFlesh = (ItemFlesh) new ItemFlesh(4, 0.3F);
 	public static String villagerFleshName = "villagerFlesh";
 	
-	public static ItemFoodMeat playerFleshCooked = (ItemFoodMeat) new ItemFoodMeat(8, 2.0F);
+	public static ItemFlesh playerFleshCooked = (ItemFlesh) new ItemFlesh(8, 0.8F);
 	public static String playerFleshCookedName = "playerFleshCooked";
 	
-	public static ItemFoodMeat villagerFleshCooked = (ItemFoodMeat) new ItemFoodMeat(8, 2.0F);
+	public static ItemFlesh villagerFleshCooked = (ItemFlesh) new ItemFlesh(8, 0.8F);
 	public static String villagerFleshCookedName = "villagerFleshCooked";
 	
 }

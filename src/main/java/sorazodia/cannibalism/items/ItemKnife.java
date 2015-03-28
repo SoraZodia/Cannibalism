@@ -9,6 +9,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import sorazodia.cannibalism.api.ICutable;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
 public class ItemKnife extends ItemSword
@@ -32,32 +34,33 @@ public class ItemKnife extends ItemSword
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
 		player.setItemInUse(stack, getMaxItemUseDuration(stack));
-		if(player.isSneaking() && !interact){
-			spawnBlood(player, world, 1);
-			playSound(world, player);
+
+		if (!interact && player.isSneaking())
+		{			
+			spookyEffect(world, player);
 			player.swingItem();
-		}
-		if(!world.isRemote && player.isSneaking() && !interact){		
-			ItemStack playerMeat = new ItemStack(ItemList.playerFlesh, 1);
-			setMeatName(playerMeat, player.getDisplayName() + "'s Flesh");			
-			dropItems(player, player, getDamage(5.0F, 5.5F), playerMeat);			
-			stack.damageItem(1, player);
+			if (!world.isRemote)
+			{
+				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getCommandSenderName(), ItemList.playerFlesh);
+				stack.damageItem(1, player);
+			}
 		}
 		interact = false;
 
 		return stack;
-	}	
+	}
 
-	private void setMeatName(ItemStack meat, String name)
+	private void setMeatName(ItemStack meat, String owner)
 	{
-		MeatOriginNBT.addNameToNBT(meat, name);
+		MeatOriginNBT.addNameToNBT(meat, owner);
 		MeatOriginNBT.getNameFromNBT(meat);
 	}
 	
-	private void playSound(World world, EntityPlayer player)
+	private void spookyEffect(World world, EntityPlayer player)
 	{
 		if(ConfigHandler.doScream())world.playSoundEffect(player.posX, player.posY, player.posZ, "mob.ghast.scream", 1.0F, ConfigHandler.getPinch());
 		if(!ConfigHandler.doScream())world.playSoundEffect(player.posX, player.posY, player.posZ, "game.player.hurt", 1.0F, ConfigHandler.getPinch());
+		spawnBlood(player, world, 1);	
 	}
 
 	@Override
@@ -66,9 +69,18 @@ public class ItemKnife extends ItemSword
 		
 		if(entityLiving.hurtTime < 1 && entityLiving.getHealth() > 0)
 		{
-			if (entityLiving instanceof EntityCow)
+			
+			if(entityLiving.getEquipmentInSlot(3) != null && entityLiving.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
 			{
-				dropItems(player, entityLiving, getDamage(2.5F, 3.0F), Items.beef, Items.leather);				
+				ItemArmor armor = (ItemArmor) entityLiving.getEquipmentInSlot(3).getItem();
+				player.swingItem();
+				player.worldObj.playSoundAtEntity(player, "dig.glass", 1.0f, 1.0f);
+				stack.damageItem(15 * armor.damageReduceAmount, player);
+				return true;
+			}
+			if (entityLiving instanceof EntityCow) //Would love to use a switch statement here <_<
+			{
+				cutEntity(player, entityLiving, getDamage(2.5F, 3.0F), Items.beef, Items.leather);				
 			}
 			if (entityLiving instanceof EntityChicken)
 			{
@@ -76,19 +88,19 @@ public class ItemKnife extends ItemSword
 			}
 			if (entityLiving instanceof EntityPig)
 			{
-				dropItems(player, entityLiving, getDamage(2.5F, 3.0F), Items.porkchop);
+				cutEntity(player, entityLiving, getDamage(2.5F, 3.0F), Items.porkchop);
 			}
 			if (entityLiving instanceof EntityVillager)
 			{
-				dropItems(player, entityLiving, getDamage(5.0F, 6.0F), ItemList.villagerFlesh);
+				cutEntity(player, entityLiving, getDamage(5.0F, 6.0F), ItemList.villagerFlesh);
 			}
 			if (entityLiving instanceof EntityZombie)
 			{
-				dropItems(player, entityLiving, getDamage(5.0F, 6.0F), Items.rotten_flesh);
+				cutEntity(player, entityLiving, getDamage(5.0F, 6.0F), Items.rotten_flesh);
 			}
 			if (entityLiving instanceof EntityPlayer)
 			{
-				dropItems(player, entityLiving, getDamage(5.0F, 5.5F), ItemList.playerFlesh);
+				cutEntity(player, entityLiving, getDamage(5.0F, 5.5F), entityLiving.getCommandSenderName(), ItemList.playerFlesh);
 			}
 			if (entityLiving instanceof ICutable)
 			{
@@ -104,30 +116,44 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			stack.damageItem(1, player);
 			spawnBlood(entityLiving, entityLiving.worldObj, 0);
+			increaseWendigo(player);
 		}
 
 		return interact;
 	}
 	
-	private void dropItems(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack... drops)
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
+	{
+		interact = true;
+
+		if (!entity.worldObj.isRemote)
+		{
+			ItemStack meat = new ItemStack(flesh);
+			setMeatName(meat, owner + "'s Flesh");
+			cutDamage(player, entity, damage);
+			increaseWendigo(player);
+			entity.entityDropItem(meat, 0.0F);
+		}
+	}
+
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, Item... drops)
 	{
 		interact = true;
 		if (!entity.worldObj.isRemote)
 		{
-		cutDamage(player, entity, damage);
-		for(ItemStack item: drops)
-			entity.entityDropItem(item, 0.0F);
+			cutDamage(player, entity, damage);
+			increaseWendigo(player);
+			for (Item item : drops)
+				entity.entityDropItem(new ItemStack(item), 0.0F);
 		}
 	}
-	
-	private void dropItems(EntityPlayer player, EntityLivingBase entity, float damage, Item... drops)
+
+	private void increaseWendigo(EntityPlayer player)
 	{
-		interact = true;
-		if(!entity.worldObj.isRemote)
+		if (CannibalismNBT.getNBT(player) != null)
 		{
-		cutDamage(player, entity, damage);
-		for(Item item: drops)
-			entity.entityDropItem(new ItemStack(item), 0.0F);
+			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
+			nbt.changeWendigoValue(10);
 		}
 	}
 
@@ -149,12 +175,12 @@ public class ItemKnife extends ItemSword
 		}
 	}
 
-	private void spawnBlood(EntityLivingBase entityLiving, World world, float yDeceaseBy)
+	private void spawnBlood(EntityLivingBase entityLiving, World world, float ySubtract)
 	{
 		for(int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
-			world.spawnParticle("reddust", entityLiving.posX + Math.random()-Math.random(), entityLiving.posY - yDeceaseBy, entityLiving.posZ + Math.random()-Math.random(), 
-					0.0F, 0.0F,0.0F);
+			world.spawnParticle("reddust", entityLiving.posX + Math.random()-Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ + Math.random()-Math.random(), 
+					0.0F, 0.0F, 0.0F);
 		}
 	}
 

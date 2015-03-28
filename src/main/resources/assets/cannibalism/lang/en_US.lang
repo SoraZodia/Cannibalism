@@ -16,3 +16,5 @@ item.villagerPoptart.name=Villager Poptart
 item.playerPoptart.name=Player Poptart
 item.villagerPoptartCooked.name=Cooked Villager Poptart
 item.playerPoptartCooked.name=Cooked Player Poptart
+
+entity.cannibalism.wendigo.name=Wendigo
