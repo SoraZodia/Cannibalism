@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mob.EntityWendigo;
@@ -22,6 +23,9 @@ public class EntityNBTEvents
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void entityCreateEvent(EntityConstructing create)
 	{
+		if(ConfigHandler.getMyth() == false)
+			return;
+		
 		if((create.entity instanceof EntityPlayer) && CannibalismNBT.getNBT((EntityLivingBase)create.entity) == null)
 		{
 			CannibalismNBT.register((EntityLivingBase) create.entity);
@@ -31,6 +35,8 @@ public class EntityNBTEvents
 	@SubscribeEvent()
 	public void entityTick(PlayerTickEvent tick)
 	{
+		if(ConfigHandler.getMyth() == false)
+			return;
 		
 		if (CannibalismNBT.getNBT(tick.player) == null)
 			return;

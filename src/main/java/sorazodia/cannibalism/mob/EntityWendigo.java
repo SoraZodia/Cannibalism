@@ -14,7 +14,7 @@ public class EntityWendigo extends EntityMob
 	{
 		super(world);
 		this.yOffset *= 8.5F;
-		this.setSize(width * 7F, height * 8.5F);
+		this.setSize(width * 4F, height * 8.5F);
 	}
 
 	@Override
@@ -64,6 +64,11 @@ public class EntityWendigo extends EntityMob
         }
         	
         return attacked;
+    }
+	
+	public int getExperiencePoints(EntityPlayer player)
+    {
+        return 15;
     }
 
 }

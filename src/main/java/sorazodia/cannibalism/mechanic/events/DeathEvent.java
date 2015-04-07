@@ -3,9 +3,11 @@ package sorazodia.cannibalism.mechanic.events;
 import java.util.Random;
 
 import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -23,7 +25,9 @@ public class DeathEvent
 		{
 			if(living instanceof EntityPlayer)
 			{
-				living.dropItem(ItemList.playerFlesh, amount);
+				ItemStack playerFlesh = new ItemStack(ItemList.playerFlesh);
+				setMeatName(playerFlesh, living.getCommandSenderName()+"'s Flesh");
+				living.entityDropItem(playerFlesh, amount);
 			}
 			if(living instanceof EntityVillager)
 			{
@@ -32,4 +36,10 @@ public class DeathEvent
 		}
 	}
 
+	private void setMeatName(ItemStack meat, String owner)
+	{
+		MeatOriginNBT.addNameToNBT(meat, owner);
+		MeatOriginNBT.getNameFromNBT(meat);
+	}
+	
 }

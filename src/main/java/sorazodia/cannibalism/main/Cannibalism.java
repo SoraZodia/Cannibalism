@@ -2,6 +2,7 @@ package sorazodia.cannibalism.main;
 
 import net.minecraftforge.common.MinecraftForge;
 import sorazodia.cannibalism.config.ConfigHandler;
+import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
@@ -28,10 +29,11 @@ public class Cannibalism {
 	@Mod.Instance(MODID)
 	public static Cannibalism cannibalism;
 	
-	@SidedProxy(clientSide = "sorazodia.cannibalism.main.proxy.ClientProxy", serverSide = "sorazodia.cannibalism.main.proxy.CommonProxy")
+	@SidedProxy(clientSide = "sorazodia.cannibalism.main.proxy.ClientProxy", serverSide = "sorazodia.cannibalism.main.proxy.ServerProxy")
 	public static ServerProxy common;
 
 	public static ConfigHandler config;
+	public static JSONConfig json;
 	public static CannibalismTab cannibalismTab = new CannibalismTab();
 
 	@EventHandler
@@ -40,6 +42,7 @@ public class Cannibalism {
 		FMLLog.info("[Cannibalism] Initializating Mod");
 		FMLLog.info("[Cannibalism] Adding Items and Syncing Config");
 		config = new ConfigHandler(preEvent);				
+		//json = new JSONConfig(preEvent);
 		
 		common.preInit();	
 		ItemRegistry.init();
@@ -54,7 +57,7 @@ public class Cannibalism {
 		CookingRegistry.init();
 		EntitysRegistry.init();
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
-		//MinecraftForge.EVENT_BUS.register(new EntityEvents());
+		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new ConfigEvent());
 		FMLLog.info("[Cannibalism] Completed");
