@@ -15,10 +15,9 @@ public class SmeltingRegistry
 	/**
 	 * Register the Items into the furnace
 	 */
-	public static void addSmelting(Item input, Item output, float xpGained)
+	public static void addSmelting(Item input, Item output, float xp)
 	{
-		GameRegistry.addSmelting(new ItemStack(input), new ItemStack(output),
-				xpGained);
+		GameRegistry.addSmelting(new ItemStack(input), new ItemStack(output), xp);
 	}
 
 	/**
@@ -26,8 +25,7 @@ public class SmeltingRegistry
 	 */
 	public static void addSmelting(Item input, Item output)
 	{
-		GameRegistry.addSmelting(new ItemStack(input), new ItemStack(output),
-				0.5F);
+		addSmelting(input, output, 0.5F);
 	}
 
 }

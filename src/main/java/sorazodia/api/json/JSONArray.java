@@ -13,21 +13,22 @@ public class JSONArray
 	private BufferedReader reader;
 	private JsonParser parser = new JsonParser();
 	private JsonArray jArray;
-	
-	public JSONArray(String path) throws FileNotFoundException {
+
+	public JSONArray(String path) throws FileNotFoundException
+	{
 		reader = new BufferedReader(new FileReader(path));
 		jArray = (JsonArray) parser.parse(reader);
 	}
-	
-	public int size() 
+
+	public int size()
 	{
 		return jArray.size();
 	}
-	
-	public String getString(int index, String key) {
+
+	public String getString(int index, String key)
+	{
 		JsonObject jObj = (JsonObject) jArray.get(index);
 		return jObj.get(key).toString();
 	}
 
-	
 }

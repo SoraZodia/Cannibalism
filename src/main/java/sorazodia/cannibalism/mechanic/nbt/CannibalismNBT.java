@@ -12,13 +12,14 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	private float wendigoLevel;
 	private boolean spawnWendigo;
 
-	public CannibalismNBT(){
+	public CannibalismNBT()
+	{
 		this.wendigoLevel = 0;
 		this.spawnWendigo = false;
 	}
-	
+
 	@Override
-	public void saveNBTData(NBTTagCompound compound) 
+	public void saveNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setFloat("wendigo", wendigoLevel);
@@ -35,20 +36,20 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	}
 
 	@Override
-	public void init(Entity entity, World world) 
+	public void init(Entity entity, World world)
 	{
 	}
-	
+
 	public void changeWendigoValue(float amount)
 	{
 		wendigoLevel += amount;
 	}
-	
+
 	public void setWendigoValue(float amount)
 	{
 		wendigoLevel = amount;
 	}
-	
+
 	public float getWendigoValue()
 	{
 		return wendigoLevel;
@@ -58,7 +59,7 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	{
 		return (CannibalismNBT) entity.getExtendedProperties(NBTNAME);
 	}
-	
+
 	public boolean wendigoSpawned()
 	{
 		return spawnWendigo;

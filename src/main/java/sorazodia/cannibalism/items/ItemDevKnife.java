@@ -13,8 +13,7 @@ import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
 import sorazodia.cannibalism.mob.EntityWendigo;
 
 /**
- * Wa ha ha, My own special knife :P
- * #evilDev
+ * Wa ha ha, My own special knife :P #evilDev
  * 
  * @author SoraZodia
  */
@@ -23,12 +22,12 @@ public class ItemDevKnife extends ItemKnife
 
 	private static final ToolMaterial dev = EnumHelper.addToolMaterial("Dev", 4, -1, 100.0F, 200000F, 5);
 	private static boolean spawn = true;
-	
+
 	public ItemDevKnife()
 	{
 		super(dev);
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
@@ -38,25 +37,25 @@ public class ItemDevKnife extends ItemKnife
 		{
 			if (!player.isSneaking())
 			{
-				EntityWendigo wendigo = (EntityWendigo)EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", world);
+				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
+						+ ".wendigo", world);
 				wendigo.setLocationAndAngles(player.posX, player.posY, player.posZ, 0, 0);
 				world.spawnEntityInWorld(wendigo);
-			}
-			else
+			} else
 			{
 				spawn = !spawn;
 				EntityNBTEvents.setSpawn(spawn);
-				player.addChatMessage(new ChatComponentText("Wendigo Spawn set to " + spawn));
+				player.addChatMessage(new ChatComponentText("Wendigo Spawn set to "
+						+ spawn));
 			}
 		}
-	
-		
+
 		return stack;
 	}
-	
-	@SuppressWarnings({"unchecked", "rawtypes"})
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) 
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
 		list.add("FOR DEVELOPMENT TESTING ONLY");
 	}

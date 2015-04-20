@@ -1,6 +1,5 @@
 package sorazodia.cannibalism.main.proxy;
 
-
 public class ServerProxy
 {
 
@@ -8,10 +7,10 @@ public class ServerProxy
 	{
 		this.registerRender();
 	}
-	
+
 	protected void registerRender()
 	{
-		
+
 	}
-	
+
 }

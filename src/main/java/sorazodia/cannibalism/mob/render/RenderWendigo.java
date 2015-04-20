@@ -13,20 +13,20 @@ import sorazodia.cannibalism.main.Cannibalism;
 public class RenderWendigo extends RenderLiving
 {
 
-	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID+":textures/entity/wendigo.png");
-	
+	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID
+			+ ":textures/entity/wendigo.png");
+
 	public RenderWendigo(ModelBase mobel, float shadowSize)
 	{
-		super(mobel, shadowSize*5);
+		super(mobel, shadowSize * 5);
 	}
-	
+
 	@Override
 	public void preRenderCallback(EntityLivingBase living, float scale)
-    {
+	{
 		GL11.glScalef(3F, 5F, 3F);
-    }
-	
-	
+	}
+
 	@Override
 	public ResourceLocation getEntityTexture(Entity entity)
 	{

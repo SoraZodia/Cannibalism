@@ -8,9 +8,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * Item registry class for Cannibalism mod, have methods to make item
- * registation in the GameRegistry a bit easier/less typing.
- * 
- * THE init() METHOD MUST BE CALLED FOR IT TO WORK
+ * registation in the GameRegistry a bit easier/less typing. THE init() METHOD
+ * MUST BE CALLED FOR IT TO WORK
  * 
  * @author SoraZodia
  */
@@ -38,12 +37,10 @@ public class SimpleItemsRegistry
 	 * A more steamline way to register your items, does all of the extra stuff
 	 * for you, just make sure your item object is initializated
 	 */
-	public static void registerItems(Item item, String itemName,
-			String imageName)
+	public static void registerItems(Item item, String itemName, String imageName)
 	{
-		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs)
-				.setUnlocalizedName(itemName)
-				.setTextureName(MODID + ":" + imageName);
+		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID
+				+ ":" + imageName);
 	}
 
 	/**
@@ -53,8 +50,8 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs)
-				.setUnlocalizedName(name).setTextureName(MODID + ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID
+				+ ":" + name);
 	}
 
 	/**
@@ -63,12 +60,10 @@ public class SimpleItemsRegistry
 	 * @param item
 	 * @param name
 	 */
-	public static void registerEasterItems(Item item, String name,
-			String easterName)
+	public static void registerEasterItems(Item item, String name, String easterName)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs)
-				.setUnlocalizedName(doEasterEgg(name, easterName))
-				.setTextureName(MODID + ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName)).setTextureName(MODID
+				+ ":" + name);
 	}
 
 	private static String doEasterEgg(String defaultName, String easterName)

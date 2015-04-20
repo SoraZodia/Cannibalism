@@ -42,33 +42,33 @@ public class EntityWendigo extends EntityMob
 			}
 		}
 	}
-	
+
 	@Override
 	public void attackEntity(Entity entity, float time)
-    {
-        if (attackTime <= 0 && time < 2.0F)
-        {
-            attackTime = 20;
-            attackEntityAsMob(entity);
-        }
-    }
-	
+	{
+		if (attackTime <= 0 && time < 2.0F)
+		{
+			attackTime = 20;
+			attackEntityAsMob(entity);
+		}
+	}
+
 	public boolean attackEntityAsMob(Entity target)
-    {
-        boolean attacked = super.attackEntityAsMob(target);
-        if (attacked) 
-        {
-        	target.motionX += 2.0;
-        	target.motionY += 1.0;
-        	target.motionZ += 2.0;
-        }
-        	
-        return attacked;
-    }
-	
+	{
+		boolean attacked = super.attackEntityAsMob(target);
+		if (attacked)
+		{
+			target.motionX += 2.0;
+			target.motionY += 1.0;
+			target.motionZ += 2.0;
+		}
+
+		return attacked;
+	}
+
 	public int getExperiencePoints(EntityPlayer player)
-    {
-        return 15;
-    }
+	{
+		return 15;
+	}
 
 }

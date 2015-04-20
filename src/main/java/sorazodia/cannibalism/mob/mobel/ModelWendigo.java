@@ -12,173 +12,173 @@ import net.minecraft.entity.Entity;
 
 public class ModelWendigo extends ModelBase
 {
-	  //fields
-    ModelRenderer leftLeg;
-    ModelRenderer rightLeg;
-    ModelRenderer rightHoof;
-    ModelRenderer leftHoof;
-    ModelRenderer leftLimb;
-    ModelRenderer rightLimb;
-    ModelRenderer body;
-    ModelRenderer neck;
-    ModelRenderer head;
-    ModelRenderer leftArm;
-    ModelRenderer rightArm;
-    ModelRenderer leftHand;
-    ModelRenderer rightHand;
-    ModelRenderer leftBranch;
-    ModelRenderer leftHorn;
-    ModelRenderer rightHorn;
-    ModelRenderer rightBranch;
-    ModelRenderer Piece1;
-  
-  public ModelWendigo()
-  {
-    textureWidth = 128;
-    textureHeight = 64;
-    
-      leftLeg = new ModelRenderer(this, 0, 0);
-      leftLeg.addBox(0F, 0F, 0F, 3, 11, 4);
-      leftLeg.setRotationPoint(-4.977778F, 11F, 4F);
-      leftLeg.setTextureSize(128, 64);
-      leftLeg.mirror = true;
-      setRotation(leftLeg, -0.5235988F, 0F, 0F);
-      rightLeg = new ModelRenderer(this, 0, 0);
-      rightLeg.addBox(0F, 0F, 0F, 3, 11, 4);
-      rightLeg.setRotationPoint(2F, 11F, 4F);
-      rightLeg.setTextureSize(128, 64);
-      rightLeg.mirror = true;
-      setRotation(rightLeg, -0.5235988F, 0F, 0F);
-      rightHoof = new ModelRenderer(this, 14, 8);
-      rightHoof.addBox(0F, 0F, 0F, 3, 4, 4);
-      rightHoof.setRotationPoint(2F, 20F, -2F);
-      rightHoof.setTextureSize(128, 64);
-      rightHoof.mirror = true;
-      setRotation(rightHoof, 0.0488486F, 0F, 0F);
-      leftHoof = new ModelRenderer(this, 14, 0);
-      leftHoof.addBox(0F, 0F, 0F, 3, 4, 4);
-      leftHoof.setRotationPoint(-5F, 20F, -2F);
-      leftHoof.setTextureSize(128, 64);
-      leftHoof.mirror = true;
-      setRotation(leftHoof, 0.0488486F, 0F, 0F);
-      leftLimb = new ModelRenderer(this, 0, 34);
-      leftLimb.addBox(0F, 0F, 0F, 3, 15, 4);
-      leftLimb.setRotationPoint(2F, 1F, -2F);
-      leftLimb.setTextureSize(128, 64);
-      leftLimb.mirror = true;
-      setRotation(leftLimb, 0.418879F, 0F, 0F);
-      rightLimb = new ModelRenderer(this, 0, 15);
-      rightLimb.addBox(0F, 0F, 0F, 3, 15, 4);
-      rightLimb.setRotationPoint(-5F, 1F, -2F);
-      rightLimb.setTextureSize(128, 64);
-      rightLimb.mirror = true;
-      setRotation(rightLimb, 0.418879F, 0F, 0F);
-      body = new ModelRenderer(this, 14, 16);
-      body.addBox(0F, 0F, 0F, 10, 19, 5);
-      body.setRotationPoint(-5F, -16F, -9F);
-      body.setTextureSize(128, 64);
-      body.mirror = true;
-      setRotation(body, 0.3549525F, 0F, 0F);
-      neck = new ModelRenderer(this, 14, 40);
-      neck.addBox(0F, 0F, 0F, 4, 8, 3);
-      neck.setRotationPoint(-2F, -23F, -11F);
-      neck.setTextureSize(128, 64);
-      neck.mirror = true;
-      setRotation(neck, 0.3671388F, 0F, 0F);
-      head = new ModelRenderer(this, 28, 40);
-      head.addBox(0F, 0F, 0F, 4, 4, 9);
-      head.setRotationPoint(-2F, -21F, -6F);
-      head.setTextureSize(128, 64);
-      head.mirror = true;
-      setRotation(head, -2.717757F, 0F, 0F);
-      leftArm = new ModelRenderer(this, 54, 37);
-      leftArm.addBox(0F, 0F, 0F, 2, 20, 3);
-      leftArm.setRotationPoint(-6F, -15F, -7F);
-      leftArm.setTextureSize(128, 64);
-      leftArm.mirror = true;
-      setRotation(leftArm, 0.0250956F, 0F, 0.2268928F);
-      rightArm = new ModelRenderer(this, 54, 13);
-      rightArm.addBox(0F, 0F, 0F, 2, 20, 3);
-      rightArm.setRotationPoint(5F, -15F, -7F);
-      rightArm.setTextureSize(128, 64);
-      rightArm.mirror = true;
-      setRotation(rightArm, 0.0250956F, 0F, -0.1735002F);
-      leftHand = new ModelRenderer(this, 54, 13);
-      leftHand.addBox(0F, 0F, 0F, 2, 20, 3);
-      leftHand.setRotationPoint(-10F, 2F, -5F);
-      leftHand.setTextureSize(128, 64);
-      leftHand.mirror = true;
-      setRotation(leftHand, -0.715585F, 0F, 0.1834145F);
-      rightHand = new ModelRenderer(this, 54, 13);
-      rightHand.addBox(0F, 0F, 0F, 2, 20, 3);
-      rightHand.setRotationPoint(8F, 2F, -6F);
-      rightHand.setTextureSize(128, 64);
-      rightHand.mirror = true;
-      setRotation(rightHand, -0.715585F, 0F, -0.1735002F);
-      leftBranch = new ModelRenderer(this, 42, 0);
-      leftBranch.addBox(0F, 0F, 0F, 1, 1, 10);
-      leftBranch.setRotationPoint(-3F, -25F, -9.5F);
-      leftBranch.setTextureSize(128, 64);
-      leftBranch.mirror = true;
-      setRotation(leftBranch, 1.186824F, 0F, -0.8726646F);
-      leftHorn = new ModelRenderer(this, 66, 0);
-      leftHorn.addBox(0F, 0F, 0F, 1, 1, 13);
-      leftHorn.setRotationPoint(-1F, -20F, -12F);
-      leftHorn.setTextureSize(128, 64);
-      leftHorn.mirror = true;
-      setRotation(leftHorn, 1.169371F, 0F, -0.3839724F);
-      rightHorn = new ModelRenderer(this, 66, 0);
-      rightHorn.addBox(0F, 0F, 0F, 1, 1, 13);
-      rightHorn.setRotationPoint(0F, -20F, -12F);
-      rightHorn.setTextureSize(128, 64);
-      rightHorn.mirror = true;
-      setRotation(rightHorn, 1.169371F, 0F, 0.3839724F);
-      rightBranch = new ModelRenderer(this, 42, 0);
-      rightBranch.addBox(0F, 0F, 0F, 1, 1, 10);
-      rightBranch.setRotationPoint(2.726667F, -26F, -9.3F);
-      rightBranch.setTextureSize(128, 64);
-      rightBranch.mirror = true;
-      setRotation(rightBranch, 1.186824F, 0.0297429F, 0.8726646F);
-    Piece1 = new ModelRenderer(this, "Piece1");
-    Piece1.setRotationPoint(0F, 0F, 0F);
-    setRotation(Piece1, 0F, 0F, 0F);
-    Piece1.mirror = true;
-  }
-  
-  public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-  {
-    super.render(entity, f, f1, f2, f3, f4, f5);
-    setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    leftLeg.render(f5);
-    rightLeg.render(f5);
-    rightHoof.render(f5);
-    leftHoof.render(f5);
-    leftLimb.render(f5);
-    rightLimb.render(f5);
-    body.render(f5);
-    neck.render(f5);
-    head.render(f5);
-    leftArm.render(f5);
-    rightArm.render(f5);
-    leftHand.render(f5);
-    rightHand.render(f5);
-    leftBranch.render(f5);
-    leftHorn.render(f5);
-    rightHorn.render(f5);
-    rightBranch.render(f5);
-    Piece1.render(f5);
-  }
-  
-  private void setRotation(ModelRenderer model, float x, float y, float z)
-  {
-    model.rotateAngleX = x;
-    model.rotateAngleY = y;
-    model.rotateAngleZ = z;
-  }
-  
-  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-  {
-    super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-  }
+	// fields
+	ModelRenderer leftLeg;
+	ModelRenderer rightLeg;
+	ModelRenderer rightHoof;
+	ModelRenderer leftHoof;
+	ModelRenderer leftLimb;
+	ModelRenderer rightLimb;
+	ModelRenderer body;
+	ModelRenderer neck;
+	ModelRenderer head;
+	ModelRenderer leftArm;
+	ModelRenderer rightArm;
+	ModelRenderer leftHand;
+	ModelRenderer rightHand;
+	ModelRenderer leftBranch;
+	ModelRenderer leftHorn;
+	ModelRenderer rightHorn;
+	ModelRenderer rightBranch;
+	ModelRenderer Piece1;
+
+	public ModelWendigo()
+	{
+		textureWidth = 128;
+		textureHeight = 64;
+
+		leftLeg = new ModelRenderer(this, 0, 0);
+		leftLeg.addBox(0F, 0F, 0F, 3, 11, 4);
+		leftLeg.setRotationPoint(-4.977778F, 11F, 4F);
+		leftLeg.setTextureSize(128, 64);
+		leftLeg.mirror = true;
+		setRotation(leftLeg, -0.5235988F, 0F, 0F);
+		rightLeg = new ModelRenderer(this, 0, 0);
+		rightLeg.addBox(0F, 0F, 0F, 3, 11, 4);
+		rightLeg.setRotationPoint(2F, 11F, 4F);
+		rightLeg.setTextureSize(128, 64);
+		rightLeg.mirror = true;
+		setRotation(rightLeg, -0.5235988F, 0F, 0F);
+		rightHoof = new ModelRenderer(this, 14, 8);
+		rightHoof.addBox(0F, 0F, 0F, 3, 4, 4);
+		rightHoof.setRotationPoint(2F, 20F, -2F);
+		rightHoof.setTextureSize(128, 64);
+		rightHoof.mirror = true;
+		setRotation(rightHoof, 0.0488486F, 0F, 0F);
+		leftHoof = new ModelRenderer(this, 14, 0);
+		leftHoof.addBox(0F, 0F, 0F, 3, 4, 4);
+		leftHoof.setRotationPoint(-5F, 20F, -2F);
+		leftHoof.setTextureSize(128, 64);
+		leftHoof.mirror = true;
+		setRotation(leftHoof, 0.0488486F, 0F, 0F);
+		leftLimb = new ModelRenderer(this, 0, 34);
+		leftLimb.addBox(0F, 0F, 0F, 3, 15, 4);
+		leftLimb.setRotationPoint(2F, 1F, -2F);
+		leftLimb.setTextureSize(128, 64);
+		leftLimb.mirror = true;
+		setRotation(leftLimb, 0.418879F, 0F, 0F);
+		rightLimb = new ModelRenderer(this, 0, 15);
+		rightLimb.addBox(0F, 0F, 0F, 3, 15, 4);
+		rightLimb.setRotationPoint(-5F, 1F, -2F);
+		rightLimb.setTextureSize(128, 64);
+		rightLimb.mirror = true;
+		setRotation(rightLimb, 0.418879F, 0F, 0F);
+		body = new ModelRenderer(this, 14, 16);
+		body.addBox(0F, 0F, 0F, 10, 19, 5);
+		body.setRotationPoint(-5F, -16F, -9F);
+		body.setTextureSize(128, 64);
+		body.mirror = true;
+		setRotation(body, 0.3549525F, 0F, 0F);
+		neck = new ModelRenderer(this, 14, 40);
+		neck.addBox(0F, 0F, 0F, 4, 8, 3);
+		neck.setRotationPoint(-2F, -23F, -11F);
+		neck.setTextureSize(128, 64);
+		neck.mirror = true;
+		setRotation(neck, 0.3671388F, 0F, 0F);
+		head = new ModelRenderer(this, 28, 40);
+		head.addBox(0F, 0F, 0F, 4, 4, 9);
+		head.setRotationPoint(-2F, -21F, -6F);
+		head.setTextureSize(128, 64);
+		head.mirror = true;
+		setRotation(head, -2.717757F, 0F, 0F);
+		leftArm = new ModelRenderer(this, 54, 37);
+		leftArm.addBox(0F, 0F, 0F, 2, 20, 3);
+		leftArm.setRotationPoint(-6F, -15F, -7F);
+		leftArm.setTextureSize(128, 64);
+		leftArm.mirror = true;
+		setRotation(leftArm, 0.0250956F, 0F, 0.2268928F);
+		rightArm = new ModelRenderer(this, 54, 13);
+		rightArm.addBox(0F, 0F, 0F, 2, 20, 3);
+		rightArm.setRotationPoint(5F, -15F, -7F);
+		rightArm.setTextureSize(128, 64);
+		rightArm.mirror = true;
+		setRotation(rightArm, 0.0250956F, 0F, -0.1735002F);
+		leftHand = new ModelRenderer(this, 54, 13);
+		leftHand.addBox(0F, 0F, 0F, 2, 20, 3);
+		leftHand.setRotationPoint(-10F, 2F, -5F);
+		leftHand.setTextureSize(128, 64);
+		leftHand.mirror = true;
+		setRotation(leftHand, -0.715585F, 0F, 0.1834145F);
+		rightHand = new ModelRenderer(this, 54, 13);
+		rightHand.addBox(0F, 0F, 0F, 2, 20, 3);
+		rightHand.setRotationPoint(8F, 2F, -6F);
+		rightHand.setTextureSize(128, 64);
+		rightHand.mirror = true;
+		setRotation(rightHand, -0.715585F, 0F, -0.1735002F);
+		leftBranch = new ModelRenderer(this, 42, 0);
+		leftBranch.addBox(0F, 0F, 0F, 1, 1, 10);
+		leftBranch.setRotationPoint(-3F, -25F, -9.5F);
+		leftBranch.setTextureSize(128, 64);
+		leftBranch.mirror = true;
+		setRotation(leftBranch, 1.186824F, 0F, -0.8726646F);
+		leftHorn = new ModelRenderer(this, 66, 0);
+		leftHorn.addBox(0F, 0F, 0F, 1, 1, 13);
+		leftHorn.setRotationPoint(-1F, -20F, -12F);
+		leftHorn.setTextureSize(128, 64);
+		leftHorn.mirror = true;
+		setRotation(leftHorn, 1.169371F, 0F, -0.3839724F);
+		rightHorn = new ModelRenderer(this, 66, 0);
+		rightHorn.addBox(0F, 0F, 0F, 1, 1, 13);
+		rightHorn.setRotationPoint(0F, -20F, -12F);
+		rightHorn.setTextureSize(128, 64);
+		rightHorn.mirror = true;
+		setRotation(rightHorn, 1.169371F, 0F, 0.3839724F);
+		rightBranch = new ModelRenderer(this, 42, 0);
+		rightBranch.addBox(0F, 0F, 0F, 1, 1, 10);
+		rightBranch.setRotationPoint(2.726667F, -26F, -9.3F);
+		rightBranch.setTextureSize(128, 64);
+		rightBranch.mirror = true;
+		setRotation(rightBranch, 1.186824F, 0.0297429F, 0.8726646F);
+		Piece1 = new ModelRenderer(this, "Piece1");
+		Piece1.setRotationPoint(0F, 0F, 0F);
+		setRotation(Piece1, 0F, 0F, 0F);
+		Piece1.mirror = true;
+	}
+
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	{
+		super.render(entity, f, f1, f2, f3, f4, f5);
+		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+		leftLeg.render(f5);
+		rightLeg.render(f5);
+		rightHoof.render(f5);
+		leftHoof.render(f5);
+		leftLimb.render(f5);
+		rightLimb.render(f5);
+		body.render(f5);
+		neck.render(f5);
+		head.render(f5);
+		leftArm.render(f5);
+		rightArm.render(f5);
+		leftHand.render(f5);
+		rightHand.render(f5);
+		leftBranch.render(f5);
+		leftHorn.render(f5);
+		rightHorn.render(f5);
+		rightBranch.render(f5);
+		Piece1.render(f5);
+	}
+
+	private void setRotation(ModelRenderer model, float x, float y, float z)
+	{
+		model.rotateAngleX = x;
+		model.rotateAngleY = y;
+		model.rotateAngleZ = z;
+	}
+
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
+	{
+		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	}
 
 }

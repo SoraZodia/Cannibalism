@@ -14,30 +14,31 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-public class EntityNBTEvents 
+public class EntityNBTEvents
 {
 
 	private boolean applyEffect = true;
 	private static boolean spawn = true;
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void entityCreateEvent(EntityConstructing create)
 	{
-		if(ConfigHandler.getMyth() == false)
+		if (ConfigHandler.getMyth() == false)
 			return;
-		
-		if((create.entity instanceof EntityPlayer) && CannibalismNBT.getNBT((EntityLivingBase)create.entity) == null)
+
+		if ((create.entity instanceof EntityPlayer)
+				&& CannibalismNBT.getNBT((EntityLivingBase) create.entity) == null)
 		{
 			CannibalismNBT.register((EntityLivingBase) create.entity);
 		}
 	}
-	
+
 	@SubscribeEvent()
 	public void entityTick(PlayerTickEvent tick)
 	{
-		if(ConfigHandler.getMyth() == false)
+		if (ConfigHandler.getMyth() == false)
 			return;
-		
+
 		if (CannibalismNBT.getNBT(tick.player) == null)
 			return;
 
@@ -53,23 +54,25 @@ public class EntityNBTEvents
 		if (sinLevel >= 150)
 		{
 
-			if (CannibalismNBT.getNBT(tick.player).wendigoSpawned() == false && spawn) 
+			if (CannibalismNBT.getNBT(tick.player).wendigoSpawned() == false
+					&& spawn)
 			{
-			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
-					+ ".wendigo", tick.player.worldObj);
-			wendigo.setLocationAndAngles(tick.player.posX - 40, tick.player.posY, tick.player.posZ, 0, 0);
-			tick.player.worldObj.spawnEntityInWorld(wendigo);
+				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
+						+ ".wendigo", tick.player.worldObj);
+				wendigo.setLocationAndAngles(tick.player.posX - 40, tick.player.posY, tick.player.posZ, 0, 0);
+				tick.player.worldObj.spawnEntityInWorld(wendigo);
 
-			CannibalismNBT.getNBT(tick.player).setWedigoSpawn(true);
-			applyEffect = true;
+				CannibalismNBT.getNBT(tick.player).setWedigoSpawn(true);
+				applyEffect = true;
 			}
-			
-			CannibalismNBT.getNBT(tick.player).setWendigoValue(0);			
-			
+
+			CannibalismNBT.getNBT(tick.player).setWendigoValue(0);
+
 		}
 	}
-	
-	public static void setSpawn(boolean doSpawn) {
+
+	public static void setSpawn(boolean doSpawn)
+	{
 		spawn = doSpawn;
 	}
 

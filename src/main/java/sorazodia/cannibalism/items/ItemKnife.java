@@ -2,20 +2,14 @@ package sorazodia.cannibalism.items;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.api.ICutable;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
@@ -27,8 +21,8 @@ public class ItemKnife extends ItemSword
 {
 
 	private boolean interact = false;
-	
-	public ItemKnife(ToolMaterial material) 
+
+	public ItemKnife(ToolMaterial material)
 	{
 		super(material);
 	}
@@ -39,7 +33,7 @@ public class ItemKnife extends ItemSword
 		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
 		if (!interact && player.isSneaking())
-		{			
+		{
 			spookyEffect(world, player);
 			player.swingItem();
 			if (!world.isRemote)
@@ -58,84 +52,101 @@ public class ItemKnife extends ItemSword
 		MeatOriginNBT.addNameToNBT(meat, owner);
 		MeatOriginNBT.getNameFromNBT(meat);
 	}
-	
+
 	private void spookyEffect(World world, EntityPlayer player)
 	{
-		if(ConfigHandler.doScream())world.playSoundEffect(player.posX, player.posY, player.posZ, "mob.ghast.scream", 1.0F, ConfigHandler.getPinch());
-		if(!ConfigHandler.doScream())world.playSoundEffect(player.posX, player.posY, player.posZ, "game.player.hurt", 1.0F, ConfigHandler.getPinch());
-		spawnBlood(player, world, 1);	
+		if (ConfigHandler.doScream())
+			world.playSoundEffect(player.posX, player.posY, player.posZ, "mob.ghast.scream", 1.0F, ConfigHandler.getPinch());
+		if (!ConfigHandler.doScream())
+			world.playSoundEffect(player.posX, player.posY, player.posZ, "game.player.hurt", 1.0F, ConfigHandler.getPinch());
+		spawnBlood(player, world, 1);
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entityLiving)
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target)
 	{
-		
-		if(entityLiving.hurtTime < 1 && entityLiving.getHealth() > 0)
+
+		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
-			
-			if(entityLiving.getEquipmentInSlot(3) != null && entityLiving.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
+
+			if (target.getEquipmentInSlot(3) != null
+					&& target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
 			{
-				ItemArmor armor = (ItemArmor) entityLiving.getEquipmentInSlot(3).getItem();
+				ItemArmor armor = (ItemArmor) target.getEquipmentInSlot(3).getItem();
 				player.swingItem();
 				player.worldObj.playSoundAtEntity(player, "dig.glass", 1.0f, 1.0f);
 				stack.damageItem(15 * armor.damageReduceAmount, player);
 				return true;
 			}
-			//System.out.print(EntityList.getEntityString(entityLiving));
-			if (entityLiving instanceof EntityCow) //Would love to use a switch statement here <_<
+
+			if (checkEntity(target))
 			{
-				cutEntity(player, entityLiving, getDamage(2.5F, 3.0F), Items.beef, Items.leather);				
+				EntityData data = getData(target);
+				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-			if (entityLiving instanceof EntityChicken)
+			// System.out.print(EntityList.getEntityString(entityLiving));
+			// if (entityLiving instanceof EntityCow)
+			// {
+			// cutEntity(player, entityLiving, getDamage(2.5F, 3.0F),
+			// Items.beef, Items.leather);
+			// }
+			// if (entityLiving instanceof EntityChicken)
+			// {
+			// cutDamage(player, entityLiving, 10.0F);
+			// }
+			// if (entityLiving instanceof EntityPig)
+			// {
+			// cutEntity(player, entityLiving, getDamage(2.5F, 3.0F),
+			// Items.porkchop);
+			// }
+			// if (entityLiving instanceof EntityVillager)
+			// {
+			// cutEntity(player, entityLiving, getDamage(5.0F, 6.0F),
+			// ItemList.villagerFlesh);
+			// }
+			// if (entityLiving instanceof EntityZombie)
+			// {
+			// cutEntity(player, entityLiving, getDamage(5.0F, 6.0F),
+			// Items.rotten_flesh);
+			// }
+			if (target instanceof EntityPlayerMP)
 			{
-				cutDamage(player, entityLiving, 10.0F);
+				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
 			}
-			if (entityLiving instanceof EntityPig)
-			{
-				cutEntity(player, entityLiving, getDamage(2.5F, 3.0F), Items.porkchop);
-			}
-			if (entityLiving instanceof EntityVillager)
-			{
-				cutEntity(player, entityLiving, getDamage(5.0F, 6.0F), ItemList.villagerFlesh);
-			}
-			if (entityLiving instanceof EntityZombie)
-			{
-				cutEntity(player, entityLiving, getDamage(5.0F, 6.0F), Items.rotten_flesh);
-			}
-			if (entityLiving instanceof EntityPlayerMP)
-			{
-				cutEntity(player, entityLiving, getDamage(5.0F, 5.5F), entityLiving.getCommandSenderName(), ItemList.playerFlesh);
-			}
-			if (entityLiving instanceof ICutable)
+			if (target instanceof ICutable)
 			{
 				interact = true;
-				ICutable target = (ICutable) entityLiving;
-				target.cut(player);
+				ICutable cut = (ICutable) target;
+				cut.cut(player);
 			}
-	
-	  }
+
+		}
 
 		if (interact)
 		{
 			player.swingItem();
 			stack.damageItem(1, player);
-			spawnBlood(entityLiving, entityLiving.worldObj, 0);
+			spawnBlood(target, target.worldObj, 0);
 			increaseWendigo(player);
 		}
 
 		return interact;
 	}
-	
-	@SuppressWarnings("unused")//TODO son
-	private boolean checkEntity(EntityLivingBase entity) {
+
+	private boolean checkEntity(EntityLivingBase entity)
+	{
 		String entityName = EntityList.getEntityString(entity);
-		
 		if (JSONConfig.contains(entityName))
 			return true;
-		
+
 		return false;
 	}
-	
+
+	private EntityData getData(EntityLivingBase entity)
+	{
+		return JSONConfig.getEntityData(EntityList.getEntityString(entity));
+	}
+
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
@@ -150,15 +161,18 @@ public class ItemKnife extends ItemSword
 		}
 	}
 
-	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, Item... drops)
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack[] drops)
 	{
 		interact = true;
 		if (!entity.worldObj.isRemote)
 		{
 			cutDamage(player, entity, damage);
 			increaseWendigo(player);
-			for (Item item : drops)
-				entity.entityDropItem(new ItemStack(item), 0.0F);
+			for (ItemStack item : drops)
+			{
+				entity.entityDropItem(item, 0.0F);
+				item.stackSize = 1;
+			}
 		}
 	}
 
@@ -187,8 +201,7 @@ public class ItemKnife extends ItemSword
 				{
 					entity.onDeath(DamageSource.causePlayerDamage(player));
 				}
-			} 
-			else if (entity instanceof EntityPlayer)
+			} else if (entity instanceof EntityPlayer)
 			{
 				player.setHealth(entity.getHealth() - damage);
 				entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.01F);
@@ -204,16 +217,17 @@ public class ItemKnife extends ItemSword
 
 	private void spawnBlood(EntityLivingBase entityLiving, World world, float ySubtract)
 	{
-		for(int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
+		for (int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
-			world.spawnParticle("reddust", entityLiving.posX + Math.random()-Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ + Math.random()-Math.random(), 
-					0.0F, 0.0F, 0.0F);
+			world.spawnParticle("reddust", entityLiving.posX + Math.random()
+					- Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ
+					+ Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
 		}
 	}
 
 	private float getDamage(float min, float max)
 	{
-		float damage = min + (float)(Math.random()*((max-min) + 1));
+		float damage = min + (float) (Math.random() * ((max - min) + 1));
 		return damage;
 	}
 }

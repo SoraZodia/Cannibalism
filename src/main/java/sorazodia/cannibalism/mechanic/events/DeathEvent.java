@@ -12,24 +12,25 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class DeathEvent 
+public class DeathEvent
 {
 	private Random rand = new Random();
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.NORMAL)
 	public void onDeath(LivingDeathEvent livingDeath)
 	{
-		int amount = rand.nextInt(3)+1;
+		int amount = rand.nextInt(3) + 1;
 		EntityLivingBase living = livingDeath.entityLiving;
-		if(!living.worldObj.isRemote)
+		if (!living.worldObj.isRemote)
 		{
-			if(living instanceof EntityPlayer)
+			if (living instanceof EntityPlayer)
 			{
 				ItemStack playerFlesh = new ItemStack(ItemList.playerFlesh);
-				setMeatName(playerFlesh, living.getCommandSenderName()+"'s Flesh");
+				setMeatName(playerFlesh, living.getCommandSenderName()
+						+ "'s Flesh");
 				living.entityDropItem(playerFlesh, amount);
 			}
-			if(living instanceof EntityVillager)
+			if (living instanceof EntityVillager)
 			{
 				living.dropItem(ItemList.villagerFlesh, amount);
 			}
@@ -41,5 +42,5 @@ public class DeathEvent
 		MeatOriginNBT.addNameToNBT(meat, owner);
 		MeatOriginNBT.getNameFromNBT(meat);
 	}
-	
+
 }
