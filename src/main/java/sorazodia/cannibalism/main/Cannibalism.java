@@ -16,6 +16,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
@@ -68,6 +69,16 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new ConfigEvent());
+		
+	}
+	
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent postEvent)
+	{
+
+		FMLLog.info("[Cannibalism] Reading JSON");
+		
+		json.read();
 
 		FMLLog.info("[Cannibalism] Mod Locked and Loaded");
 	}

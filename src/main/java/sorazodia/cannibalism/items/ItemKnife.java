@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -84,31 +85,7 @@ public class ItemKnife extends ItemSword
 				EntityData data = getData(target);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-			// System.out.print(EntityList.getEntityString(entityLiving));
-			// if (entityLiving instanceof EntityCow)
-			// {
-			// cutEntity(player, entityLiving, getDamage(2.5F, 3.0F),
-			// Items.beef, Items.leather);
-			// }
-			// if (entityLiving instanceof EntityChicken)
-			// {
-			// cutDamage(player, entityLiving, 10.0F);
-			// }
-			// if (entityLiving instanceof EntityPig)
-			// {
-			// cutEntity(player, entityLiving, getDamage(2.5F, 3.0F),
-			// Items.porkchop);
-			// }
-			// if (entityLiving instanceof EntityVillager)
-			// {
-			// cutEntity(player, entityLiving, getDamage(5.0F, 6.0F),
-			// ItemList.villagerFlesh);
-			// }
-			// if (entityLiving instanceof EntityZombie)
-			// {
-			// cutEntity(player, entityLiving, getDamage(5.0F, 6.0F),
-			// Items.rotten_flesh);
-			// }
+			
 			if (target instanceof EntityPlayerMP)
 			{
 				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
@@ -161,24 +138,23 @@ public class ItemKnife extends ItemSword
 		}
 	}
 
-	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack[] drops)
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, Item[] drops)
 	{
 		interact = true;
 		if (!entity.worldObj.isRemote)
 		{
 			cutDamage(player, entity, damage);
 			increaseWendigo(player);
-			for (ItemStack item : drops)
+			for (Item item : drops)
 			{
-				entity.entityDropItem(item, 0.0F);
-				item.stackSize = 1;
+				entity.entityDropItem(new ItemStack(item), 0.0F);
 			}
 		}
 	}
 
 	private void increaseWendigo(EntityPlayer player)
 	{
-		if (CannibalismNBT.getNBT(player) != null)
+		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true)
 		{
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			nbt.changeWendigoValue(10);

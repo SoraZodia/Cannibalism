@@ -1,11 +1,10 @@
 package sorazodia.cannibalism.api;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class EntityData
 {
-	private ItemStack[] drops;
+	private Item[] drops;
 	private float minDamage;
 	private float maxDamage;
 
@@ -16,23 +15,23 @@ public class EntityData
 		maxDamage = max;
 	}
 
-	private ItemStack[] covertString(String[] convert)
+	private Item[] covertString(String[] convert)
 	{
-		ItemStack[] drops = new ItemStack[convert.length];
+		Item[] drops = new Item[convert.length];
 		for (int x = 0; x < drops.length; x++)
 		{
-			drops[x] = new ItemStack((Item) Item.itemRegistry.getObject(convert[x]));
+			drops[x] =  (Item) Item.itemRegistry.getObject(convert[x]);
 		}
 
 		return drops;
 	}
 
-	public ItemStack[] getDrops()
+	public Item[] getDrops()
 	{
 		return drops;
 	}
 
-	public void setDrops(ItemStack[] drops)
+	public void setDrops(Item[] drops)
 	{
 		this.drops = drops;
 	}

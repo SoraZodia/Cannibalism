@@ -12,11 +12,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class JSONConfig
 {
-	private static JSONArray json;
-	private static HashMap<String, EntityData> entityMap = new HashMap<>();
-	private static String dirPath;
-	private static String filePath;
-	private static StringBuilder entityName = new StringBuilder();
+	private JSONArray json;
+	private JSONWriter write;
+	private StringBuilder entityName = new StringBuilder();
+	private final String dirPath;
+	private final String filePath;
+	
+	private static HashMap<String, EntityData> entityMap = new HashMap<>();	
 	private static final String MODID = "modID";
 	private static final String ENTITYID = "entityID";
 	private static final String DROPS = "drops";
@@ -24,15 +26,14 @@ public class JSONConfig
 	private static final String MAX = "maxDamage";
 	private static final String MINECRAFT = "\"minecraft\"";
 	private static String regEx = "[\\s+[\"+]]";
-	private static JSONWriter write;
+	
 
 	public JSONConfig(FMLPreInitializationEvent preEvent) throws IOException
 	{
 		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath()
 				+ "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
-		initJSON(preEvent);
-		read();
+		initJSON();
 	}
 
 	public void addEntity(String name, String modID, String[] drops, String min, String max)
@@ -46,7 +47,7 @@ public class JSONConfig
 		write.writeArrayEnd();
 	}
 
-	public void initJSON(FMLPreInitializationEvent event) throws IOException
+	public void initJSON() throws IOException
 	{
 		if (new File(filePath).exists())
 			return;
@@ -68,23 +69,26 @@ public class JSONConfig
 	{
 		try
 		{
-			json = new JSONArray(filePath);
-			for (int x = 0; x < json.size(); x++)
+			for (File files : new File(dirPath).listFiles())
 			{
-				if (!(json.getString(x, MODID).equalsIgnoreCase(MINECRAFT)))
-					entityName.append(json.getString(x, MODID).replaceAll(regEx, "")).append(".");
+				json = new JSONArray(files.getAbsolutePath());
+				for (int x = 0; x < json.size(); x++) //<__<... O(n^2)... >___>
+				{
+					if (!(json.getString(x, MODID).equalsIgnoreCase(MINECRAFT)))
+						entityName.append(json.getString(x, MODID).replaceAll(regEx, "")).append(".");
 
-				entityName.append(json.getString(x, ENTITYID).replaceAll(regEx, ""));
+					entityName.append(json.getString(x, ENTITYID).replaceAll(regEx, ""));
 
-				String[] drop = json.getString(x, DROPS).replaceAll(regEx, "").split(",+");
+					String[] drop = json.getString(x, DROPS).replaceAll(regEx, "").split(",+");
 
-				float min = Float.parseFloat(json.getString(x, MIN).replaceAll(regEx, ""));
-				float max = Float.parseFloat(json.getString(x, MAX).replaceAll(regEx, ""));
+					float min = Float.parseFloat(json.getString(x, MIN).replaceAll(regEx, ""));
+					float max = Float.parseFloat(json.getString(x, MAX).replaceAll(regEx, ""));
 
-				entityMap.put(entityName.toString(), new EntityData(drop, min, max));
+					entityMap.put(entityName.toString(), new EntityData(drop, min, max));
 
-				System.out.println(entityName.toString());
-				entityName.delete(0, entityName.length());
+					// Debug System.out.println(entityName.toString());
+					entityName.delete(0, entityName.length());
+				}
 			}
 		} catch (IOException io)
 		{
