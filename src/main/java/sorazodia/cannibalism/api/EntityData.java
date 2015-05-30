@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 public class EntityData
 {
 	private Item[] drops;
+	private String[] itemList;
 	private float minDamage;
 	private float maxDamage;
 	private String name;
@@ -20,9 +21,11 @@ public class EntityData
 	public EntityData(String entityName, String[] drop, float min, float max)
 	{
 		drops = covertString(drop);
+		itemList = drop;
 		minDamage = min;
 		maxDamage = max;
 		setName(entityName);
+		//System.out.println(toString());
 	}
 
 	private Item[] covertString(String[] convert)
@@ -30,7 +33,7 @@ public class EntityData
 		Item[] drops = new Item[convert.length];
 		for (int x = 0; x < drops.length; x++)
 		{
-			drops[x] =  (Item) Item.itemRegistry.getObject(convert[x]);
+			drops[x] = (Item) Item.itemRegistry.getObject(convert[x]);
 		}
 
 		return drops;
@@ -79,6 +82,21 @@ public class EntityData
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder drops = new StringBuilder("[ ");
+		
+		for(String s : itemList)
+			drops.append(s).append(", ");
+		
+		drops.deleteCharAt(drops.lastIndexOf(",")).append("]");
+		
+		return "EntityID: " + getName() + ", Drops: " + drops.toString()
+				+ ", Min/Max Damage: " + getMinDamage() + "/" + getMaxDamage();
+
 	}
 
 }
