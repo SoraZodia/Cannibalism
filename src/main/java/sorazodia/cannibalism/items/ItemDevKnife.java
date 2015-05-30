@@ -20,7 +20,7 @@ import sorazodia.cannibalism.mob.EntityWendigo;
 public class ItemDevKnife extends ItemKnife
 {
 
-	private static final ToolMaterial dev = EnumHelper.addToolMaterial("Dev", 4, -1, 100.0F, 200000F, 5);
+	private static final ToolMaterial dev = EnumHelper.addToolMaterial("Dev", 4, -1, 100.0F, Float.MAX_VALUE, 5);
 	private static boolean spawn = true;
 
 	public ItemDevKnife()

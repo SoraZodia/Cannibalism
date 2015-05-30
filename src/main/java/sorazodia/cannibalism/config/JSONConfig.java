@@ -2,12 +2,14 @@ package sorazodia.cannibalism.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.main.Cannibalism;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class JSONConfig
@@ -17,8 +19,10 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
-	
-	private static HashMap<String, EntityData> entityMap = new HashMap<>();	
+
+	private static HashMap<String, EntityData> entityMap = new HashMap<>();
+	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
+	private static boolean isWildCard = false;
 	private static final String MODID = "modID";
 	private static final String ENTITYID = "entityID";
 	private static final String DROPS = "drops";
@@ -26,14 +30,12 @@ public class JSONConfig
 	private static final String MAX = "maxDamage";
 	private static final String MINECRAFT = "\"minecraft\"";
 	private static String regEx = "[\\s+[\"+]]";
-	
 
 	public JSONConfig(FMLPreInitializationEvent preEvent) throws IOException
 	{
 		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath()
 				+ "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
-		initJSON();
 	}
 
 	public void addEntity(String name, String modID, String[] drops, String min, String max)
@@ -49,61 +51,73 @@ public class JSONConfig
 
 	public void initJSON() throws IOException
 	{
-		if (new File(filePath).exists())
+		if (new File(dirPath).exists() && new File(filePath).exists())
 			return;
+
+		FMLLog.info("[Cannibalism] Default JSON not found! Creating new file");
 
 		File folder = new File(dirPath);
 
+		folder.mkdir();
+
 		write = new JSONWriter(filePath);
-		try
-		{
-			folder.mkdir();
-			writeDefault();
-		} catch (IOException io)
-		{
-			io.printStackTrace();
-		}
+		writeDefault();
+
+		FMLLog.info("[Cannibalism] Default JSON created");
 	}
 
-	public void read()
+	public void read() throws IOException
 	{
-		try
+		for (File files : new File(dirPath).listFiles())
 		{
-			for (File files : new File(dirPath).listFiles())
+			json = new JSONArray(files.getAbsolutePath());
+			for (int x = 0; x < json.size(); x++)
 			{
-				json = new JSONArray(files.getAbsolutePath());
-				for (int x = 0; x < json.size(); x++) //<__<... O(n^2)... >___>
-				{
-					if (!(json.getString(x, MODID).equalsIgnoreCase(MINECRAFT)))
-						entityName.append(json.getString(x, MODID).replaceAll(regEx, "")).append(".");
-
-					entityName.append(json.getString(x, ENTITYID).replaceAll(regEx, ""));
-
-					String[] drop = json.getString(x, DROPS).replaceAll(regEx, "").split(",+");
-
-					float min = Float.parseFloat(json.getString(x, MIN).replaceAll(regEx, ""));
-					float max = Float.parseFloat(json.getString(x, MAX).replaceAll(regEx, ""));
-
-					entityMap.put(entityName.toString(), new EntityData(drop, min, max));
-
-					// Debug System.out.println(entityName.toString());
-					entityName.delete(0, entityName.length());
-				}
+				parseEntity(x);
+				entityName.delete(0, entityName.length());
 			}
-		} catch (IOException io)
-		{
-			io.printStackTrace();
 		}
+
+	}
+
+	private void parseEntity(int index)
+	{
+		/*
+		 * Get all the information from the JSON and process the data into
+		 * strings that the class can uses
+		 */
+		String entityID = json.getString(index, ENTITYID).replaceAll(regEx, "");
+		String[] drop = json.getString(index, DROPS).replaceAll(regEx, "").split(",+");
+		float min = Float.parseFloat(json.getString(index, MIN).replaceAll(regEx, ""));
+		float max = Float.parseFloat(json.getString(index, MAX).replaceAll(regEx, ""));
+
+		if (!json.getString(index, MODID).equalsIgnoreCase(MINECRAFT))
+			entityName.append(json.getString(index, MODID).replaceAll(regEx, "")).append(".");
+
+		if (entityID.endsWith("*"))
+		{
+			isWildCard = true;
+			entityID = entityID.substring(0, entityID.lastIndexOf("*"));
+		}
+
+		entityName.append(entityID);
+
+		if (isWildCard)
+			wildcardMap.add(new EntityData(entityName.toString(), drop, min, max));
+		else
+			entityMap.put(entityName.toString(), new EntityData(drop, min, max));
+
 	}
 
 	private void writeDefault() throws IOException
 	{
 		write.writeStart();
-		addEntity("Cow", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
+		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather",
+				"minecraft:beef" }, "2.5", "3.0");
 		addEntity("Chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
 		addEntity("Pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
-		addEntity("Villager", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
-		addEntity("Zombie", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
+		addEntity("Villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
+		addEntity("Zombie*", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
 		write.write();
 	}
 
@@ -115,6 +129,21 @@ public class JSONConfig
 	public static boolean contains(String key)
 	{
 		return entityMap.containsKey(key);
+	}
+
+	public static ArrayList<EntityData> getWildcardMap()
+	{
+		return wildcardMap;
+	}
+
+	public void codeRed()
+	{
+		entityMap.put("Chicken", new EntityData(new String[] { "" }, 2.3F, 3.0F));
+		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Cow", new String[] {
+				"minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
 	}
 
 }

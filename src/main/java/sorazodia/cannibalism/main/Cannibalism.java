@@ -38,6 +38,8 @@ public class Cannibalism
 	public static ConfigHandler config;
 	public static JSONConfig json;
 	public static CannibalismTab cannibalismTab = new CannibalismTab();
+	
+	private static boolean error = false;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
@@ -49,9 +51,12 @@ public class Cannibalism
 		try
 		{
 			json = new JSONConfig(preEvent);
+			json.initJSON();
 		} catch (IOException e)
 		{
+			FMLLog.severe("[Cannibalism] **********************UNABLE TO START NOR CREATE JSON*******************************************");
 			e.printStackTrace();
+			error = true;
 		}
 
 		common.preInit();
@@ -78,9 +83,39 @@ public class Cannibalism
 
 		FMLLog.info("[Cannibalism] Reading JSON");
 		
-		json.read();
+		if(error == true)
+			error();
+		else
+			tryRead();
 
 		FMLLog.info("[Cannibalism] Mod Locked and Loaded");
+	}
+	
+	private void tryRead()
+	{
+		try
+		{
+			json.read();
+		} 
+		catch (IOException io)
+		{
+			error(io);
+		}
+	}
+	
+	private void error(Exception e)
+	{
+		FMLLog.severe("[Cannibalism] **********************UNABLE TO READ JSON, PLAN B GOOOOOOO*******************************************");
+		e.printStackTrace();
+		FMLLog.severe("[Cannibalism] Defaulting to backup");
+		json.codeRed();
+	}
+	
+	private void error()
+	{
+		FMLLog.severe("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
+		FMLLog.severe("[Cannibalism] Defaulting to backup");
+		json.codeRed();
 	}
 
 }

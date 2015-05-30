@@ -1,5 +1,7 @@
 package sorazodia.cannibalism.items;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +72,8 @@ public class ItemKnife extends ItemSword
 		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
 
-			if (target.getEquipmentInSlot(3) != null
+			if (!player.isSneaking()
+					&& target.getEquipmentInSlot(3) != null
 					&& target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
 			{
 				ItemArmor armor = (ItemArmor) target.getEquipmentInSlot(3).getItem();
@@ -86,11 +89,15 @@ public class ItemKnife extends ItemSword
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 			
+			if(getWildCardIndex(target, player.worldObj) >= 0) {
+				EntityData data = JSONConfig.getWildcardMap().get(getWildCardIndex(target, player.worldObj));
+				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
+			}
+
 			if (target instanceof EntityPlayerMP)
 			{
 				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
-			}
-			if (target instanceof ICutable)
+			} else if (target instanceof ICutable)
 			{
 				interact = true;
 				ICutable cut = (ICutable) target;
@@ -112,16 +119,26 @@ public class ItemKnife extends ItemSword
 
 	private boolean checkEntity(EntityLivingBase entity)
 	{
-		String entityName = EntityList.getEntityString(entity);
-		if (JSONConfig.contains(entityName))
-			return true;
-
-		return false;
+		return JSONConfig.contains(EntityList.getEntityString(entity));
 	}
 
 	private EntityData getData(EntityLivingBase entity)
 	{
 		return JSONConfig.getEntityData(EntityList.getEntityString(entity));
+	}
+
+	private int getWildCardIndex(EntityLivingBase entity, World world)
+	{
+		ArrayList<EntityData> wildcardList = JSONConfig.getWildcardMap();
+		int index = -1;
+		
+		for (int x = 0; x < wildcardList.size(); x++)
+		{
+			if(wildcardList.get(x).getEntity(world).getClass().isInstance(entity))
+				index = x;
+		}
+		
+		return index;
 	}
 
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
@@ -154,7 +171,8 @@ public class ItemKnife extends ItemSword
 
 	private void increaseWendigo(EntityPlayer player)
 	{
-		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true)
+		if (CannibalismNBT.getNBT(player) != null
+				&& ConfigHandler.getMyth() == true)
 		{
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			nbt.changeWendigoValue(10);

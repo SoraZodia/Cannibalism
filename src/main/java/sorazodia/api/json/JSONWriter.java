@@ -1,6 +1,7 @@
 package sorazodia.api.json;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -11,11 +12,11 @@ public class JSONWriter
 	private final String quote = "\"";
 	private final String colon = ":";
 	private final String comma = ",";
-	private final String breakL = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
+	private final String breakL = "\n";
 
 	public JSONWriter(String path) throws IOException
 	{
-		writer = new BufferedWriter(new FileWriter(path));
+		writer = new BufferedWriter(new FileWriter(new File(path)));
 	}
 
 	public void writeArray(String key, String[] value)
@@ -54,6 +55,15 @@ public class JSONWriter
 		fuser.deleteCharAt(fuser.lastIndexOf(comma));
 		fuser.append("]").append(breakL);
 		writer.write(fuser.toString());
+		fuser.delete(0, fuser.length());
+		writer.close();
+	}
+	
+	public void append() throws IOException
+	{
+		fuser.deleteCharAt(fuser.lastIndexOf(comma));
+		fuser.append("]").append(breakL);
+		writer.append(fuser.toString());
 		fuser.delete(0, fuser.length());
 		writer.close();
 	}
