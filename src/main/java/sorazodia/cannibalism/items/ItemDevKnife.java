@@ -1,6 +1,7 @@
 package sorazodia.cannibalism.items;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,7 +35,7 @@ public class ItemDevKnife extends ItemKnife
 
 		if (!world.isRemote)
 		{
-			if (player.isSneaking())
+			if (player.isSneaking() && player.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
 			{
 				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
 						+ ".wendigo", world);
@@ -51,7 +52,7 @@ public class ItemDevKnife extends ItemKnife
 	{
 		if (player.worldObj.isRemote)
 		{
-			player.addChatMessage(new ChatComponentText("[Format -> 'modID.name' or 'name' if mob is part of vanilla]"));
+			player.addChatMessage(new ChatComponentText("[Format] \"modID.name\" or \"name\" if mob is part of vanilla"));
 			player.addChatMessage(new ChatComponentText("[Name] "+EntityList.getEntityString(target)));
 		}
 		return true;
