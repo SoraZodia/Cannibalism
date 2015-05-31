@@ -7,7 +7,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import sorazodia.cannibalism.main.Cannibalism;
@@ -52,8 +53,8 @@ public class ItemDevKnife extends ItemKnife
 	{
 		if (player.worldObj.isRemote)
 		{
-			player.addChatMessage(new ChatComponentText("[Format] \"modID.name\" or \"name\" if mob is part of vanilla"));
-			player.addChatMessage(new ChatComponentText("[Name] "+EntityList.getEntityString(target)));
+			player.addChatMessage(new ChatComponentTranslation("item.devKnife.format"));
+			player.addChatMessage(new ChatComponentTranslation("item.devKnife.mobName", EntityList.getEntityString(target)));
 		}
 		return true;
 	}
@@ -62,8 +63,8 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
-		list.add("Dev Knife");
-		list.add("[Right Click] Can be used to get entity name for JSON");
+		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
+		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
 	}
 
 }

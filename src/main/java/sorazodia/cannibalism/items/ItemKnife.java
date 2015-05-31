@@ -11,6 +11,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.api.ICutable;
@@ -89,24 +90,27 @@ public class ItemKnife extends ItemSword
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 			
-			if(getWildCardIndex(target, player.worldObj) >= 0) {
+			else if(getWildCardIndex(target, player.worldObj) >= 0) {
 				EntityData data = JSONConfig.getWildcardMap().get(getWildCardIndex(target, player.worldObj));
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 
+			else if (target instanceof ICutable)
+			{
+				interact = true;
+				ICutable cutable = (ICutable) target;
+				cutable.cut(player);
+			}
+			
 			if (target instanceof EntityPlayerMP)
 			{
 				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
-			} else if (target instanceof ICutable)
-			{
-				interact = true;
-				ICutable cut = (ICutable) target;
-				cut.cut(player);
-			}
+			} 			
+			
 
 		}
 
-		if (interact)
+		if (interact == true)
 		{
 			player.swingItem();
 			stack.damageItem(1, player);
@@ -144,11 +148,13 @@ public class ItemKnife extends ItemSword
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
-
+		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
+        System.out.println(name);
 		if (!entity.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
-			setMeatName(meat, owner + "'s Flesh");
+			//setMeatName(meat, owner + "'s Flesh");
+			setMeatName(meat, name);
 			cutDamage(player, entity, damage);
 			increaseWendigo(player);
 			entity.entityDropItem(meat, 0.0F);
