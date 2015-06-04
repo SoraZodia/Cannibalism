@@ -30,15 +30,16 @@ public class Cannibalism
 	public static final String GUI_FACTORY = "sorazodia.cannibalism.config.ConfigGUIFactory";
 
 	@Mod.Instance(MODID)
-	public static Cannibalism cannibalism;
+	public static Cannibalism instance;
 
 	@SidedProxy(clientSide = "sorazodia.cannibalism.main.proxy.ClientProxy", serverSide = "sorazodia.cannibalism.main.proxy.ServerProxy")
 	public static ServerProxy common;
-
-	public static ConfigHandler config;
-	public static JSONConfig json;
+	
 	public static CannibalismTab cannibalismTab = new CannibalismTab();
 	
+	@SuppressWarnings("unused")
+	private static ConfigHandler config;
+	private static JSONConfig json;
 	private static boolean error = false;
 
 	@EventHandler
@@ -47,7 +48,7 @@ public class Cannibalism
 		FMLLog.info("[Cannibalism] Initializating Mod");
 		FMLLog.info("[Cannibalism] Adding Items and Syncing Config");
 		config = new ConfigHandler(preEvent);
-		ItemRegistry.init();
+
 		try
 		{
 			json = new JSONConfig(preEvent);
@@ -59,6 +60,7 @@ public class Cannibalism
 			error = true;
 		}
 
+		ItemRegistry.init();
 		common.preInit();
 	}
 
@@ -116,6 +118,11 @@ public class Cannibalism
 		FMLLog.severe("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
 		FMLLog.severe("[Cannibalism] Defaulting to backup");
 		json.codeRed();
+	}
+
+	public static JSONConfig getJson()
+	{
+		return json;
 	}
 
 }

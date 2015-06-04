@@ -1,8 +1,5 @@
 package sorazodia.cannibalism.items;
 
-import java.util.ArrayList;
-
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,6 +15,7 @@ import sorazodia.cannibalism.api.ICutable;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
@@ -25,12 +23,13 @@ public class ItemKnife extends ItemSword
 {
 
 	private boolean interact = false;
+	private JSONConfig json = Cannibalism.getJson();
 
 	public ItemKnife(ToolMaterial material)
 	{
 		super(material);
 	}
-
+	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
@@ -84,14 +83,14 @@ public class ItemKnife extends ItemSword
 				return true;
 			}
 
-			if (checkEntity(target))
+			if (json.checkEntity(target))
 			{
-				EntityData data = getData(target);
+				EntityData data = json.getData(target);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 			
-			else if(getWildCardIndex(target, player.worldObj) >= 0) {
-				EntityData data = JSONConfig.getWildcardMap().get(getWildCardIndex(target, player.worldObj));
+			else if(json.getWildCardIndex(target, player.worldObj) >= 0) {
+				EntityData data = json.getData(target, player.worldObj);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 
@@ -121,39 +120,16 @@ public class ItemKnife extends ItemSword
 		return interact;
 	}
 
-	private boolean checkEntity(EntityLivingBase entity)
-	{
-		return JSONConfig.contains(EntityList.getEntityString(entity));
-	}
-
-	private EntityData getData(EntityLivingBase entity)
-	{
-		return JSONConfig.getEntityData(EntityList.getEntityString(entity));
-	}
-
-	private int getWildCardIndex(EntityLivingBase entity, World world)
-	{
-		ArrayList<EntityData> wildcardList = JSONConfig.getWildcardMap();
-		int index = -1;
-		
-		for (int x = 0; x < wildcardList.size(); x++)
-		{
-			if(wildcardList.get(x).getEntity(world).getClass().isInstance(entity))
-				index = x;
-		}
-		
-		return index;
-	}
+	
 
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
 		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
-        System.out.println(name);
+        //System.out.println(name);
 		if (!entity.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
-			//setMeatName(meat, owner + "'s Flesh");
 			setMeatName(meat, name);
 			cutDamage(player, entity, damage);
 			increaseWendigo(player);

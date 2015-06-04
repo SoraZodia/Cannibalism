@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.World;
 import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
 import sorazodia.cannibalism.api.EntityData;
@@ -70,6 +73,9 @@ public class JSONConfig
 	{
 		for (File files : new File(dirPath).listFiles())
 		{
+			if(files.getName().equals(".crash.txt"))
+				continue;
+			
 			json = new JSONArray(files.getAbsolutePath());
 			for (int x = 0; x < json.size(); x++)
 			{
@@ -121,19 +127,42 @@ public class JSONConfig
 		write.write();
 	}
 
-	public static EntityData getEntityData(String key)
+	public HashMap<String, EntityData> getEntityMap()
 	{
-		return entityMap.get(key);
+		return entityMap;
 	}
-
-	public static boolean contains(String key)
-	{
-		return entityMap.containsKey(key);
-	}
-
-	public static ArrayList<EntityData> getWildcardMap()
+	
+	public ArrayList<EntityData> getWildcardMap()
 	{
 		return wildcardMap;
+	}
+	
+	public boolean checkEntity(EntityLivingBase entity)
+	{
+		return entityMap.containsKey(EntityList.getEntityString(entity));
+	}
+
+	public int getWildCardIndex(EntityLivingBase entity, World world)
+	{
+		int index = -1;
+		
+		for (int x = 0; x < wildcardMap.size(); x++)
+		{
+			if(wildcardMap.get(x).getEntity(world).getClass().isInstance(entity))
+				index = x;
+		}
+		
+		return index;
+	}
+	
+	public EntityData getData(EntityLivingBase entity)
+	{
+		return entityMap.get(EntityList.getEntityString(entity));
+	}
+	
+	public EntityData getData(EntityLivingBase entity, World world)
+	{
+		return wildcardMap.get(getWildCardIndex(entity, world));
 	}
 
 	public void codeRed()
@@ -144,6 +173,11 @@ public class JSONConfig
 				"minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
+	}
+
+	public String getDirPath()
+	{
+		return dirPath;
 	}
 
 }

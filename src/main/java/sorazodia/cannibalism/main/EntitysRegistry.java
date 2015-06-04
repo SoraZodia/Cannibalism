@@ -17,7 +17,7 @@ public class EntitysRegistry
 
 	private static void registerEntity(Class<? extends EntityLiving> entity, String name, int range)
 	{
-		EntityRegistry.registerModEntity(entity, name, modID++, Cannibalism.cannibalism, range, 1, true);
+		EntityRegistry.registerModEntity(entity, name, modID++, Cannibalism.instance, range, 1, true);
 	}
 
 }
