@@ -73,9 +73,6 @@ public class JSONConfig
 	{
 		for (File files : new File(dirPath).listFiles())
 		{
-			if(files.getName().equals(".crash.txt"))
-				continue;
-			
 			json = new JSONArray(files.getAbsolutePath());
 			for (int x = 0; x < json.size(); x++)
 			{
