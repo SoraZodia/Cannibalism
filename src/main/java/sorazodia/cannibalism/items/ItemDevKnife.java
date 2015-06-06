@@ -63,7 +63,7 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-
+		
 		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
 		if (!(player.worldObj.isRemote) && player.isSneaking())
@@ -80,9 +80,25 @@ public class ItemDevKnife extends ItemKnife
 			{
 				error(player, syntax);
 			} 
+			catch (NumberFormatException number)
+			{
+				error(player, 0, number);
+			}
+			catch (ClassCastException cast)
+			{
+				error(player, 0, cast);
+			}
+			catch (NullPointerException nulled)
+			{
+				error(player, 0, nulled);
+			}
 			catch (IOException io)
 			{
 				error(player, io);
+			}
+			catch (Exception wtfHappened)
+			{
+				error(player, 0, wtfHappened);
 			}
 
 		}
@@ -90,6 +106,15 @@ public class ItemDevKnife extends ItemKnife
 		return stack;
 	}
 
+	private void error(EntityPlayer player, int errorLine, Exception exception)
+	{
+		displayLocalizatedChat(player,"item.devKnife.reloadFail", EnumChatFormatting.RED);
+		displayLocalizatedChat(player,"item.devKnife.reloadFailCheck", EnumChatFormatting.RED);
+		json.codeRed();
+		displayLocalizatedChat(player,"item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
+		exception.printStackTrace();
+	}
+	
 	private void error(EntityPlayer player, Exception exception)
 	{
 		displayLocalizatedChat(player,"item.devKnife.reloadFail", EnumChatFormatting.RED);
@@ -143,6 +168,11 @@ public class ItemDevKnife extends ItemKnife
 	private void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color)
 	{
 		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText).setChatStyle(new ChatStyle().setColor(color)));
+	}
+	
+	private void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText,EnumChatFormatting color, Object... parsedElement)
+	{
+		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText, parsedElement).setChatStyle(new ChatStyle().setColor(color)));
 	}
 
 }
