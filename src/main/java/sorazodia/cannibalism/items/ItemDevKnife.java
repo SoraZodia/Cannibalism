@@ -83,11 +83,11 @@ public class ItemDevKnife extends ItemKnife
 				if(error instanceof JsonSyntaxException)
 				    error(player, error.getMessage(), json.getFileName());
 				else
-					error(player, "There's a extra charater in your JSON that causing the parser trouble", json.getFileName());
+					error(player, "item.devKnife.errorCharacter", json.getFileName());
 			} 
 			catch (Exception wtfHappened)
 			{
-				error(player, "Something not accounted for caused the parser to fail", json.getFileName());
+				error(player, "item.devKnife.errorUnknown", json.getFileName());
 			}
 		}
 
@@ -98,7 +98,7 @@ public class ItemDevKnife extends ItemKnife
 	{
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFail", EnumChatFormatting.RED);
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFailCheck", EnumChatFormatting.WHITE, fileName);
-		Chat.displayPlainChat(player, errorMessage);
+		Chat.displayLocalizatedChat(player, errorMessage);
 		json.codeRed();
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
 	}
