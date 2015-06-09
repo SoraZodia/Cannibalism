@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -22,6 +24,7 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
+	private String fileName;
 
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
@@ -69,10 +72,11 @@ public class JSONConfig
 		FMLLog.info("[Cannibalism] Default JSON created");
 	}
 
-	public void read() throws IOException
+	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
 		for (File files : new File(dirPath).listFiles())
 		{
+			fileName = files.getName();
 			json = new JSONArray(files.getAbsolutePath());
 			for (int x = 0; x < json.size(); x++)
 			{
@@ -128,12 +132,12 @@ public class JSONConfig
 	{
 		return entityMap;
 	}
-	
+
 	public ArrayList<EntityData> getWildcardMap()
 	{
 		return wildcardMap;
 	}
-	
+
 	public boolean checkEntity(EntityLivingBase entity)
 	{
 		return entityMap.containsKey(EntityList.getEntityString(entity));
@@ -142,21 +146,21 @@ public class JSONConfig
 	public int getWildCardIndex(EntityLivingBase entity, World world)
 	{
 		int index = -1;
-		
+
 		for (int x = 0; x < wildcardMap.size(); x++)
 		{
-			if(wildcardMap.get(x).getEntity(world).getClass().isInstance(entity))
+			if (wildcardMap.get(x).getEntity(world).getClass().isInstance(entity))
 				index = x;
 		}
-		
+
 		return index;
 	}
-	
+
 	public EntityData getData(EntityLivingBase entity)
 	{
 		return entityMap.get(EntityList.getEntityString(entity));
 	}
-	
+
 	public EntityData getData(EntityLivingBase entity, World world)
 	{
 		return wildcardMap.get(getWildCardIndex(entity, world));
@@ -164,7 +168,7 @@ public class JSONConfig
 
 	public void codeRed()
 	{
-		entityMap.put("Chicken", new EntityData(new String[] { "" }, 2.3F, 3.0F));
+		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
 		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Cow", new String[] {
 				"minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
@@ -177,4 +181,8 @@ public class JSONConfig
 		return dirPath;
 	}
 
+	public String getFileName()
+	{
+		return fileName;
+	}
 }

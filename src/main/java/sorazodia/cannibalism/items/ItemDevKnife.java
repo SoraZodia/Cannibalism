@@ -4,17 +4,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+import sorazodia.api.localization.Chat;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.Cannibalism;
@@ -44,7 +46,8 @@ public class ItemDevKnife extends ItemKnife
 		if (!(user instanceof EntityPlayer))
 			return false;
 
-		//As much as it would be funny to see players accidentally Wendigos, don't really want that to happen...
+		// As much as it would be funny to see players accidentally Wendigos,
+		// don't really want that to happen...
 		if (!world.isRemote)
 		{
 			if (user.isSneaking()
@@ -63,64 +66,41 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		
+
 		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
-		if (!(player.worldObj.isRemote) && player.isSneaking())
+		if (!world.isRemote)
 		{
-			displayLocalizatedChat(player, "item.devKnife.reload");
+			Chat.displayLocalizatedChat(player, "item.devKnife.reload");
 			try
 			{
 				json.getEntityMap().clear();
 				json.getWildcardMap().clear();
 				json.read();
-				displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.GREEN);
+				Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.GREEN);
+			} catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
+			{
+				if(error instanceof JsonSyntaxException)
+				    error(player, error.getMessage(), json.getFileName());
+				else
+					error(player, "There's a extra charater in your JSON that causing the parser trouble", json.getFileName());
 			} 
-			catch (com.google.gson.JsonSyntaxException syntax)
-			{
-				error(player, syntax);
-			} 
-			catch (NumberFormatException number)
-			{
-				error(player, 0, number);
-			}
-			catch (ClassCastException cast)
-			{
-				error(player, 0, cast);
-			}
-			catch (NullPointerException nulled)
-			{
-				error(player, 0, nulled);
-			}
-			catch (IOException io)
-			{
-				error(player, io);
-			}
 			catch (Exception wtfHappened)
 			{
-				error(player, 0, wtfHappened);
+				error(player, "Something not accounted for caused the parser to fail", json.getFileName());
 			}
-
 		}
 
 		return stack;
 	}
 
-	private void error(EntityPlayer player, int errorLine, Exception exception)
+	private void error(EntityPlayer player, String errorMessage, String fileName)
 	{
-		displayLocalizatedChat(player,"item.devKnife.reloadFail", EnumChatFormatting.RED);
-		displayLocalizatedChat(player,"item.devKnife.reloadFailCheck", EnumChatFormatting.RED);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFail", EnumChatFormatting.RED);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFailCheck", EnumChatFormatting.WHITE, fileName);
+		Chat.displayPlainChat(player, errorMessage);
 		json.codeRed();
-		displayLocalizatedChat(player,"item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
-		exception.printStackTrace();
-	}
-	
-	private void error(EntityPlayer player, Exception exception)
-	{
-		displayLocalizatedChat(player,"item.devKnife.reloadFail", EnumChatFormatting.RED);
-		json.codeRed();
-		player.addChatMessage(new ChatComponentText(exception.getMessage()));
-		displayLocalizatedChat(player,"item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
 	}
 
 	@Override
@@ -130,7 +110,7 @@ public class ItemDevKnife extends ItemKnife
 		{
 			if (!player.isSneaking())
 			{
-				displayLocalizatedChat(player, "item.devKnife.format");
+				Chat.displayLocalizatedChat(player, "item.devKnife.format");
 				player.addChatMessage(new ChatComponentTranslation("item.devKnife.mobName", EntityList.getEntityString(target)));
 			} else
 			{
@@ -158,21 +138,6 @@ public class ItemDevKnife extends ItemKnife
 	{
 		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
 		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
-	}
-	
-	private void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText)
-	{
-		displayLocalizatedChat(receiver, unlocalizatedText, EnumChatFormatting.WHITE);
-	}
-	
-	private void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color)
-	{
-		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText).setChatStyle(new ChatStyle().setColor(color)));
-	}
-	
-	private void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText,EnumChatFormatting color, Object... parsedElement)
-	{
-		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText, parsedElement).setChatStyle(new ChatStyle().setColor(color)));
 	}
 
 }

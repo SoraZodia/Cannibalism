@@ -2,6 +2,8 @@ package sorazodia.cannibalism.main;
 
 import java.io.IOException;
 
+import com.google.gson.JsonSyntaxException;
+
 import net.minecraftforge.common.MinecraftForge;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
@@ -99,15 +101,19 @@ public class Cannibalism
 		{
 			json.read();
 		} 
-		catch (IOException io)
+		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
 		{
-			error(io);
+			error(error, json.getFileName());
+		} 
+		 catch (Exception wtfHappened)
+		{
+			error(wtfHappened, json.getFileName());
 		}
 	}
 	
-	private void error(Exception e)
+	private void error(Exception e, String fileName)
 	{
-		FMLLog.severe("[Cannibalism] **********************UNABLE TO READ JSON, PLAN B GOOOOOOO*******************************************");
+		FMLLog.severe("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
 		e.printStackTrace();
 		FMLLog.severe("[Cannibalism] Defaulting to backup");
 		json.codeRed();
@@ -119,7 +125,7 @@ public class Cannibalism
 		FMLLog.severe("[Cannibalism] Defaulting to backup");
 		json.codeRed();
 	}
-
+	
 	public static JSONConfig getJson()
 	{
 		return json;

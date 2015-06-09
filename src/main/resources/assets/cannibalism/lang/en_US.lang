@@ -24,7 +24,7 @@ item.devKnife.mobName=[Name] %s
 item.devKnife.reload=Reloading JSON configs and clearing entity drops mappings
 item.devKnife.reloadFinish=JSON reloaded. Entity drops remapped.
 item.devKnife.reloadFail=Failed to read JSON! Falling back to default configs.
-item.devKnife.reloadFailCheck=Check your JSONs for any extra characters!
+item.devKnife.reloadFailCheck=%s is misformatted!
 item.devKnife.lore1=Dev Knife
 item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
 
