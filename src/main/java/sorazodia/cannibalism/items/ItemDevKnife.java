@@ -1,17 +1,24 @@
 package sorazodia.cannibalism.items;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.Level;
+
 import com.google.gson.JsonSyntaxException;
 
+import cpw.mods.fml.common.FMLLog;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -45,6 +52,8 @@ public class ItemDevKnife extends ItemKnife
 
 		if (!(user instanceof EntityPlayer))
 			return false;
+		
+		victim.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
 
 		// As much as it would be funny to see players accidentally Wendigos,
 		// don't really want that to happen...
@@ -109,9 +118,10 @@ public class ItemDevKnife extends ItemKnife
 		if (!(player.worldObj.isRemote))
 		{
 			if (!player.isSneaking())
-			{
+			{	
 				Chat.displayLocalizatedChat(player, "item.devKnife.format");
 				player.addChatMessage(new ChatComponentTranslation("item.devKnife.mobName", EntityList.getEntityString(target)));
+				player.addChatMessage(new ChatComponentTranslation("item.devKnife.superName", EntityList.getEntityString(getSuperEntity(target))));
 			} else
 			{
 				if (json.checkEntity(target))
@@ -138,6 +148,26 @@ public class ItemDevKnife extends ItemKnife
 	{
 		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
 		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
+	}
+	
+	private Entity getSuperEntity(Entity child) {
+		Class<?> superClass;
+		Entity entity = child;
+		try
+		{
+			superClass = Class.forName(child.getClass().getSuperclass().getName());
+			Constructor<?> cons = superClass.getConstructor(World.class);
+			entity = (Entity) cons.newInstance(child.worldObj);
+			
+		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+		{
+			FMLLog.log(Level.INFO, "[Cannibalism - Dev Knife Usage] This entity extended from EntityMob or the likes, it has no mobs ingame which it is extended from");
+		} catch (Exception wtfHappened)
+		{
+			FMLLog.log(Level.ERROR,"[Cannibalism - Dev Knife Usage] Unknown Error happened, stacktrace incoming");
+			FMLLog.log(Level.ERROR, wtfHappened.getMessage());
+		}
+		return entity;
 	}
 
 }
