@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.google.gson.JsonSyntaxException;
-
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -14,6 +13,9 @@ import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.main.Cannibalism;
+
+import com.google.gson.JsonSyntaxException;
+
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -35,7 +37,8 @@ public class JSONConfig
 	private static final String MIN = "minDamage";
 	private static final String MAX = "maxDamage";
 	private static final String MINECRAFT = "\"minecraft\"";
-	private static String regEx = "[\\s+[\"+]]";
+	// private static String regEx = "[\\s+[\"+]]";
+	private static String regEx = "[\"+]";
 
 	public JSONConfig(FMLPreInitializationEvent preEvent) throws IOException
 	{
@@ -93,7 +96,7 @@ public class JSONConfig
 		 * Get all the information from the JSON and process the data into
 		 * strings that the class can uses
 		 */
-		String entityID = json.getString(index, ENTITYID).replaceAll(regEx, "");
+		String entityID = json.getString(index, ENTITYID).replaceAll(regEx, "").trim();
 		String[] drop = json.getString(index, DROPS).replaceAll(regEx, "").split(",+");
 		float min = Float.parseFloat(json.getString(index, MIN).replaceAll(regEx, ""));
 		float max = Float.parseFloat(json.getString(index, MAX).replaceAll(regEx, ""));
@@ -149,7 +152,10 @@ public class JSONConfig
 
 		for (int x = 0; x < wildcardMap.size(); x++)
 		{
-			if (wildcardMap.get(x).getEntity(world).getClass().isInstance(entity))
+			Entity e = wildcardMap.get(x).getEntity(world);
+			if (e == null)
+				continue;
+			else if (e.getClass().isInstance(entity))
 				index = x;
 		}
 

@@ -25,7 +25,7 @@ public class EntityData
 		minDamage = min;
 		maxDamage = max;
 		setName(entityName);
-		//System.out.println(toString());
+		// System.out.println(toString());
 	}
 
 	private Item[] covertString(String[] convert)
@@ -71,7 +71,13 @@ public class EntityData
 
 	public EntityLivingBase getEntity(World world)
 	{
-		return (EntityLivingBase) EntityList.createEntityByName(name, world);
+		try
+		{
+			return (EntityLivingBase) EntityList.createEntityByName(name, world);
+		} catch (NullPointerException nu)
+		{
+			return null;
+		}
 	}
 
 	public String getName()
@@ -88,12 +94,12 @@ public class EntityData
 	public String toString()
 	{
 		StringBuilder drops = new StringBuilder("[ ");
-		
-		for(String s : itemList)
+
+		for (String s : itemList)
 			drops.append(s).append(", ");
-		
+
 		drops.deleteCharAt(drops.lastIndexOf(",")).append("]");
-		
+
 		return "EntityID: " + getName() + ", Drops: " + drops.toString()
 				+ ", Min/Max Damage: " + getMinDamage() + "/" + getMaxDamage();
 
