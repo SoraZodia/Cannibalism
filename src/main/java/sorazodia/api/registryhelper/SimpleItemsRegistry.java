@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Item registry class for Cannibalism mod, have methods to make item
@@ -39,8 +39,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
-		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID
-				+ ":" + imageName);
+		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName);
 	}
 
 	/**
@@ -50,8 +49,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID
-				+ ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name);
 	}
 
 	/**
@@ -62,8 +60,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerEasterItems(Item item, String name, String easterName)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName)).setTextureName(MODID
-				+ ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName));
 	}
 
 	private static String doEasterEgg(String defaultName, String easterName)

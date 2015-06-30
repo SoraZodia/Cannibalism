@@ -1,8 +1,8 @@
 package sorazodia.cannibalism.mechanic.nbt;
 
-import sorazodia.cannibalism.main.Cannibalism;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import sorazodia.cannibalism.main.Cannibalism;
 
 /**
  * Adds NBT to the player meat
@@ -25,7 +25,7 @@ public class MeatOriginNBT
 
 	public static void getNameFromNBT(ItemStack stack)
 	{
-		NBTTagCompound tag = stack.stackTagCompound.getCompoundTag(Cannibalism.MODID);
+		NBTTagCompound tag = stack.getTagCompound().getCompoundTag(Cannibalism.MODID);
 		stack.setStackDisplayName(tag.getString("name"));
 
 	}

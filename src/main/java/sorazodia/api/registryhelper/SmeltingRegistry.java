@@ -2,7 +2,7 @@ package sorazodia.api.registryhelper;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * A way to add new furnace recipes with less typing

@@ -2,9 +2,15 @@ package sorazodia.cannibalism.main;
 
 import java.io.IOException;
 
-import com.google.gson.JsonSyntaxException;
-
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
@@ -12,14 +18,8 @@ import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
 import sorazodia.cannibalism.tab.CannibalismTab;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
+import com.google.gson.JsonSyntaxException;
 
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
@@ -63,7 +63,6 @@ public class Cannibalism
 		}
 
 		ItemRegistry.init();
-		common.preInit();
 	}
 
 	@EventHandler
@@ -71,6 +70,7 @@ public class Cannibalism
 	{
 
 		FMLLog.info("[Cannibalism] Initializating Recipes and Events");
+		common.init();
 		RecipesRegistry.init();
 		CookingRegistry.init();
 		EntitysRegistry.init();

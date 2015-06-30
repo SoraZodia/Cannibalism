@@ -13,7 +13,6 @@ public class EntityWendigo extends EntityMob
 	public EntityWendigo(World world)
 	{
 		super(world);
-		this.yOffset *= 8.5F;
 		this.setSize(width * 4F, height * 8.5F);
 	}
 
@@ -34,22 +33,12 @@ public class EntityWendigo extends EntityMob
 		super.onUpdate();
 		if (!isEntityAlive())
 		{
-			if (this.entityToAttack instanceof EntityPlayer)
+			if (this.attackingPlayer instanceof EntityPlayer)
 			{
-				EntityPlayer player = (EntityPlayer) this.entityToAttack;
+				EntityPlayer player = (EntityPlayer) this.attackingPlayer;
 				if (CannibalismNBT.getNBT(player) != null)
 					CannibalismNBT.getNBT(player).setWedigoSpawn(false);
 			}
-		}
-	}
-
-	@Override
-	public void attackEntity(Entity entity, float time)
-	{
-		if (attackTime <= 0 && time < 2.0F)
-		{
-			attackTime = 20;
-			attackEntityAsMob(entity);
 		}
 	}
 

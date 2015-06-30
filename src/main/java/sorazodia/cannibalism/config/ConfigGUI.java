@@ -1,10 +1,10 @@
 package sorazodia.cannibalism.config;
 
-import sorazodia.cannibalism.main.Cannibalism;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import sorazodia.cannibalism.main.Cannibalism;
 
 public class ConfigGUI extends GuiConfig
 {
@@ -12,6 +12,6 @@ public class ConfigGUI extends GuiConfig
 
 	public ConfigGUI(GuiScreen parent)
 	{
-		super(parent, new ConfigElement<ConfigGUI>(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), Cannibalism.MODID, false, false, title);
+		super(parent, new ConfigElement(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), Cannibalism.MODID, false, false, title);
 	}
 }

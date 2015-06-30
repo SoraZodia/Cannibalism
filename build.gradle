@@ -17,13 +17,23 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.1.1-1.7.10"
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+version = "1.1.1-1.8"
 group= "com.sorazodia.cannibalism" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Cannibalism"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
-    runDir = "eclipse/assets"
+    version = "1.8-11.14.3.1450"
+    if(file('../run').exists())
+	{
+	   runDir = "../run1.8"
+	}
+	else 
+	{
+	   runDir = "eclipse/assets"
+	}
 }
 
 dependencies {

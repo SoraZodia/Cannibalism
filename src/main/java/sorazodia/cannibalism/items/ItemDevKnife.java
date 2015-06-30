@@ -6,11 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.logging.log4j.Level;
-
-import com.google.gson.JsonSyntaxException;
-
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,11 +18,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.FMLLog;
+
+import org.apache.logging.log4j.Level;
+
 import sorazodia.api.localization.Chat;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mob.EntityWendigo;
+
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Wa ha ha, My own special knife :P #evilDev

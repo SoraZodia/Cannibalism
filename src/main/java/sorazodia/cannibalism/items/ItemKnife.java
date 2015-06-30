@@ -8,6 +8,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.api.EntityData;
@@ -41,7 +42,7 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			if (!world.isRemote)
 			{
-				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getCommandSenderName(), ItemList.playerFlesh);
+				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getCommandSenderEntity().getName(), ItemList.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}
@@ -103,7 +104,7 @@ public class ItemKnife extends ItemSword
 			
 			if (target instanceof EntityPlayerMP)
 			{
-				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
+				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderEntity().getName(), ItemList.playerFlesh);
 			} 			
 			
 
@@ -195,7 +196,7 @@ public class ItemKnife extends ItemSword
 	{
 		for (int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
-			world.spawnParticle("reddust", entityLiving.posX + Math.random()
+			world.spawnParticle(EnumParticleTypes.REDSTONE, entityLiving.posX + Math.random()
 					- Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ
 					+ Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
 		}

@@ -1,8 +1,8 @@
 package sorazodia.api.registryhelper;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * Makes adding recipes via the OreDictionary a bit more simple
