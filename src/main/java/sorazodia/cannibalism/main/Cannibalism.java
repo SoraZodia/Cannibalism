@@ -69,7 +69,7 @@ public class Cannibalism
 	public void init(FMLInitializationEvent event)
 	{
 
-		FMLLog.info("[Cannibalism] Initializating Recipes and Events");
+		FMLLog.info("[Cannibalism] Initializating Recipes, Textures, and Events");
 		common.init();
 		RecipesRegistry.init();
 		CookingRegistry.init();

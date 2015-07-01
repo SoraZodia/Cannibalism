@@ -8,12 +8,13 @@ public class ImageRegistry
 {
 	public static void init()
 	{
-		ModelRegistry.addTexture(ItemList.devKnife, MODID, ItemList.flintKnifeName);
-		ModelRegistry.addTexture(ItemList.diamondKnife, MODID, ItemList.diamondKnifeName);
+		ModelRegistry.addTexture(ItemList.woodenKnife, MODID, ItemList.woodenKnifeName);
+		ModelRegistry.addTexture(ItemList.stoneKnife, MODID, ItemList.stoneKnifeName);
 		ModelRegistry.addTexture(ItemList.flintKnife, MODID, ItemList.flintKnifeName);
 		ModelRegistry.addTexture(ItemList.goldKnife, MODID, ItemList.goldKnifeName);
 		ModelRegistry.addTexture(ItemList.ironKnife, MODID, ItemList.ironKnifeName);
-		ModelRegistry.addTexture(ItemList.woodenKnife, MODID, ItemList.woodenKnifeName);
+		ModelRegistry.addTexture(ItemList.diamondKnife, MODID, ItemList.diamondKnifeName);
+		ModelRegistry.addTexture(ItemList.devKnife, MODID, ItemList.flintKnifeName);
 		
 		ModelRegistry.addTexture(ItemList.playerFlesh, MODID, ItemList.playerFleshName);
 		ModelRegistry.addTexture(ItemList.playerFleshCooked, MODID, ItemList.playerFleshCookedName);
