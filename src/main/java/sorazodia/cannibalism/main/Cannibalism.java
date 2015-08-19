@@ -2,9 +2,10 @@ package sorazodia.cannibalism.main;
 
 import java.io.IOException;
 
-import com.google.gson.JsonSyntaxException;
-
 import net.minecraftforge.common.MinecraftForge;
+
+import org.apache.logging.log4j.Logger;
+
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
@@ -12,8 +13,10 @@ import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
 import sorazodia.cannibalism.tab.CannibalismTab;
+
+import com.google.gson.JsonSyntaxException;
+
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -43,12 +46,16 @@ public class Cannibalism
 	private static ConfigHandler config;
 	private static JSONConfig json;
 	private static boolean error = false;
+	
+	private Logger log;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
 	{
-		FMLLog.info("[Cannibalism] Initializating Mod");
-		FMLLog.info("[Cannibalism] Adding Items and Syncing Config");
+		log = preEvent.getModLog();
+		
+		log.info("Initializating Mod");
+		log.info("[Cannibalism] Adding Items and Syncing Config");
 		config = new ConfigHandler(preEvent);
 
 		try
@@ -57,7 +64,7 @@ public class Cannibalism
 			json.initJSON();
 		} catch (IOException e)
 		{
-			FMLLog.severe("[Cannibalism] **********************UNABLE TO START NOR CREATE JSON*******************************************");
+			log.error("**********************UNABLE TO START NOR CREATE JSON*******************************************");
 			e.printStackTrace();
 			error = true;
 		}
@@ -70,7 +77,7 @@ public class Cannibalism
 	public void init(FMLInitializationEvent event)
 	{
 
-		FMLLog.info("[Cannibalism] Initializating Recipes and Events");
+		log.info("Initializating Recipes and Events");
 		RecipesRegistry.init();
 		CookingRegistry.init();
 		EntitysRegistry.init();
@@ -85,14 +92,14 @@ public class Cannibalism
 	public void postInit(FMLPostInitializationEvent postEvent)
 	{
 
-		FMLLog.info("[Cannibalism] Reading JSON");
+		log.info("Reading JSON");
 		
 		if(error == true)
 			error();
 		else
 			tryRead();
 
-		FMLLog.info("[Cannibalism] Mod Locked and Loaded");
+		log.info("Mod Locked and Loaded");
 	}
 	
 	private void tryRead()
@@ -113,16 +120,16 @@ public class Cannibalism
 	
 	private void error(Exception e, String fileName)
 	{
-		FMLLog.severe("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
+		log.error("**********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
 		e.printStackTrace();
-		FMLLog.severe("[Cannibalism] Defaulting to backup");
+		log.error("Defaulting to backup");
 		json.codeRed();
 	}
 	
 	private void error()
 	{
-		FMLLog.severe("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
-		FMLLog.severe("[Cannibalism] Defaulting to backup");
+		log.error("**********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
+		log.error("Defaulting to backup");
 		json.codeRed();
 	}
 	

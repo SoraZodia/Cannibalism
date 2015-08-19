@@ -1,9 +1,11 @@
 package sorazodia.cannibalism.mob;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
@@ -13,8 +15,8 @@ public class EntityWendigo extends EntityMob
 	public EntityWendigo(World world)
 	{
 		super(world);
-		this.yOffset *= 8.5F;
-		this.setSize(width * 4F, height * 8.5F);
+		//this.yOffset *= 8.5F;
+		//this.setSize(width * 4F, height * 8.5F);
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class EntityWendigo extends EntityMob
 	{
 		super.applyEntityAttributes();
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(0D);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100D);
 		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40D);
 		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1000D);
@@ -44,23 +46,22 @@ public class EntityWendigo extends EntityMob
 	}
 
 	@Override
-	public void attackEntity(Entity entity, float time)
+	public boolean attackEntityAsMob(Entity entity)
 	{
-		if (attackTime <= 0 && time < 2.0F)
+		boolean attacked = super.attackEntityAsMob(entity);
+		if (attacked && entity instanceof EntityLivingBase)
 		{
-			attackTime = 20;
-			attackEntityAsMob(entity);
-		}
-	}
-
-	public boolean attackEntityAsMob(Entity target)
-	{
-		boolean attacked = super.attackEntityAsMob(target);
-		if (attacked)
-		{
+			EntityLivingBase target = (EntityLivingBase) entity;
+			
 			target.motionX += 2.0;
 			target.motionY += 1.0;
 			target.motionZ += 2.0;
+			
+			target.setHealth(target.getHealth() - 10);
+			if (target.getHealth() < 0.01F)
+			{
+				target.onDeath(DamageSource.causeMobDamage(this));
+			}
 		}
 
 		return attacked;
