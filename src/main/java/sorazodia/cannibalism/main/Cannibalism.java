@@ -47,7 +47,7 @@ public class Cannibalism
 	private static JSONConfig json;
 	private static boolean error = false;
 	
-	private Logger log;
+	private static Logger log;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
@@ -136,6 +136,11 @@ public class Cannibalism
 	public static JSONConfig getJson()
 	{
 		return json;
+	}
+
+	public static Logger getLogger()
+	{
+		return log;
 	}
 
 }
