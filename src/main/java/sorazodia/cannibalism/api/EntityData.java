@@ -49,7 +49,7 @@ public class EntityData
 				itemData[0] = concat.toString();
 				itemData[1] = itemData[itemData.length - 1];
 			}
-			if (itemData.length > 1 && itemData.length < 3)
+			if (itemData.length > 1)
 				if (isInteger(itemData[1]))
 					metadata = Integer.parseInt(itemData[1]);
 			

@@ -54,7 +54,7 @@ public class Cannibalism
 	{
 		log = preEvent.getModLog();
 		
-		log.info("Initializating Mod");
+		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items and Syncing Config");
 		config = new ConfigHandler(preEvent);
 
@@ -77,7 +77,7 @@ public class Cannibalism
 	public void init(FMLInitializationEvent event)
 	{
 
-		log.info("Initializating Recipes and Events");
+		log.info("[Cannibalism] Initializating Recipes and Events");
 		RecipesRegistry.init();
 		CookingRegistry.init();
 		EntitysRegistry.init();
@@ -92,14 +92,14 @@ public class Cannibalism
 	public void postInit(FMLPostInitializationEvent postEvent)
 	{
 
-		log.info("Reading JSON");
+		log.info("[Cannibalism] Reading JSON");
 		
 		if(error == true)
 			error();
 		else
 			tryRead();
 
-		log.info("Mod Locked and Loaded");
+		log.info("[Cannibalism] Mod Locked and Loaded");
 	}
 	
 	private void tryRead()
@@ -120,16 +120,16 @@ public class Cannibalism
 	
 	private void error(Exception e, String fileName)
 	{
-		log.error("**********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
+		log.error("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
 		e.printStackTrace();
-		log.error("Defaulting to backup");
+		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();
 	}
 	
 	private void error()
 	{
-		log.error("**********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
-		log.error("Defaulting to backup");
+		log.error("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
+		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();
 	}
 	

@@ -6,11 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.logging.log4j.Level;
-
-import com.google.gson.JsonSyntaxException;
-
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,11 +18,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+
+import org.apache.logging.log4j.Level;
+
 import sorazodia.api.localization.Chat;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mob.EntityWendigo;
+
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Wa ha ha, My own special knife :P #evilDev
@@ -161,11 +161,11 @@ public class ItemDevKnife extends ItemKnife
 			
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 		{
-			FMLLog.log(Level.INFO, "[Cannibalism - Dev Knife Usage] This entity extended from EntityMob or the likes, it has no mobs ingame which it is extended from");
+			Cannibalism.getLogger().log(Level.INFO, "[Cannibalism - Dev Knife Usage] This entity extended from EntityMob or the likes, it has no mobs ingame which it is extended from");
 		} catch (Exception wtfHappened)
 		{
-			FMLLog.log(Level.ERROR,"[Cannibalism - Dev Knife Usage] Unknown Error happened, stacktrace incoming");
-			FMLLog.log(Level.ERROR, wtfHappened.getMessage());
+			Cannibalism.getLogger().log(Level.ERROR,"[Cannibalism - Dev Knife Usage] Unknown Error happened, stacktrace incoming");
+			Cannibalism.getLogger().log(Level.ERROR, wtfHappened.getMessage());
 		}
 		return entity;
 	}

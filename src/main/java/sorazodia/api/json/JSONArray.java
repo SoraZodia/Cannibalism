@@ -24,10 +24,10 @@ public class JSONArray
 		try
 		{
 			reader.close();
-			Cannibalism.getLogger().debug("Reader successfully closed");
+			Cannibalism.getLogger().debug("[Cannibalism] Reader successfully closed");
 		} catch (IOException io)
 		{
-			Cannibalism.getLogger().error("Unable to close/use BufferedReader");
+			Cannibalism.getLogger().error("[Cannibalism] Unable to close/use BufferedReader");
 			io.printStackTrace();
 		}
 	}
