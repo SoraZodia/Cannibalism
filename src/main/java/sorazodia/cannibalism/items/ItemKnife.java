@@ -3,7 +3,6 @@ package sorazodia.cannibalism.items;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -137,16 +136,16 @@ public class ItemKnife extends ItemSword
 		}
 	}
 
-	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, Item[] drops)
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack[] drops)
 	{
 		interact = true;
 		if (!entity.worldObj.isRemote)
 		{
 			cutDamage(player, entity, damage);
 			increaseWendigo(player);
-			for (Item item : drops)
+			for (ItemStack item : drops)
 			{
-				entity.entityDropItem(new ItemStack(item), 0.0F);
+				entity.entityDropItem(item.copy(), 0.0F);
 			}
 		}
 	}
