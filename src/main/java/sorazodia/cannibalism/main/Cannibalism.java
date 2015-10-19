@@ -76,7 +76,6 @@ public class Cannibalism
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-
 		log.info("[Cannibalism] Initializating Recipes and Events");
 		RecipesRegistry.init();
 		CookingRegistry.init();

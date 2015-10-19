@@ -15,7 +15,6 @@ import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.main.Cannibalism;
-import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
 public class ItemKnife extends ItemSword
@@ -113,7 +112,6 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			stack.damageItem(1, player);
 			spawnBlood(target, target.worldObj, 0);
-			increaseWendigo(player);
 		}
 
 		return interact;
@@ -131,7 +129,6 @@ public class ItemKnife extends ItemSword
 			ItemStack meat = new ItemStack(flesh);
 			setMeatName(meat, name);
 			cutDamage(player, entity, damage);
-			increaseWendigo(player);
 			entity.entityDropItem(meat, 0.0F);
 		}
 	}
@@ -142,21 +139,10 @@ public class ItemKnife extends ItemSword
 		if (!entity.worldObj.isRemote)
 		{
 			cutDamage(player, entity, damage);
-			increaseWendigo(player);
 			for (ItemStack item : drops)
 			{
 				entity.entityDropItem(item.copy(), 0.0F);
 			}
-		}
-	}
-
-	private void increaseWendigo(EntityPlayer player)
-	{
-		if (CannibalismNBT.getNBT(player) != null
-				&& ConfigHandler.getMyth() == true)
-		{
-			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-			nbt.changeWendigoValue(10);
 		}
 	}
 
