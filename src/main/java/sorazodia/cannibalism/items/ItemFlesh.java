@@ -26,6 +26,7 @@ public class ItemFlesh extends ItemFood
 		if (CannibalismNBT.getNBT(player) != null
 				&& ConfigHandler.getMyth() == true)
 		{
+			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			nbt.changeWendigoValue(10);
 		}
 	}
