@@ -1,0 +1,27 @@
+{
+ "mob.wendigo.death":
+  {
+       "category":"hostile",
+	   "sounds":
+	   [
+	      "mob/wendigo/wendigo_dead"
+	   ]
+  },
+  "mob.wendigo.grr":
+   {
+	    "category":"hostile",
+		"sounds":
+		[
+		    "mob/wendigo/wendigo_grr"
+	    ]
+   },  
+   "mob.wendigo.hurt":
+   {
+         "category":"hostile",
+		 "sounds":
+		 [
+		     "mob/wendigo/wendigo_hiss_angry",
+			 "mob/wendigo/wendigo_sreen"
+	     ]
+    }
+}
