@@ -27,7 +27,7 @@ public class ItemKnife extends ItemSword
 	{
 		super(material);
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
@@ -70,9 +70,7 @@ public class ItemKnife extends ItemSword
 		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
 
-			if (!player.isSneaking()
-					&& target.getEquipmentInSlot(3) != null
-					&& target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
+			if (!player.isSneaking() && target.getEquipmentInSlot(3) != null && target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
 			{
 				ItemArmor armor = (ItemArmor) target.getEquipmentInSlot(3).getItem();
 				player.swingItem();
@@ -86,8 +84,9 @@ public class ItemKnife extends ItemSword
 				EntityData data = json.getData(target);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-			
-			else if(json.getWildCardIndex(target, player.worldObj) >= 0) {
+
+			else if (json.getWildCardIndex(target, player.worldObj) >= 0)
+			{
 				EntityData data = json.getData(target, player.worldObj);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
@@ -98,12 +97,11 @@ public class ItemKnife extends ItemSword
 				ICutable cutable = (ICutable) target;
 				cutable.cut(player);
 			}
-			
+
 			if (target instanceof EntityPlayerMP)
 			{
 				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderName(), ItemList.playerFlesh);
-			} 			
-			
+			}
 
 		}
 
@@ -117,13 +115,11 @@ public class ItemKnife extends ItemSword
 		return interact;
 	}
 
-	
-
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
 		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
-        //System.out.println(name);
+		//System.out.println(name);
 		if (!entity.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
@@ -162,7 +158,8 @@ public class ItemKnife extends ItemSword
 				{
 					entity.onDeath(DamageSource.causePlayerDamage(player));
 				}
-			} else if (entity instanceof EntityPlayer)
+			}
+			else if (entity instanceof EntityPlayer)
 			{
 				player.setHealth(entity.getHealth() - damage);
 				entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.01F);
@@ -180,9 +177,7 @@ public class ItemKnife extends ItemSword
 	{
 		for (int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
-			world.spawnParticle("reddust", entityLiving.posX + Math.random()
-					- Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ
-					+ Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
+			world.spawnParticle("reddust", entityLiving.posX + Math.random() - Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ + Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
 		}
 	}
 

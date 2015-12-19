@@ -37,20 +37,20 @@ public class EntityNBTEvents
 		{
 			EntityPlayer player = (EntityPlayer) updateEvent.entityLiving;
 			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
-			
+
 			addWendigoAbility(player, wendigoLevel);
 			wendigoSpawn(player, wendigoLevel);
 		}
 	}
-	
+
 	private void addWendigoAbility(EntityPlayer player, float wendigoLevel)
 	{
-		if (wendigoLevel >= 50 && wendigoLevel < 100)
+		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
 			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10));
 			player.addExhaustion(0.02F);
 		}
-		if (wendigoLevel >= 100)
+		if (wendigoLevel >= 50)
 		{
 			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10, 1));
 			player.addExhaustion(0.04F);
@@ -77,7 +77,7 @@ public class EntityNBTEvents
 			if (CannibalismNBT.getNBT(player).wendigoSpawned() == false)
 			{
 				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);
-				wendigo.setLocationAndAngles(player.posX - 40, player.posY, player.posZ, 0, 0);
+				wendigo.setLocationAndAngles(player.posX * 2, player.posY, player.posZ * 2, 0, 0);
 				player.worldObj.spawnEntityInWorld(wendigo);
 
 				CannibalismNBT.getNBT(player).setWedigoSpawn(true);

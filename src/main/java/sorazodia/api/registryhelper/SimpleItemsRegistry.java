@@ -39,8 +39,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
-		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID
-				+ ":" + imageName);
+		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID + ":" + imageName);
 	}
 
 	/**
@@ -50,8 +49,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID
-				+ ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID + ":" + name);
 	}
 
 	/**
@@ -62,8 +60,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerEasterItems(Item item, String name, String easterName)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName)).setTextureName(MODID
-				+ ":" + name);
+		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName)).setTextureName(MODID + ":" + name);
 	}
 
 	private static String doEasterEgg(String defaultName, String easterName)

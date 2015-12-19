@@ -25,7 +25,8 @@ public class JSONArray
 		{
 			reader.close();
 			Cannibalism.getLogger().debug("[Cannibalism] Reader successfully closed");
-		} catch (IOException io)
+		}
+		catch (IOException io)
 		{
 			Cannibalism.getLogger().error("[Cannibalism] Unable to close/use BufferedReader");
 			io.printStackTrace();

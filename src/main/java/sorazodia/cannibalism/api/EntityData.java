@@ -52,7 +52,7 @@ public class EntityData
 			if (itemData.length > 1)
 				if (isInteger(itemData[1]))
 					metadata = Integer.parseInt(itemData[1]);
-			
+
 			Item item = (Item) Item.itemRegistry.getObject(itemData[0]);
 
 			drops[x] = new ItemStack(item, 1, metadata);
@@ -96,7 +96,8 @@ public class EntityData
 		try
 		{
 			return (EntityLivingBase) EntityList.createEntityByName(name, world);
-		} catch (NullPointerException nu)
+		}
+		catch (NullPointerException nu)
 		{
 			return null;
 		}

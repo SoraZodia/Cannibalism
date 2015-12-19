@@ -42,8 +42,7 @@ public class JSONConfig
 
 	public JSONConfig(FMLPreInitializationEvent preEvent) throws IOException
 	{
-		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath()
-				+ "\\" + Cannibalism.MODID;
+		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath() + "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
 	}
 
@@ -122,8 +121,7 @@ public class JSONConfig
 	private void writeDefault() throws IOException
 	{
 		write.writeStart();
-		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather",
-				"minecraft:beef" }, "2.5", "3.0");
+		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
 		addEntity("Chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
 		addEntity("Pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
 		addEntity("Villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
@@ -176,8 +174,7 @@ public class JSONConfig
 	{
 		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
 		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Cow", new String[] {
-				"minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
 	}

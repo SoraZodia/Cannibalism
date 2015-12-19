@@ -32,7 +32,7 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public void onUpdate()
 	{
-		super.onUpdate();
+		//super.onUpdate();
 		if (!isEntityAlive())
 		{
 			if (this.entityToAttack instanceof EntityPlayer)
@@ -41,7 +41,8 @@ public class EntityWendigo extends EntityMob
 				if (CannibalismNBT.getNBT(player) != null)
 					CannibalismNBT.getNBT(player).setWedigoSpawn(false);
 			}
-		} else
+		}
+		else
 		{
 			this.stepHeight = 1.0F;
 		}
@@ -62,12 +63,11 @@ public class EntityWendigo extends EntityMob
 				target.motionY *= 2;
 				target.motionX *= 2;
 				target.motionZ *= 2;
-				
+
 				if (target.getHealth() <= 0.01F)
 					target.onDeath(DamageSource.causeMobDamage(this).setDamageBypassesArmor());
 			}
 
-			
 		}
 
 		return attacked;

@@ -58,7 +58,7 @@ public class JSONWriter
 		fuser.delete(0, fuser.length());
 		writer.close();
 	}
-	
+
 	public void append() throws IOException
 	{
 		fuser.deleteCharAt(fuser.lastIndexOf(comma));

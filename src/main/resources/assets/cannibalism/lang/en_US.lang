@@ -32,5 +32,6 @@ item.devKnife.errorUnknown=Something not accounted for caused the parser to fail
 
 item.devKnife.lore1=Dev Knife
 item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
+item.devknife.wendigostat=Currect Wendigo Level: %f
 
 entity.cannibalism.wendigo.name=Wendigo

@@ -8,22 +8,22 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class Chat
 {
-	
+
 	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText)
 	{
 		displayLocalizatedChat(receiver, unlocalizatedText, EnumChatFormatting.WHITE);
 	}
-	
+
 	public static void displayPlainChat(EntityPlayer receiver, String text)
 	{
-	   receiver.addChatComponentMessage(new ChatComponentText(text));
+		receiver.addChatComponentMessage(new ChatComponentText(text));
 	}
-	
+
 	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color)
 	{
 		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText).setChatStyle(new ChatStyle().setColor(color)));
 	}
-	
+
 	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color, Object... variables)
 	{
 		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText, variables).setChatStyle(new ChatStyle().setColor(color)));

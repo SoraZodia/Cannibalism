@@ -39,21 +39,21 @@ public class Cannibalism
 
 	@SidedProxy(clientSide = "sorazodia.cannibalism.main.proxy.ClientProxy", serverSide = "sorazodia.cannibalism.main.proxy.ServerProxy")
 	public static ServerProxy common;
-	
+
 	public static CannibalismTab cannibalismTab = new CannibalismTab();
-	
+
 	@SuppressWarnings("unused")
 	private static ConfigHandler config;
 	private static JSONConfig json;
 	private static boolean error = false;
-	
+
 	private static Logger log;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
 	{
 		log = preEvent.getModLog();
-		
+
 		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items and Syncing Config");
 		config = new ConfigHandler(preEvent);
@@ -62,7 +62,8 @@ public class Cannibalism
 		{
 			json = new JSONConfig(preEvent);
 			json.initJSON();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			log.error("**********************UNABLE TO START NOR CREATE JSON*******************************************");
 			e.printStackTrace();
@@ -84,39 +85,39 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new EntityNBTEvents());
 		FMLCommonHandler.instance().bus().register(new ConfigEvent());
-		
+
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent postEvent)
 	{
 
 		log.info("[Cannibalism] Reading JSON");
-		
-		if(error == true)
+
+		if (error == true)
 			error();
 		else
 			tryRead();
 
 		log.info("[Cannibalism] Mod Locked and Loaded");
 	}
-	
+
 	private void tryRead()
 	{
 		try
 		{
 			json.read();
-		} 
+		}
 		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
 		{
 			error(error, json.getFileName());
-		} 
-		 catch (Exception wtfHappened)
+		}
+		catch (Exception wtfHappened)
 		{
 			error(wtfHappened, json.getFileName());
 		}
 	}
-	
+
 	private void error(Exception e, String fileName)
 	{
 		log.error("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
@@ -124,14 +125,14 @@ public class Cannibalism
 		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();
 	}
-	
+
 	private void error()
 	{
 		log.error("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
 		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();
 	}
-	
+
 	public static JSONConfig getJson()
 	{
 		return json;

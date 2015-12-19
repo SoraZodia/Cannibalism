@@ -19,12 +19,11 @@ public class ItemFlesh extends ItemFood
 	{
 		this(hunger, saturation, true);
 	}
-	
+
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (CannibalismNBT.getNBT(player) != null
-				&& ConfigHandler.getMyth() == true)
+		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true)
 		{
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			nbt.changeWendigoValue(10);

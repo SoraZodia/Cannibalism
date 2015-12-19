@@ -20,7 +20,6 @@
          "category":"hostile",
 		 "sounds":
 		 [
-		     "mob/wendigo/wendigo_hiss_angry",
 			 "mob/wendigo/wendigo_sreen"
 	     ]
     }
