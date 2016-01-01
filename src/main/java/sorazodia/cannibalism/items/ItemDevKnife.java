@@ -63,7 +63,7 @@ public class ItemDevKnife extends ItemKnife
 			if (user.isSneaking() && user.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
 			{
 				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", world);
-				wendigo.setLocationAndAngles(user.posX, user.posY, user.posZ, 0, 0);
+				wendigo.setLocationAndAngles(user.posX + 1, user.posY, user.posZ, 0, 0);
 				world.spawnEntityInWorld(wendigo);
 			}
 		}
@@ -135,6 +135,13 @@ public class ItemDevKnife extends ItemKnife
 				{
 					EntityData data = json.getData(target, player.worldObj);
 					player.addChatMessage(new ChatComponentText(data.toString()));
+				}
+				else if (target instanceof EntityWendigo && player.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
+				{ //Debug
+					if (CannibalismNBT.getNBT(player) != null)
+					{
+						CannibalismNBT.getNBT(player).changeWendigoValue(10);
+					}
 				}
 			}
 

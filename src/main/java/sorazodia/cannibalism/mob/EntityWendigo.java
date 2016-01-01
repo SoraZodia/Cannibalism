@@ -32,7 +32,7 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public void onUpdate()
 	{
-		//super.onUpdate();
+		super.onUpdate();
 		if (!isEntityAlive())
 		{
 			if (this.entityToAttack instanceof EntityPlayer)
@@ -82,7 +82,7 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public int getExperiencePoints(EntityPlayer player)
 	{
-		return 15;
+		return 50;
 	}
 
 	@Override

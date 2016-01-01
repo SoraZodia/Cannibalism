@@ -12,33 +12,25 @@ import net.minecraft.entity.Entity;
 
 public class ModelWendigo extends ModelBase
 {
-	// fields
 	ModelRenderer leftLeg;
 	ModelRenderer rightLeg;
-	
-	ModelRenderer rightHoof;
-	ModelRenderer leftHoof;
-	
+
 	ModelRenderer leftLimb;
 	ModelRenderer rightLimb;
-	
+
 	ModelRenderer body;
 	ModelRenderer neck;
 	ModelRenderer head;
-	
+
 	ModelRenderer leftArm;
 	ModelRenderer rightArm;
-	
+
 	ModelRenderer leftHand;
 	ModelRenderer rightHand;
-	
+
 	ModelRenderer leftBranch;
-	ModelRenderer leftHorn;
-	
-	ModelRenderer rightHorn;
+
 	ModelRenderer rightBranch;
-	
-	ModelRenderer Piece1;
 
 	public ModelWendigo()
 	{
@@ -46,144 +38,110 @@ public class ModelWendigo extends ModelBase
 		textureHeight = 64;
 
 		leftLimb = new ModelRenderer(this, 0, 34);
-		leftLimb.addBox(0F, 0F, 0F, 3, 15, 4);
+		leftLimb.addBox(0.05F, -1F, 0F, 3, 15, 4);
 		leftLimb.setRotationPoint(2F, 1F, -2F);
 		leftLimb.setTextureSize(128, 64);
 		leftLimb.mirror = true;
 		setRotation(leftLimb, 0.42F, 0F, 0F);
 		leftLeg = new ModelRenderer(this, 0, 0);
-		leftLeg.addBox(0F, 0F, 0F, 3, 11, 4);
+		leftLeg.addBox(5F, 3F, -2.2F, 3, 11, 4);
 		leftLeg.setRotationPoint(-4.98F, 11F, 4F);
 		leftLeg.setTextureSize(128, 64);
 		leftLeg.mirror = true;
 		setRotation(leftLeg, -0.52F, 0F, 0F);
 		leftLimb.addChild(leftLeg);
-		leftHoof = new ModelRenderer(this, 14, 0);
-		leftHoof.addBox(0F, 0F, 0F, 3, 4, 4);
-		leftHoof.setRotationPoint(-5F, 20F, -2F);
-		leftHoof.setTextureSize(128, 64);
-		leftHoof.mirror = true;
-		setRotation(leftHoof, 0.048F, 0F, 0F);
-		leftLeg.addChild(leftHoof);
-		
+
 		rightLimb = new ModelRenderer(this, 0, 15);
-		rightLimb.addBox(0F, 0F, 0F, 3, 15, 4);
+		rightLimb.addBox(-0.05F, -1F, 0F, 3, 15, 4);
 		rightLimb.setRotationPoint(-5F, 1F, -2F);
 		rightLimb.setTextureSize(128, 64);
 		rightLimb.mirror = true;
 		setRotation(rightLimb, 0.42F, 0F, 0F);
 		rightLeg = new ModelRenderer(this, 0, 0);
-		rightLeg.addBox(0F, 0F, 0F, 3, 11, 4);
+		rightLeg.addBox(-2.1F, 3F, -2.2F, 3, 11, 4);
 		rightLeg.setRotationPoint(2F, 11F, 4F);
 		rightLeg.setTextureSize(128, 64);
 		rightLeg.mirror = true;
 		setRotation(rightLeg, -0.52F, 0F, 0F);
 		rightLimb.addChild(rightLeg);
-		rightHoof = new ModelRenderer(this, 14, 8);
-		rightHoof.addBox(0F, 0F, 0F, 3, 4, 4);
-		rightHoof.setRotationPoint(2F, 20F, -2F);
-		rightHoof.setTextureSize(128, 64);
-		rightHoof.mirror = true;
-		setRotation(rightHoof, 0.049F, 0F, 0F);
-		rightLeg.addChild(rightHoof);
-	
+
 		head = new ModelRenderer(this, 28, 40);
-		head.addBox(0F, 0F, 0F, 4, 4, 9);
+		head.addBox(0F, 2F, 3.3F, 4, 4, 9);
 		head.setRotationPoint(-2F, -21F, -6F);
 		head.setTextureSize(128, 64);
 		head.mirror = true;
 		setRotation(head, -2.72F, 0F, 0F);
 		neck = new ModelRenderer(this, 14, 40);
-		neck.addBox(0F, 0F, 0F, 4, 8, 3);
+		neck.addBox(2F, 22F, 3.7F, 4, 8, 3);
 		neck.setRotationPoint(-2F, -23F, -11F);
 		neck.setTextureSize(128, 64);
 		neck.mirror = true;
-		setRotation(neck, 0.37F, 0F, 0F);	
-		head.addChild(neck);	
-		
+		setRotation(neck, 0.37F, 0F, 0F);
+		head.addChild(neck);
+
 		leftBranch = new ModelRenderer(this, 42, 0);
-		leftBranch.addBox(0F, 0F, 0F, 1, 1, 10);
+		leftBranch.addBox(-20F, 23F, -25F, 1, 1, 10);
 		leftBranch.setRotationPoint(-3F, -25F, -9.5F);
 		leftBranch.setTextureSize(128, 64);
 		leftBranch.mirror = true;
 		setRotation(leftBranch, 1.19F, 0F, -0.87F);
 		head.addChild(leftBranch);
-		leftHorn = new ModelRenderer(this, 66, 0);
-		leftHorn.addBox(0F, 0F, 0F, 1, 1, 13);
-		leftHorn.setRotationPoint(-1F, -20F, -12F);
-		leftHorn.setTextureSize(128, 64);
-		leftHorn.mirror = true;
-		setRotation(leftHorn, 1.17F, 0F, -0.38F);
-		leftBranch.addChild(leftHorn);
 		rightBranch = new ModelRenderer(this, 42, 0);
-		rightBranch.addBox(0F, 0F, 0F, 1, 1, 10);
+		rightBranch.addBox(22F, 23F, -23F, 1, 1, 10);
 		rightBranch.setRotationPoint(2.73F, -26F, -9.3F);
 		rightBranch.setTextureSize(128, 64);
 		rightBranch.mirror = true;
 		setRotation(rightBranch, 1.19F, 0.029F, 0.87F);
 		head.addChild(rightBranch);
-		rightHorn = new ModelRenderer(this, 66, 0);
-		rightHorn.addBox(0F, 0F, 0F, 1, 1, 13);
-		rightHorn.setRotationPoint(0F, -20F, -12F);
-		rightHorn.setTextureSize(128, 64);
-		rightHorn.mirror = true;
-		setRotation(rightHorn, 1.16F, 0F, 0.38F);
-		rightBranch.addChild(rightHorn);		
-		
+
 		body = new ModelRenderer(this, 14, 16);
 		body.addBox(0F, 0F, 0F, 10, 19, 5);
 		body.setRotationPoint(-5F, -16F, -9F);
 		body.setTextureSize(128, 64);
 		body.mirror = true;
 		setRotation(body, 0.35F, 0F, 0F);
-		
+
 		leftArm = new ModelRenderer(this, 54, 37);
-		leftArm.addBox(0F, 0F, 0F, 2, 20, 3);
+		leftArm.addBox(9F, 13F, 7.5F, 2, 20, 3);
 		leftArm.setRotationPoint(-6F, -15F, -7F);
 		leftArm.setTextureSize(128, 64);
 		leftArm.mirror = true;
 		setRotation(leftArm, 0.025F, 0F, 0.23F);
 		body.addChild(leftArm);
 		leftHand = new ModelRenderer(this, 54, 13);
-		leftHand.addBox(0F, 0F, 0F, 2, 20, 3);
+		leftHand.addBox(19F, 13F, 29.5F, 2, 20, 3);
 		leftHand.setRotationPoint(-10F, 2F, -5F);
 		leftHand.setTextureSize(128, 64);
 		leftHand.mirror = true;
-		setRotation(leftHand, -0.72F, 0F, 0.18F);
+		setRotation(leftHand, -0.72F, 0F, 0F);
 		leftArm.addChild(leftHand);
-		
+
 		rightArm = new ModelRenderer(this, 54, 13);
-		rightArm.addBox(0F, 0F, 0F, 2, 20, 3);
+		rightArm.addBox(1F, 15.6F, 7.5F, 2, 20, 3);
 		rightArm.setRotationPoint(5F, -15F, -7F);
 		rightArm.setTextureSize(128, 64);
 		rightArm.mirror = true;
 		setRotation(rightArm, 0.025F, 0F, -0.17F);
 		body.addChild(rightArm);
 		rightHand = new ModelRenderer(this, 54, 13);
-		rightHand.addBox(0F, 0F, 0F, 2, 20, 3);
+		rightHand.addBox(-7F, 14F, 31.5F, 2, 20, 3);
 		rightHand.setRotationPoint(8F, 2F, -6F);
 		rightHand.setTextureSize(128, 64);
 		rightHand.mirror = true;
-		setRotation(rightHand, -0.72F, 0F, -0.17F);
+		setRotation(rightHand, -0.72F, 0F, 0F);
 		rightArm.addChild(rightHand);
-		
-		Piece1 = new ModelRenderer(this, "Piece1");
-		Piece1.setRotationPoint(0F, 0F, 0F);
-		setRotation(Piece1, 0F, 0F, 0F);
-		Piece1.mirror = true;
 	}
 
+	//pitch, yaw, roll
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		
+
 		leftLimb.render(f5);
 		rightLimb.render(f5);
-		
+
 		body.render(f5);
 		head.render(f5);
-
-		//Piece1.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -194,21 +152,23 @@ public class ModelWendigo extends ModelBase
 	}
 
 	/**
-     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-     * "far" arms and legs can swing at most.
-     */
-    public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
-    {
-        this.leftLeg.rotateAngleX = -1.5F * this.func_78172_a(p_78087_1_, 13.0F) * p_78087_2_;
-        this.rightLeg.rotateAngleX = 1.5F * this.func_78172_a(p_78087_1_, 13.0F) * p_78087_2_;
-        
-        this.leftHoof.rotateAngleX = -1.5F * this.func_78172_a(p_78087_1_, 13.0F) * p_78087_2_;
-    }
-    
-    private float func_78172_a(float p_78172_1_, float p_78172_2_)
-    {
-        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
-    }
+	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are
+	 * used for animating the movement of arms and legs, where par1 represents
+	 * the time(so that arms and legs swing back and forth) and par2 represents
+	 * how "far" arms and legs can swing at most.
+	 */
+	public void setRotationAngles(float time, float maxSwing, float p_78087_3_, float headAngleY, float headAngleX, float p_78087_6_, Entity entity)
+	{
+		this.leftLimb.rotateAngleX = -1.5F * this.func_78172_a(time, 30.0F) * maxSwing;
+        this.rightLimb.rotateAngleX = 1.5F * this.func_78172_a(time, 30.0F) * maxSwing;
+
+        this.rightArm.rotateAngleX = -0.2F * this.func_78172_a(time, 30.0F) * maxSwing;
+        this.leftArm.rotateAngleX =  0.2F * this.func_78172_a(time, 30.0F) * maxSwing;
+	}
+
+	private float func_78172_a(float time, float swing)
+	{
+		return (Math.abs(time % swing - swing * 0.5F) - swing * 0.25F) / (swing * 0.50F);
+	}
 
 }

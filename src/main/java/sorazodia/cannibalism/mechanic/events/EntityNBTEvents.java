@@ -3,11 +3,14 @@ package sorazodia.cannibalism.mechanic.events;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemFood;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
+import sorazodia.cannibalism.items.ItemFlesh;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mob.EntityWendigo;
@@ -40,6 +43,15 @@ public class EntityNBTEvents
 
 			addWendigoAbility(player, wendigoLevel);
 			wendigoSpawn(player, wendigoLevel);
+		}
+	}
+	
+	@SubscribeEvent
+	public void foodEaten(PlayerUseItemEvent.Finish useEvent)
+	{
+		if (useEvent.item.getItem() instanceof ItemFood && useEvent.item.getItem() instanceof ItemFlesh)
+		{
+			
 		}
 	}
 
