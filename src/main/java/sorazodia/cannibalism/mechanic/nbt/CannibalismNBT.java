@@ -11,11 +11,13 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	public static final String NBTNAME = "cannibalismVariables";
 	private float wendigoLevel;
 	private boolean spawnWendigo;
+	private boolean applyEffect;
 
 	public CannibalismNBT()
 	{
 		this.wendigoLevel = 0;
 		this.spawnWendigo = false;
+		this.applyEffect = true;
 	}
 
 	@Override
@@ -24,6 +26,7 @@ public class CannibalismNBT implements IExtendedEntityProperties
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setFloat("wendigo", wendigoLevel);
 		nbt.setBoolean("wendigoExist", spawnWendigo);
+		nbt.setBoolean("applyWarningEffect", applyEffect);
 		compound.setTag(NBTNAME, nbt);
 	}
 
@@ -32,7 +35,8 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	{
 		NBTTagCompound nbt = compound.getCompoundTag(NBTNAME);
 		wendigoLevel = nbt.getFloat("wendigo");
-		spawnWendigo = nbt.getBoolean("levelIncre");
+		spawnWendigo = nbt.getBoolean("wendigoExist");
+		applyEffect = nbt.getBoolean("applyWarningEffect");
 	}
 
 	@Override
@@ -69,6 +73,17 @@ public class CannibalismNBT implements IExtendedEntityProperties
 	{
 		spawnWendigo = doSpawn;
 	}
+	
+	public boolean doWarningEffect()
+	{
+		return applyEffect;
+	}
+
+	public void setWarningEffect(boolean doApply)
+	{
+		applyEffect = doApply;
+	}
+
 
 	public static final void register(EntityLivingBase entity)
 	{
