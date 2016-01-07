@@ -14,10 +14,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 
 public class CommandWendigoLevel implements ICommand
 {
-	
+
 	@Override
 	public int compareTo(Object o)
 	{
@@ -33,7 +34,8 @@ public class CommandWendigoLevel implements ICommand
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "todo - Mainly used for debugging";
+		sender.addChatMessage(new ChatComponentTranslation("command.set"));
+		return StatCollector.translateToLocalFormatted("command.stat");
 	}
 
 	@Override
@@ -48,19 +50,64 @@ public class CommandWendigoLevel implements ICommand
 	{
 		if (args.length >= 2)
 		{
-			EntityPlayerMP player =MinecraftServer.getServer().getConfigurationManager().func_152612_a(args[1]);
+			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(args[1]);
+
+			if (player == null)
+			{
+				sender.addChatMessage(new ChatComponentTranslation("command.error.player"));
+				return;
+			}
+
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-			
+
 			switch (args[0])
 			{
 			case "set":
-				nbt.setWendigoValue(Float.parseFloat(args[2]));
+				if (isFloat(args[2]))
+				{
+					nbt.setWendigoValue(Float.parseFloat(args[2]));
+					sender.addChatMessage(new ChatComponentTranslation("command.wendigolevelchange"));
+				}
+				else
+				{
+					sender.addChatMessage(new ChatComponentTranslation("command.error.number"));
+				}
 				break;
 			case "stat":
-				sender.addChatMessage(new ChatComponentTranslation("item.devknife.wendigostat", nbt.getWendigoValue()));
+				sender.addChatMessage(new ChatComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				break;
 			}
 		}
+	}
+
+	//http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
+	public static boolean isFloat(String arg)
+	{
+		if (arg == null)
+			return false;
+
+		int length = arg.length();
+
+		if (length == 0)
+			return false;
+
+		int x = 0;
+
+		if (arg.charAt(0) == '-')
+		{
+			if (length == 1)
+				return false;
+			x = 1;
+		}
+
+		for (; x < length; x++)
+		{
+			char c = arg.charAt(x);
+			if ((c <= '/' || c >= ':') && c != '.')
+				return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -75,7 +122,7 @@ public class CommandWendigoLevel implements ICommand
 	{
 		ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
 		ArrayList<String> argsList = new ArrayList<>();
-		
+
 		if (args.length >= 1)
 		{
 			String lastLetter = args[args.length - 1];
@@ -87,11 +134,14 @@ public class CommandWendigoLevel implements ICommand
 				argsList.add("set");
 			}
 
-			for (int x = 0; x < profiles.length; x++)
+			if (args.length > 1)
 			{
-				if (manager.func_152596_g(profiles[x]) && lastLetter.regionMatches(true, 0, profiles[x].getName(), 0, profiles[x].getName().length())) 
+				for (int x = 0; x < profiles.length; x++)
 				{
-					argsList.add(profiles[x].getName());
+					if (manager.func_152596_g(profiles[x]) && lastLetter.regionMatches(true, 0, profiles[x].getName(), 0, profiles[x].getName().length()))
+					{
+						argsList.add(profiles[x].getName());
+					}
 				}
 			}
 		}
@@ -104,7 +154,7 @@ public class CommandWendigoLevel implements ICommand
 	{
 		if (args.length >= 2 && index == 2)
 			return true;
-		
+
 		return false;
 	}
 }
