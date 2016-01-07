@@ -119,7 +119,7 @@ public class ItemKnife extends ItemSword
 	{
 		interact = true;
 		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
-		//System.out.println(name);
+		
 		if (!entity.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);

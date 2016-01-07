@@ -39,7 +39,13 @@ public class EntityWendigo extends EntityMob
 			{
 				EntityPlayer player = (EntityPlayer) this.entityToAttack;
 				if (CannibalismNBT.getNBT(player) != null)
-					CannibalismNBT.getNBT(player).setWedigoSpawn(false);
+				{
+					CannibalismNBT nbt = CannibalismNBT.getNBT(player);
+					
+					nbt.setWendigoValue(0);
+					nbt.setWedigoSpawn(false);
+					nbt.setWarningEffect(true);
+				}
 			}
 		}
 		else

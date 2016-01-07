@@ -25,7 +25,6 @@ import sorazodia.api.localization.Chat;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.Cannibalism;
-import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mob.EntityWendigo;
 
 import com.google.gson.JsonSyntaxException;
@@ -136,13 +135,6 @@ public class ItemDevKnife extends ItemKnife
 					EntityData data = json.getData(target, player.worldObj);
 					player.addChatMessage(new ChatComponentText(data.toString()));
 				}
-				else if (target instanceof EntityWendigo && player.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
-				{ //Debug
-					if (CannibalismNBT.getNBT(player) != null)
-					{
-						CannibalismNBT.getNBT(player).changeWendigoValue(10);
-					}
-				}
 			}
 
 		}
@@ -154,15 +146,8 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
-		CannibalismNBT nbtinfo = CannibalismNBT.getNBT(player);
-
 		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
 		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
-
-		if (nbtinfo != null)
-		{
-			list.add(StatCollector.translateToLocalFormatted("item.devknife.wendigostat", nbtinfo.getWendigoValue()));
-		}
 	}
 
 	private Entity getSuperEntity(Entity child)

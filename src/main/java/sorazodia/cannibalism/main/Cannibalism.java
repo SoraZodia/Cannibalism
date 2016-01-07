@@ -12,6 +12,7 @@ import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
+import sorazodia.cannibalism.server.CommandWendigoLevel;
 import sorazodia.cannibalism.tab.CannibalismTab;
 
 import com.google.gson.JsonSyntaxException;
@@ -23,6 +24,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
@@ -49,6 +51,12 @@ public class Cannibalism
 
 	private static Logger log;
 
+	@EventHandler
+	public void serverStart(FMLServerStartingEvent preServerEvent)
+	{
+		preServerEvent.registerServerCommand(new CommandWendigoLevel());
+	}
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent preEvent)
 	{
