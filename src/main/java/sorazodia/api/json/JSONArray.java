@@ -3,6 +3,9 @@ package sorazodia.api.json;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+
+import sorazodia.cannibalism.main.Cannibalism;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -18,6 +21,16 @@ public class JSONArray
 	{
 		reader = new BufferedReader(new FileReader(path));
 		jArray = (JsonArray) parser.parse(reader);
+		try
+		{
+			reader.close();
+			Cannibalism.getLogger().debug("[Cannibalism] Reader successfully closed");
+		}
+		catch (IOException io)
+		{
+			Cannibalism.getLogger().error("[Cannibalism] Unable to close/use BufferedReader");
+			io.printStackTrace();
+		}
 	}
 
 	public int size()

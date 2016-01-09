@@ -2,8 +2,12 @@ package sorazodia.api.registryhelper;
 
 import java.util.Random;
 
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -16,8 +20,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class SimpleItemsRegistry
 {
 
-	private static String MODID;
 	private static CreativeTabs tabs;
+	private static String modid;
 
 	/**
 	 * Intitizate the MODID and CreativeTabs variable for the rest of the class
@@ -29,8 +33,8 @@ public class SimpleItemsRegistry
 	 */
 	public static void init(String modID, CreativeTabs tab)
 	{
-		MODID = modID;
 		tabs = tab;
+		modid = modID;
 	}
 
 	/**
@@ -39,7 +43,11 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
-		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName);
+		GameRegistry.registerItem(item, itemName);
+		item.setCreativeTab(tabs).setUnlocalizedName(itemName);
+		
+		 if(FMLCommonHandler.instance().getSide().isClient())
+	            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modid + ":" + imageName, "inventory"));
 	}
 
 	/**
@@ -49,32 +57,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name);
-	}
-
-	/**
-	 * This one... allows for alternate names... under... conditions
-	 * 
-	 * @param item
-	 * @param name
-	 */
-	public static void registerEasterItems(Item item, String name, String easterName)
-	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName));
-	}
-
-	private static String doEasterEgg(String defaultName, String easterName)
-	{
-		String output;
-		Random rand = new Random();
-		short chance = (short) rand.nextInt(1000000);
-
-		if (chance == 1)
-			output = easterName;
-		else
-			output = defaultName;
-
-		return output;
+		registerItems(item, name, name);
 	}
 
 }

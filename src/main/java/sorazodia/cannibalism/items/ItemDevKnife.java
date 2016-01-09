@@ -18,7 +18,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Level;
 
@@ -53,19 +52,17 @@ public class ItemDevKnife extends ItemKnife
 
 		if (!(user instanceof EntityPlayer))
 			return false;
-		
+
 		victim.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
 
 		// As much as it would be funny to see players accidentally Wendigos,
 		// don't really want that to happen...
 		if (!world.isRemote)
 		{
-			if (user.isSneaking()
-					&& user.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
+			if (user.isSneaking() && user.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
 			{
-				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
-						+ ".wendigo", world);
-				wendigo.setLocationAndAngles(user.posX, user.posY, user.posZ, 0, 0);
+				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", world);
+				wendigo.setLocationAndAngles(user.posX + 1, user.posY, user.posZ, 0, 0);
 				world.spawnEntityInWorld(wendigo);
 			}
 		}
@@ -88,13 +85,14 @@ public class ItemDevKnife extends ItemKnife
 				json.getWildcardMap().clear();
 				json.read();
 				Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.GREEN);
-			} catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
+			}
+			catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
 			{
-				if(error instanceof JsonSyntaxException)
-				    error(player, error.getMessage(), json.getFileName());
+				if (error instanceof JsonSyntaxException)
+					error(player, error.getMessage(), json.getFileName());
 				else
 					error(player, "item.devKnife.errorCharacter", json.getFileName());
-			} 
+			}
 			catch (Exception wtfHappened)
 			{
 				error(player, "item.devKnife.errorUnknown", json.getFileName());
@@ -119,11 +117,12 @@ public class ItemDevKnife extends ItemKnife
 		if (!(player.worldObj.isRemote))
 		{
 			if (!player.isSneaking())
-			{	
+			{
 				Chat.displayLocalizatedChat(player, "item.devKnife.format");
 				player.addChatMessage(new ChatComponentTranslation("item.devKnife.mobName", EntityList.getEntityString(target)));
 				player.addChatMessage(new ChatComponentTranslation("item.devKnife.superName", EntityList.getEntityString(getSuperEntity(target))));
-			} else
+			}
+			else
 			{
 				if (json.checkEntity(target))
 				{
@@ -150,8 +149,9 @@ public class ItemDevKnife extends ItemKnife
 		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
 		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
 	}
-	
-	private Entity getSuperEntity(Entity child) {
+
+	private Entity getSuperEntity(Entity child)
+	{
 		Class<?> superClass;
 		Entity entity = child;
 		try
@@ -159,14 +159,16 @@ public class ItemDevKnife extends ItemKnife
 			superClass = Class.forName(child.getClass().getSuperclass().getName());
 			Constructor<?> cons = superClass.getConstructor(World.class);
 			entity = (Entity) cons.newInstance(child.worldObj);
-			
-		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+
+		}
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 		{
-			FMLLog.log(Level.INFO, "[Cannibalism - Dev Knife Usage] This entity extended from EntityMob or the likes, it has no mobs ingame which it is extended from");
-		} catch (Exception wtfHappened)
+			Cannibalism.getLogger().log(Level.INFO, "[Cannibalism - Dev Knife Usage] This entity extended from EntityMob or the likes, it has no mobs ingame which it is extended from");
+		}
+		catch (Exception wtfHappened)
 		{
-			FMLLog.log(Level.ERROR,"[Cannibalism - Dev Knife Usage] Unknown Error happened, stacktrace incoming");
-			FMLLog.log(Level.ERROR, wtfHappened.getMessage());
+			Cannibalism.getLogger().log(Level.ERROR, "[Cannibalism - Dev Knife Usage] Unknown Error happened, stacktrace incoming");
+			Cannibalism.getLogger().log(Level.ERROR, wtfHappened.getMessage());
 		}
 		return entity;
 	}

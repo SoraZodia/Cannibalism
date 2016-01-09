@@ -8,10 +8,10 @@ import sorazodia.cannibalism.main.Cannibalism;
 
 public class ConfigGUI extends GuiConfig
 {
-	private static final String title = "Cannibalism Config";
+	private static final String TITLE = "Cannibalism Config";
 
 	public ConfigGUI(GuiScreen parent)
 	{
-		super(parent, new ConfigElement(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), Cannibalism.MODID, false, false, title);
+		super(parent, new ConfigElement(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), Cannibalism.MODID, false, false, TITLE);
 	}
 }

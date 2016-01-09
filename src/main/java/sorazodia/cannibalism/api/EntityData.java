@@ -3,11 +3,13 @@ package sorazodia.cannibalism.api;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityData
 {
-	private Item[] drops;
+	private ItemStack[] drops;
 	private String[] itemList;
 	private float minDamage;
 	private float maxDamage;
@@ -28,23 +30,44 @@ public class EntityData
 		// System.out.println(toString());
 	}
 
-	private Item[] covertString(String[] convert)
+	private ItemStack[] covertString(String[] str)
 	{
-		Item[] drops = new Item[convert.length];
+		ItemStack[] drops = new ItemStack[str.length];
 		for (int x = 0; x < drops.length; x++)
 		{
-			drops[x] = (Item) Item.itemRegistry.getObject(convert[x]);
+			String[] itemData = str[x].trim().split("#");
+			int metadata = 0;
+
+			if (itemData.length >= 3) //Just in case someone used # as part of the item unlocalizated name...
+			{
+				StringBuilder concat = new StringBuilder();
+				for (int y = 0; y < itemData.length - 1; y++)
+				{
+					concat.append("#");
+					concat.append(itemData[y]);
+				}
+				concat.deleteCharAt(0); //delete the extra #
+				itemData[0] = concat.toString();
+				itemData[1] = itemData[itemData.length - 1];
+			}
+			if (itemData.length > 1)
+				if (isInteger(itemData[1]))
+					metadata = Integer.parseInt(itemData[1]);
+
+			Item item = (Item) Item.itemRegistry.getObject(new ResourceLocation(itemData[0]));
+
+			drops[x] = new ItemStack(item, 1, metadata);
 		}
 
 		return drops;
 	}
 
-	public Item[] getDrops()
+	public ItemStack[] getDrops()
 	{
 		return drops;
 	}
 
-	public void setDrops(Item[] drops)
+	public void setDrops(ItemStack[] drops)
 	{
 		this.drops = drops;
 	}
@@ -74,7 +97,8 @@ public class EntityData
 		try
 		{
 			return (EntityLivingBase) EntityList.createEntityByName(name, world);
-		} catch (NullPointerException nu)
+		}
+		catch (NullPointerException nu)
 		{
 			return null;
 		}
@@ -90,6 +114,36 @@ public class EntityData
 		this.name = name;
 	}
 
+	//From http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
+	private boolean isInteger(String arg)
+	{
+		if (arg == null)
+			return false;
+
+		int length = arg.length();
+
+		if (length == 0)
+			return false;
+
+		int x = 0;
+
+		if (arg.charAt(0) == '-')
+		{
+			if (length == 1)
+				return false;
+			x = 1;
+		}
+
+		for (; x < length; x++)
+		{
+			char c = arg.charAt(x);
+			if (c <= '/' || c >= ':')
+				return false;
+		}
+
+		return true;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -100,8 +154,7 @@ public class EntityData
 
 		drops.deleteCharAt(drops.lastIndexOf(",")).append("]");
 
-		return "EntityID: " + getName() + ", Drops: " + drops.toString()
-				+ ", Min/Max Damage: " + getMinDamage() + "/" + getMaxDamage();
+		return "EntityID: " + getName() + ", Drops: " + drops.toString() + ", Min/Max Damage: " + getMinDamage() + "/" + getMaxDamage();
 
 	}
 

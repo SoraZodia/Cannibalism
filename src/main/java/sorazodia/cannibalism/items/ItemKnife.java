@@ -3,7 +3,6 @@ package sorazodia.cannibalism.items;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -17,7 +16,6 @@ import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.main.Cannibalism;
-import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
 
 public class ItemKnife extends ItemSword
@@ -30,7 +28,7 @@ public class ItemKnife extends ItemSword
 	{
 		super(material);
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
@@ -42,7 +40,7 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			if (!world.isRemote)
 			{
-				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getCommandSenderEntity().getName(), ItemList.playerFlesh);
+				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getName(), ItemList.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}
@@ -73,9 +71,7 @@ public class ItemKnife extends ItemSword
 		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
 
-			if (!player.isSneaking()
-					&& target.getEquipmentInSlot(3) != null
-					&& target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
+			if (!player.isSneaking() && target.getEquipmentInSlot(3) != null && target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
 			{
 				ItemArmor armor = (ItemArmor) target.getEquipmentInSlot(3).getItem();
 				player.swingItem();
@@ -89,8 +85,9 @@ public class ItemKnife extends ItemSword
 				EntityData data = json.getData(target);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-			
-			else if(json.getWildCardIndex(target, player.worldObj) >= 0) {
+
+			else if (json.getWildCardIndex(target, player.worldObj) >= 0)
+			{
 				EntityData data = json.getData(target, player.worldObj);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
@@ -101,12 +98,11 @@ public class ItemKnife extends ItemSword
 				ICutable cutable = (ICutable) target;
 				cutable.cut(player);
 			}
-			
+
 			if (target instanceof EntityPlayerMP)
 			{
-				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getCommandSenderEntity().getName(), ItemList.playerFlesh);
-			} 			
-			
+				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
+			}
 
 		}
 
@@ -115,50 +111,35 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			stack.damageItem(1, player);
 			spawnBlood(target, target.worldObj, 0);
-			increaseWendigo(player);
 		}
 
 		return interact;
 	}
 
-	
-
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
 		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
-        //System.out.println(name);
+		
 		if (!entity.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
 			setMeatName(meat, name);
 			cutDamage(player, entity, damage);
-			increaseWendigo(player);
 			entity.entityDropItem(meat, 0.0F);
 		}
 	}
 
-	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, Item[] drops)
+	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack[] drops)
 	{
 		interact = true;
 		if (!entity.worldObj.isRemote)
 		{
 			cutDamage(player, entity, damage);
-			increaseWendigo(player);
-			for (Item item : drops)
+			for (ItemStack item : drops)
 			{
-				entity.entityDropItem(new ItemStack(item), 0.0F);
+				entity.entityDropItem(item.copy(), 0.0F);
 			}
-		}
-	}
-
-	private void increaseWendigo(EntityPlayer player)
-	{
-		if (CannibalismNBT.getNBT(player) != null
-				&& ConfigHandler.getMyth() == true)
-		{
-			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-			nbt.changeWendigoValue(10);
 		}
 	}
 
@@ -178,7 +159,8 @@ public class ItemKnife extends ItemSword
 				{
 					entity.onDeath(DamageSource.causePlayerDamage(player));
 				}
-			} else if (entity instanceof EntityPlayer)
+			}
+			else if (entity instanceof EntityPlayer)
 			{
 				player.setHealth(entity.getHealth() - damage);
 				entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.01F);
@@ -196,9 +178,7 @@ public class ItemKnife extends ItemSword
 	{
 		for (int repeat = 0; repeat < ConfigHandler.getBloodAmount(); repeat++)
 		{
-			world.spawnParticle(EnumParticleTypes.REDSTONE, entityLiving.posX + Math.random()
-					- Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ
-					+ Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
+			world.spawnParticle(EnumParticleTypes.REDSTONE, entityLiving.posX + Math.random() - Math.random(), entityLiving.posY - ySubtract, entityLiving.posZ + Math.random() - Math.random(), 0.0F, 0.0F, 0.0F);
 		}
 	}
 

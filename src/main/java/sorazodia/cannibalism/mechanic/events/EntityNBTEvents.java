@@ -6,9 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
@@ -17,63 +16,68 @@ import sorazodia.cannibalism.mob.EntityWendigo;
 public class EntityNBTEvents
 {
 
-	private boolean applyEffect = true;
-	private static boolean spawn = true;
-
-	@SubscribeEvent(priority = EventPriority.HIGH)
+	@SubscribeEvent
 	public void entityCreateEvent(EntityConstructing create)
 	{
-		if (ConfigHandler.getMyth() == false)
-			return;
-
-		if ((create.entity instanceof EntityPlayer)
-				&& CannibalismNBT.getNBT((EntityLivingBase) create.entity) == null)
+		if (ConfigHandler.getMyth() == true && (create.entity instanceof EntityPlayer) && CannibalismNBT.getNBT((EntityLivingBase) create.entity) == null)
 		{
 			CannibalismNBT.register((EntityLivingBase) create.entity);
 		}
 	}
 
-	@SubscribeEvent()
-	public void entityTick(PlayerTickEvent tick)
+	@SubscribeEvent
+	public void playerUpdate(LivingUpdateEvent updateEvent)
 	{
-		if (ConfigHandler.getMyth() == false)
-			return;
-
-		if (CannibalismNBT.getNBT(tick.player) == null)
-			return;
-
-		float sinLevel = CannibalismNBT.getNBT(tick.player).getWendigoValue();
-
-		if (sinLevel >= 100 && applyEffect && spawn)
+		if (!updateEvent.entityLiving.worldObj.isRemote && updateEvent.entityLiving instanceof EntityPlayer && ConfigHandler.getMyth() && CannibalismNBT.getNBT(updateEvent.entityLiving) != null)
 		{
-			tick.player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100));
-			tick.player.addPotionEffect(new PotionEffect(Potion.confusion.id, 100));
-			applyEffect = false;
-		}
+			EntityPlayer player = (EntityPlayer) updateEvent.entityLiving;
+			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
 
-		if (sinLevel >= 150)
-		{
-
-			if (CannibalismNBT.getNBT(tick.player).wendigoSpawned() == false
-					&& spawn)
-			{
-				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID
-						+ ".wendigo", tick.player.worldObj);
-				wendigo.setLocationAndAngles(tick.player.posX - 40, tick.player.posY, tick.player.posZ, 0, 0);
-				tick.player.worldObj.spawnEntityInWorld(wendigo);
-
-				CannibalismNBT.getNBT(tick.player).setWedigoSpawn(true);
-				applyEffect = true;
-			}
-
-			CannibalismNBT.getNBT(tick.player).setWendigoValue(0);
-
+			addWendigoAbility(player, wendigoLevel);
+			wendigoSpawn(player, wendigoLevel, CannibalismNBT.getNBT(player));
 		}
 	}
 
-	public static void setSpawn(boolean doSpawn)
+	private void addWendigoAbility(EntityPlayer player, float wendigoLevel)
 	{
-		spawn = doSpawn;
+		if (wendigoLevel >= 25 && wendigoLevel < 100)
+		{
+			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10));
+			player.addExhaustion(0.02F);
+		}
+		if (wendigoLevel >= 50)
+		{
+			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10, 1));
+			player.addExhaustion(0.04F);
+		}
+		if (wendigoLevel >= 150)
+		{
+			player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 10, 2));
+			player.addExhaustion(0.08F);
+		}
+		if (wendigoLevel >= 240)
+		{
+			player.addPotionEffect(new PotionEffect(Potion.resistance.id, 10, 1));
+		}
+	}
+
+	private void wendigoSpawn(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
+	{
+		if (wendigoLevel >= 100 && nbt.doWarningEffect())
+		{
+			player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100));
+			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 100));
+			nbt.setWarningEffect(false);
+		}
+
+		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
+		{
+			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);
+			wendigo.setLocationAndAngles(player.posX * 2, player.posY, player.posZ * 2, 0, 0);
+			player.worldObj.spawnEntityInWorld(wendigo);
+			CannibalismNBT.getNBT(player).setWedigoSpawn(true);
+
+		}
 	}
 
 }
