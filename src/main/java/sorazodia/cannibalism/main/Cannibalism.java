@@ -52,7 +52,7 @@ public class Cannibalism
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent preServerEvent)
 	{
-		//preServerEvent.registerServerCommand(new CommandWendigoLevel());
+		preServerEvent.registerServerCommand(new CommandWendigoLevel());
 	}
 	
 	@EventHandler

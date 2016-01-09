@@ -17,6 +17,8 @@ import com.mojang.authlib.GameProfile;
 
 public class CommandWendigoLevel implements ICommand
 {
+	private final String commandSet = "set";
+	private final String commandStat = "stat";
 
 	@Override
 	public String getCommandName()
@@ -34,7 +36,12 @@ public class CommandWendigoLevel implements ICommand
 	@Override
 	public List<String> getCommandAliases()
 	{
-		return null;
+		ArrayList<String> aliases = new ArrayList<>();
+		
+		aliases.add(Cannibalism.MODID);
+		aliases.add(commandSet);
+		aliases.add(commandStat);	
+		return aliases;
 	}
 
 	@Override
@@ -54,7 +61,7 @@ public class CommandWendigoLevel implements ICommand
 
 			switch (args[0])
 			{
-			case "set":
+			case commandSet:
 				if (isFloat(args[2]))
 				{
 					nbt.setWendigoValue(Float.parseFloat(args[2]));
@@ -65,7 +72,7 @@ public class CommandWendigoLevel implements ICommand
 					sender.addChatMessage(new ChatComponentTranslation("command.error.number"));
 				}
 				break;
-			case "stat":
+			case commandStat:
 				sender.addChatMessage(new ChatComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				break;
 			}
@@ -120,8 +127,8 @@ public class CommandWendigoLevel implements ICommand
 
 			if (args.length == 1)
 			{
-				argsList.add("stat");
-				argsList.add("set");
+				argsList.add(commandStat);
+				argsList.add(commandSet);
 			}
 
 			if (args.length > 1)

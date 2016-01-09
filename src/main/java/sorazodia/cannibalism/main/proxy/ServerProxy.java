@@ -1,6 +1,5 @@
 package sorazodia.cannibalism.main.proxy;
 
-
 public class ServerProxy
 {
 
