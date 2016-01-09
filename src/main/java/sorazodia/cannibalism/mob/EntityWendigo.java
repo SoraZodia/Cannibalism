@@ -3,7 +3,13 @@ package sorazodia.cannibalism.mob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -17,13 +23,21 @@ public class EntityWendigo extends EntityMob
 	{
 		super(world);
 		this.setSize(width, height * 2.0F);
+		
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.35D, false));
+		this.tasks.addTask(1, new EntityAIWander(this, 0.25D));
+		this.tasks.addTask(2, new EntityAISwimming(this));
+		this.tasks.addTask(2, new EntityAILookIdle(this));
+		
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
 	}
 
 	@Override
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2D);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100D);
 		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(42D);
 		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(100D);

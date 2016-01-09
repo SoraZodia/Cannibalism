@@ -77,7 +77,6 @@ public class Cannibalism
 		}
 
 		ItemRegistry.init();
-		common.preInit();
 	}
 
 	@EventHandler
@@ -90,6 +89,7 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
+		common.init();
 
 	}
 
