@@ -1,15 +1,20 @@
 package sorazodia.cannibalism.config;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
@@ -26,6 +31,8 @@ public class JSONConfig
 	private final String dirPath;
 	private final String filePath;
 	private String fileName;
+	private static boolean isJSONUpdated = true;
+	private static Logger log = Cannibalism.getLogger();
 
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
@@ -59,9 +66,14 @@ public class JSONConfig
 	public void initJSON() throws IOException
 	{
 		if (new File(dirPath).exists() && new File(filePath).exists())
-			return;
+		{
+			if (!isJSONUpdated)
+				addNewEntityToFile();
 
-		FMLLog.info("[Cannibalism] Default JSON not found! Creating new file");
+			return;
+		}
+
+		log.info("[Cannibalism] Default JSON not found! Creating new file");
 
 		File folder = new File(dirPath);
 
@@ -70,7 +82,7 @@ public class JSONConfig
 		write = new JSONWriter(filePath);
 		writeDefault();
 
-		FMLLog.info("[Cannibalism] Default JSON created");
+		log.info("[Cannibalism] Default JSON created");
 	}
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
@@ -86,6 +98,61 @@ public class JSONConfig
 			}
 		}
 
+	}
+
+	private void addNewEntityToFile()
+	{
+		File oldJSON = new File(filePath);
+		File tempJSON = new File(dirPath + "\\json.temp");
+		
+		log.info("[Cannibalism] Updating JSON to include new entry");
+		
+		try
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
+			BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
+			
+			String line = reader.readLine();
+			StringBuilder str = new StringBuilder();
+			
+			if (line.length() > 1)
+			{
+				for (int x = 1; x < line.length(); x++)
+					str.append(line.charAt(x));
+				
+				str.append("\n");
+				line = "[";
+			}
+			
+			writer.write(line + "\n");
+			writer.write("{\n");
+			writer.write("\"entityID\":\"Sheep\",\n");
+			writer.write("\"modID\":\"minecraft\",\n");
+			writer.write("\"drops\":\"minecraft:wool,minecraft:mutton\",\n");
+			writer.write("\"minDamage\":\"2.5\",\n");
+			writer.write("\"maxDamage\":\"3.0\"\n");
+			writer.write("},\n");
+			writer.write(str.toString());
+
+			while ((line = reader.readLine()) != null)
+				writer.write(line + "\n");
+
+			reader.close();
+			writer.close();
+
+		}
+		catch (IOException io)
+		{
+			log.info("[Cannibalism] Unable to update JSON!");
+			io.printStackTrace();
+		}
+
+		oldJSON.delete();
+		
+		if(!tempJSON.renameTo(oldJSON))
+			log.info("[Cannibalism] Unable to update JSON!");
+		else
+			log.info("[Cannibalism] JSON updated");
 	}
 
 	private void parseEntity(int index)
@@ -174,7 +241,7 @@ public class JSONConfig
 	{
 		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
 		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
-		entityMap.put("Sheep", new EntityData(new String[] { "minecraft:wool",  "minecraft:mutton"}, 2.3F, 3.0F));
+		entityMap.put("Sheep", new EntityData(new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
@@ -188,5 +255,10 @@ public class JSONConfig
 	public String getFileName()
 	{
 		return fileName;
+	}
+
+	public static void setUpdateState(boolean isUpdated)
+	{
+		isJSONUpdated = isUpdated;
 	}
 }

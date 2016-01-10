@@ -62,7 +62,8 @@ public class ConfigHandler
 	{
 		boolean success = false;
 		boolean removed = false;
-		final String KEY = "# Old Config Removed (v1.2.2)";
+		final String oldKey = "# Old Config Removed (v1.2.2)";
+		final String key = "# Old Config Removed (v1.2.2);JSON Updated (v2.2.2)";
 
 		try
 		{
@@ -70,26 +71,28 @@ public class ConfigHandler
 			BufferedReader reader = new BufferedReader(new FileReader(oldFile));
 			String str = reader.readLine();
 
-			if (str.equals(KEY))
+			if (str.equals(key))
 			{
 				reader.close();
 				return true;
 			}
 
-			Cannibalism.getLogger().info("Removing old config settings");
-			File tempFile = new File(path + "\\cannibalismtemp.txt");
+			JSONConfig.setUpdateState(false);
+			
+			Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
+			File tempFile = new File(path + "\\cannibalism.temp");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 			while (str != null)
 			{
 				if (removed == false)
 				{
-					writer.write(KEY);
+					writer.write(key);
 					writer.write('\n');
 					removed = true;
 				}
 
-				if (str.contains("[Alpha]Enable Mythological Mode"))
+				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains(oldKey))
 				{
 					str = reader.readLine();
 					continue;
@@ -106,11 +109,11 @@ public class ConfigHandler
 
 			oldFile.delete();
 			success = tempFile.renameTo(oldFile);
-			Cannibalism.getLogger().info("Old config removed");
+			Cannibalism.getLogger().info("[Cannibalism] Config updated");
 		}
 		catch (IOException e)
 		{
-			Cannibalism.getLogger().info("Failed to open file");
+			Cannibalism.getLogger().info("[Cannibalism] Failed to open file");
 			e.printStackTrace();
 		}
 

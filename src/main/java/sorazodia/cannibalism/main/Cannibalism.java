@@ -125,7 +125,7 @@ public class Cannibalism
 
 	private void error(Exception e, String fileName)
 	{
-		log.error("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
+		log.error("[Cannibalism] **********************UNABLE TO READ " + fileName + " PLAN B GOOOOOOO*******************************************");
 		e.printStackTrace();
 		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();
