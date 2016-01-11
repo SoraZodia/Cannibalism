@@ -21,7 +21,7 @@ public class ConfigHandler
 
 	public ConfigHandler(FMLPreInitializationEvent event)
 	{
-		if (!removeOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
+		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
 			Cannibalism.getLogger().info("Failed to remove old config");
 
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
@@ -58,7 +58,7 @@ public class ConfigHandler
 		return myth;
 	}
 
-	private static boolean removeOldConfig(String path)
+	public static boolean updateOldConfig(String dirPath)
 	{
 		boolean success = false;
 		boolean removed = false;
@@ -67,7 +67,7 @@ public class ConfigHandler
 
 		try
 		{
-			File oldFile = new File(path + "\\cannibalism.cfg");
+			File oldFile = new File(dirPath + "\\cannibalism.cfg");
 			BufferedReader reader = new BufferedReader(new FileReader(oldFile));
 			String str = reader.readLine();
 
@@ -80,7 +80,7 @@ public class ConfigHandler
 			JSONConfig.setUpdateState(false);
 			
 			Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
-			File tempFile = new File(path + "\\cannibalism.temp");
+			File tempFile = new File(dirPath + "\\cannibalism.temp");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 			while (str != null)

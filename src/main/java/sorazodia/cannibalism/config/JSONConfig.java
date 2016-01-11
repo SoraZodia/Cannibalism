@@ -9,13 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import org.apache.logging.log4j.Logger;
+
 import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
 import sorazodia.cannibalism.api.EntityData;
@@ -30,6 +31,7 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
+	private final String configDir;
 	private String fileName;
 	private static boolean isJSONUpdated = true;
 	private static Logger log = Cannibalism.getLogger();
@@ -50,6 +52,7 @@ public class JSONConfig
 	{
 		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath() + "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
+		configDir = preEvent.getModConfigurationDirectory().getAbsolutePath();
 	}
 
 	public void addEntity(String name, String modID, String[] drops, String min, String max)
@@ -81,6 +84,8 @@ public class JSONConfig
 
 		write = new JSONWriter(filePath);
 		writeDefault();
+		
+		ConfigHandler.updateOldConfig(configDir);
 
 		log.info("[Cannibalism] Default JSON created");
 	}
@@ -113,14 +118,14 @@ public class JSONConfig
 			BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
 			
 			String line = reader.readLine();
-			StringBuilder str = new StringBuilder();
-			
+			StringBuilder newEntry = new StringBuilder();
+
 			if (line.length() > 1)
 			{
 				for (int x = 1; x < line.length(); x++)
-					str.append(line.charAt(x));
+					newEntry.append(line.charAt(x));
 				
-				str.append("\n");
+				newEntry.append("\n");
 				line = "[";
 			}
 			
@@ -132,7 +137,7 @@ public class JSONConfig
 			writer.write("\"minDamage\":\"2.5\",\n");
 			writer.write("\"maxDamage\":\"3.0\"\n");
 			writer.write("},\n");
-			writer.write(str.toString());
+			writer.write(newEntry.toString());
 
 			while ((line = reader.readLine()) != null)
 				writer.write(line + "\n");
