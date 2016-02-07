@@ -20,10 +20,10 @@ public class ConfigHandler
 	private static int bloodAmount;
 
 	public ConfigHandler(FMLPreInitializationEvent event)
-	{
+	{	
 		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
 			Cannibalism.getLogger().info("Failed to remove old config");
-
+		
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
 		syncConfig();
 	}
@@ -32,7 +32,7 @@ public class ConfigHandler
 	{
 		scream = configFile.getBoolean("Use Scream Sound", Configuration.CATEGORY_GENERAL, false, "Set true if you want to hear... PAIN");
 		myth = configFile.getBoolean("Enable Mythological Mode", Configuration.CATEGORY_GENERAL, false, "Set true cause myths about cannibalism to become real.");
-		screamPinch = configFile.getFloat("Scream Pinch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
+		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
 		if (configFile.hasChanged())
 			configFile.save();
@@ -62,8 +62,7 @@ public class ConfigHandler
 	{
 		boolean success = false;
 		boolean removed = false;
-		final String oldKey = "# Old Config Removed (v1.2.2)";
-		final String key = "# Old Config Removed (v1.2.2);JSON Updated (v2.2.2)";
+		final String key = "# Old Config Removed (v1.2.3);JSON Updated (v2.2.2)";
 
 		try
 		{
@@ -77,7 +76,8 @@ public class ConfigHandler
 				return true;
 			}
 
-			JSONConfig.setUpdateState(false);
+			if (!str.contains("JSON Updated (v2.2.2)") && str.contains("Old Config Removed"))
+			    JSONConfig.setUpdateState(false);
 			
 			Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
 			File tempFile = new File(dirPath + "\\cannibalism.temp");
@@ -92,10 +92,15 @@ public class ConfigHandler
 					removed = true;
 				}
 
-				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains(oldKey))
+				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
 				{
 					str = reader.readLine();
 					continue;
+				}
+				
+				if (str.contains("Scream Pinch"))
+				{
+					str = str.replace("Pinch", "Pitch");
 				}
 
 				writer.write(str);

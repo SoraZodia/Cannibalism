@@ -12,7 +12,7 @@ public class EntitysRegistry
 
 	public static void init()
 	{
-		registerEntity(EntityWendigo.class, WENDIGO_NAME, 40);
+		registerEntity(EntityWendigo.class, WENDIGO_NAME, 42);
 	}
 
 	private static void registerEntity(Class<? extends EntityLiving> entity, String name, int range)

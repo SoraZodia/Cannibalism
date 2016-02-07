@@ -23,9 +23,12 @@ public class EntityWendigo extends EntityMob
 	{
 		super(world);
 		this.setSize(width, height * 2.0F);
-		
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.35D, false));
-		this.tasks.addTask(1, new EntityAIWander(this, 0.25D));
+		this.stepHeight = 1.0F;
+		this.experienceValue = 50;
+			
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.5D, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.5D, false));
+		this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAILookIdle(this));
 		
@@ -37,7 +40,7 @@ public class EntityWendigo extends EntityMob
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100D);
 		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(42D);
 		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(100D);
@@ -61,10 +64,6 @@ public class EntityWendigo extends EntityMob
 					nbt.setWarningEffect(true);
 				}
 			}
-		}
-		else
-		{
-			this.stepHeight = 1.0F;
 		}
 	}
 
@@ -97,12 +96,6 @@ public class EntityWendigo extends EntityMob
 	public boolean canDespawn()
 	{
 		return false;
-	}
-
-	@Override
-	public int getExperiencePoints(EntityPlayer player)
-	{
-		return 50;
 	}
 
 	@Override
