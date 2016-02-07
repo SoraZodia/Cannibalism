@@ -32,7 +32,7 @@ public class ConfigHandler
 	{
 		scream = configFile.getBoolean("Use Scream Sound", Configuration.CATEGORY_GENERAL, false, "Set true if you want to hear... PAIN");
 		myth = configFile.getBoolean("Enable Mythological Mode", Configuration.CATEGORY_GENERAL, false, "Set true cause myths about cannibalism to become real.");
-		screamPinch = configFile.getFloat("Scream Pinch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
+		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
 		if (configFile.hasChanged())
 			configFile.save();
@@ -62,7 +62,7 @@ public class ConfigHandler
 	{
 		boolean success = false;
 		boolean removed = false;
-		final String KEY = "# Old Config Removed (v1.2.2)";
+		final String KEY = "# Old Config Removed (v1.2.3)";
 
 		try
 		{
@@ -76,7 +76,7 @@ public class ConfigHandler
 				return true;
 			}
 
-			Cannibalism.getLogger().info("Removing old config settings");
+			Cannibalism.getLogger().info("Updating config");
 			File tempFile = new File(path + "\\cannibalismtemp.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
@@ -89,10 +89,15 @@ public class ConfigHandler
 					removed = true;
 				}
 
-				if (str.contains("[Alpha]Enable Mythological Mode"))
+				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
 				{
 					str = reader.readLine();
 					continue;
+				}
+				
+				if (str.contains("Scream Pinch"))
+				{
+					str = str.replace("Pinch", "Pitch");
 				}
 
 				writer.write(str);
@@ -105,8 +110,8 @@ public class ConfigHandler
 			reader.close();
 
 			oldFile.delete();
-			success = tempFile.renameTo(oldFile);
-			Cannibalism.getLogger().info("Old config removed");
+			success = tempFile.renameTo(new File(path + "\\cannibalism.cfg"));
+			Cannibalism.getLogger().info("Config updated");
 		}
 		catch (IOException e)
 		{
