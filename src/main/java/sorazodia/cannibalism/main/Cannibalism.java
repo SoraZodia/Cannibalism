@@ -62,8 +62,9 @@ public class Cannibalism
 
 		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items and Syncing Config");
+		
 		config = new ConfigHandler(preEvent);
-
+		
 		try
 		{
 			json = new JSONConfig(preEvent);
@@ -75,7 +76,7 @@ public class Cannibalism
 			e.printStackTrace();
 			error = true;
 		}
-
+		
 		ItemRegistry.init();
 	}
 

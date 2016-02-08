@@ -84,7 +84,7 @@ public class JSONConfig
 
 		write = new JSONWriter(filePath);
 		writeDefault();
-		
+
 		ConfigHandler.updateOldConfig(configDir);
 
 		log.info("[Cannibalism] Default JSON created");
@@ -109,42 +109,44 @@ public class JSONConfig
 	{
 		File oldJSON = new File(filePath);
 		File tempJSON = new File(dirPath + "\\json.temp");
-		
+
 		log.info("[Cannibalism] Updating JSON to include new entry");
-		
+
 		try
 		{
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
-			BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
-			
-			String line = reader.readLine();
-			StringBuilder newEntry = new StringBuilder();
-
-			if (line.length() > 1)
+			if (oldJSON.exists())
 			{
-				for (int x = 1; x < line.length(); x++)
-					newEntry.append(line.charAt(x));
-				
-				newEntry.append("\n");
-				line = "[";
-			}
-			
-			writer.write(line + "\n");
-			writer.write("{\n");
-			writer.write("\"entityID\":\"Sheep\",\n");
-			writer.write("\"modID\":\"minecraft\",\n");
-			writer.write("\"drops\":\"minecraft:wool,minecraft:mutton\",\n");
-			writer.write("\"minDamage\":\"2.5\",\n");
-			writer.write("\"maxDamage\":\"3.0\"\n");
-			writer.write("},\n");
-			writer.write(newEntry.toString());
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
+				BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
 
-			while ((line = reader.readLine()) != null)
+				String line = reader.readLine();
+				StringBuilder newEntry = new StringBuilder();
+
+				if (line.length() > 1)
+				{
+					for (int x = 1; x < line.length(); x++)
+						newEntry.append(line.charAt(x));
+
+					newEntry.append("\n");
+					line = "[";
+				}
+
 				writer.write(line + "\n");
+				writer.write("{\n");
+				writer.write("\"entityID\":\"Sheep\",\n");
+				writer.write("\"modID\":\"minecraft\",\n");
+				writer.write("\"drops\":\"minecraft:wool,minecraft:mutton\",\n");
+				writer.write("\"minDamage\":\"2.5\",\n");
+				writer.write("\"maxDamage\":\"3.0\"\n");
+				writer.write("},\n");
+				writer.write(newEntry.toString());
 
-			reader.close();
-			writer.close();
+				while ((line = reader.readLine()) != null)
+					writer.write(line + "\n");
 
+				reader.close();
+				writer.close();
+			}
 		}
 		catch (IOException io)
 		{
@@ -153,8 +155,8 @@ public class JSONConfig
 		}
 
 		oldJSON.delete();
-		
-		if(!tempJSON.renameTo(oldJSON))
+
+		if (!tempJSON.renameTo(oldJSON))
 			log.info("[Cannibalism] Unable to update JSON!");
 		else
 			log.info("[Cannibalism] JSON updated");

@@ -76,8 +76,7 @@ public class ConfigHandler
 				return true;
 			}
 
-			if (!str.contains("JSON Updated (v2.2.2)") && str.contains("Old Config Removed"))
-			    JSONConfig.setUpdateState(false);
+		    JSONConfig.setUpdateState(false);
 			
 			Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
 			File tempFile = new File(dirPath + "\\cannibalism.temp");
