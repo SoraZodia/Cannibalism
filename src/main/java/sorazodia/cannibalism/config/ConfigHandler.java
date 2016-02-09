@@ -20,10 +20,10 @@ public class ConfigHandler
 	private static int bloodAmount;
 
 	public ConfigHandler(FMLPreInitializationEvent event)
-	{	
+	{
 		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
 			Cannibalism.getLogger().info("Failed to remove old config");
-		
+
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
 		syncConfig();
 	}
@@ -67,53 +67,57 @@ public class ConfigHandler
 		try
 		{
 			File oldFile = new File(dirPath + "\\cannibalism.cfg");
-			BufferedReader reader = new BufferedReader(new FileReader(oldFile));
-			String str = reader.readLine();
 
-			if (str.equals(key))
+			if (oldFile.exists())
 			{
-				reader.close();
-				return true;
-			}
+				BufferedReader reader = new BufferedReader(new FileReader(oldFile));
+				String str = reader.readLine();
 
-		    JSONConfig.setUpdateState(false);
-			
-			Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
-			File tempFile = new File(dirPath + "\\cannibalism.temp");
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-			while (str != null)
-			{
-				if (removed == false)
+				if (str.equals(key))
 				{
-					writer.write(key);
+					reader.close();
+					return true;
+				}
+
+				JSONConfig.setUpdateState(false);
+
+				Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
+				File tempFile = new File(dirPath + "\\cannibalism.temp");
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+				while (str != null)
+				{
+					if (removed == false)
+					{
+						writer.write(key);
+						writer.write('\n');
+						removed = true;
+					}
+
+					if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
+					{
+						str = reader.readLine();
+						continue;
+					}
+
+					if (str.contains("Scream Pinch"))
+					{
+						str = str.replace("Pinch", "Pitch");
+					}
+
+					writer.write(str);
 					writer.write('\n');
-					removed = true;
-				}
-
-				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
-				{
 					str = reader.readLine();
-					continue;
-				}
-				
-				if (str.contains("Scream Pinch"))
-				{
-					str = str.replace("Pinch", "Pitch");
+
 				}
 
-				writer.write(str);
-				writer.write('\n');
-				str = reader.readLine();
+				writer.close();
+				reader.close();
 
+				oldFile.delete();
+				success = tempFile.renameTo(oldFile);
+				Cannibalism.getLogger().info("[Cannibalism] Config updated");
 			}
-
-			writer.close();
-			reader.close();
-
-			oldFile.delete();
-			success = tempFile.renameTo(oldFile);
-			Cannibalism.getLogger().info("[Cannibalism] Config updated");
 		}
 		catch (IOException e)
 		{

@@ -69,12 +69,7 @@ public class JSONConfig
 	public void initJSON() throws IOException
 	{
 		if (new File(dirPath).exists() && new File(filePath).exists())
-		{
-			if (!isJSONUpdated)
-				addNewEntityToFile();
-
-			return;
-		}
+         	return;
 
 		log.info("[Cannibalism] Default JSON not found! Creating new file");
 
@@ -86,6 +81,7 @@ public class JSONConfig
 		writeDefault();
 
 		ConfigHandler.updateOldConfig(configDir);
+		isJSONUpdated = true;
 
 		log.info("[Cannibalism] Default JSON created");
 	}
@@ -103,6 +99,12 @@ public class JSONConfig
 			}
 		}
 
+	}
+	
+	public void updateJSON()
+	{
+		if (!isJSONUpdated)
+		    addNewEntityToFile();
 	}
 
 	private void addNewEntityToFile()
