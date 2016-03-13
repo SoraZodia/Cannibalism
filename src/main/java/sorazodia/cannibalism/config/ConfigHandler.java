@@ -3,6 +3,7 @@ package sorazodia.cannibalism.config;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -118,6 +119,10 @@ public class ConfigHandler
 				success = tempFile.renameTo(oldFile);
 				Cannibalism.getLogger().info("[Cannibalism] Config updated");
 			}
+		}
+		catch (FileNotFoundException e)
+		{
+			Cannibalism.getLogger().info("Failed to find file");
 		}
 		catch (IOException e)
 		{

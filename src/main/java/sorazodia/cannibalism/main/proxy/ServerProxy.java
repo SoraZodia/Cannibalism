@@ -1,9 +1,10 @@
 package sorazodia.cannibalism.main.proxy;
 
+
 public class ServerProxy
 {
 
-	public void init()
+	public void preInit()
 	{
 		this.registerRender();
 	}

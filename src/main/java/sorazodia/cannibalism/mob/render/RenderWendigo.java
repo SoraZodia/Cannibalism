@@ -9,13 +9,11 @@ import sorazodia.cannibalism.mob.mobel.ModelWendigo;
 
 public class RenderWendigo extends RenderLiving<EntityWendigo>
 {
-
 	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID, "textures/entity/wendigo.png");
-	private static ModelWendigo wendigoModel = new ModelWendigo();
 
 	public RenderWendigo(RenderManager manager)
 	{
-		super(manager, wendigoModel, 0.5F);
+		super(manager, new ModelWendigo(), 0.5F);
 	}
 
 	@Override

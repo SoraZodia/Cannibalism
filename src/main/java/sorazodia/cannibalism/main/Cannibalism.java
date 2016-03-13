@@ -27,8 +27,7 @@ import com.google.gson.JsonSyntaxException;
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
 {
-
-	// @MOD variables
+	
 	public static final String MODID = "cannibalism";
 	public static final String VERSION = "2.2.3";
 	public static final String NAME = "Cannibalism";
@@ -78,6 +77,7 @@ public class Cannibalism
 		}
 		
 		ItemRegistry.init();
+		common.preInit();
 	}
 
 	@EventHandler
@@ -90,8 +90,6 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
-		common.init();
-
 	}
 
 	@EventHandler
