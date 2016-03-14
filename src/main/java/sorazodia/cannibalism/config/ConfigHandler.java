@@ -20,9 +20,9 @@ public class ConfigHandler
 	private static float screamPinch;
 	private static int bloodAmount;
 
-	public ConfigHandler(FMLPreInitializationEvent event)
+	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
 	{
-		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
+		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath(), json))
 			Cannibalism.getLogger().info("Failed to remove old config");
 
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
@@ -59,7 +59,7 @@ public class ConfigHandler
 		return myth;
 	}
 
-	public static boolean updateOldConfig(String dirPath)
+	public static boolean updateOldConfig(String dirPath, JSONConfig json)
 	{
 		boolean success = false;
 		boolean removed = false;
@@ -80,7 +80,7 @@ public class ConfigHandler
 					return true;
 				}
 
-				JSONConfig.setUpdateState(false);
+				json.updateAndRead();
 
 				Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
 				File tempFile = new File(dirPath + "\\cannibalism.temp");

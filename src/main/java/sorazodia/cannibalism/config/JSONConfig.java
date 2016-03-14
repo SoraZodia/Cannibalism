@@ -31,9 +31,7 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
-	private final String configDir;
 	private String fileName;
-	private static boolean isJSONUpdated = true;
 	private static Logger log = Cannibalism.getLogger();
 
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
@@ -52,7 +50,6 @@ public class JSONConfig
 	{
 		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath() + "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
-		configDir = preEvent.getModConfigurationDirectory().getAbsolutePath();
 	}
 
 	public void addEntity(String name, String modID, String[] drops, String min, String max)
@@ -69,7 +66,7 @@ public class JSONConfig
 	public void initJSON() throws IOException
 	{
 		if (new File(dirPath).exists() && new File(filePath).exists())
-         	return;
+			return;
 
 		log.info("[Cannibalism] Default JSON not found! Creating new file");
 
@@ -80,14 +77,16 @@ public class JSONConfig
 		write = new JSONWriter(filePath);
 		writeDefault();
 
-		ConfigHandler.updateOldConfig(configDir);
-		isJSONUpdated = true;
+		//ConfigHandler.updateOldConfig(configDir, this);
 
 		log.info("[Cannibalism] Default JSON created");
 	}
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
+		if ((!entityMap.isEmpty() || !wildcardMap.isEmpty()))
+			return;
+		
 		for (File files : new File(dirPath).listFiles())
 		{
 			fileName = files.getName();
@@ -98,16 +97,11 @@ public class JSONConfig
 				entityName.delete(0, entityName.length());
 			}
 		}
-
-	}
-	
-	public void updateJSON()
-	{
-		if (!isJSONUpdated)
-		    addNewEntityToFile();
+		
+		wildcardMap.sort((firstData, secordData) -> firstData.compareTo(secordData));
 	}
 
-	private void addNewEntityToFile()
+	public void updateAndRead()
 	{
 		File oldJSON = new File(filePath);
 		File tempJSON = new File(dirPath + "\\json.temp");
@@ -117,6 +111,22 @@ public class JSONConfig
 		try
 		{
 			if (oldJSON.exists())
+				this.read();
+		}
+		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException e)
+		{
+			log.info("[Cannibalism] The JSON is misformatted, the entry will still be included but please fix the error");
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			log.info("[Cannibalism] Unable to read JSON, defaulting to adding the new entry instead of checking if it's already included");
+			e.printStackTrace();
+		}
+
+		try
+		{
+			if (oldJSON.exists() && !isWildCardEntry("minecraft:Sheep"))
 			{
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
 				BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
@@ -149,6 +159,8 @@ public class JSONConfig
 				reader.close();
 				writer.close();
 			}
+			else
+				log.info("[Cannibalism] Update not needed, new entry is already there");
 		}
 		catch (IOException io)
 		{
@@ -235,6 +247,27 @@ public class JSONConfig
 
 		return index;
 	}
+	
+	public boolean isWildCardEntry(String name)
+	{
+		int lastIndex = wildcardMap.size() - 1;
+		int firstIndex = 0;
+		
+		while (lastIndex > firstIndex)
+		{
+			int midIndex = lastIndex / firstIndex;
+			int compare = wildcardMap.get(midIndex).getName().compareTo(name);
+			
+			if (compare == 1)
+				lastIndex = midIndex;
+			if (compare == -1)
+				firstIndex = midIndex;
+			else
+				return true;
+		}
+		
+		return false;
+	}
 
 	public EntityData getData(EntityLivingBase entity)
 	{
@@ -264,10 +297,5 @@ public class JSONConfig
 	public String getFileName()
 	{
 		return fileName;
-	}
-
-	public static void setUpdateState(boolean isUpdated)
-	{
-		isJSONUpdated = isUpdated;
 	}
 }

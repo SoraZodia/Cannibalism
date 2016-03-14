@@ -62,11 +62,11 @@ public class Cannibalism
 		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items and Syncing Config");
 		
-		config = new ConfigHandler(preEvent);
-		
 		try
 		{
 			json = new JSONConfig(preEvent);
+			config = new ConfigHandler(preEvent, json);
+			
 			json.initJSON();
 		}
 		catch (IOException e)
