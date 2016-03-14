@@ -126,7 +126,7 @@ public class JSONConfig
 
 		try
 		{
-			if (oldJSON.exists() && !isWildCardEntry("minecraft:Sheep"))
+			if (oldJSON.exists() && (!isWildCardEntry("minecraft:Sheep") || !entityMap.containsKey("minecraft:Sheep")))
 			{
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
 				BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
