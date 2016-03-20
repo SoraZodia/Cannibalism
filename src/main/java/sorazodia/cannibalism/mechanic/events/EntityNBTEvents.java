@@ -7,11 +7,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mob.EntityWendigo;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityNBTEvents
 {
@@ -33,12 +33,11 @@ public class EntityNBTEvents
 			EntityPlayer player = (EntityPlayer) updateEvent.entityLiving;
 			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
 
-			addWendigoAbility(player, wendigoLevel);
-			wendigoSpawn(player, wendigoLevel, CannibalismNBT.getNBT(player));
+			addWendigoEffect(player, wendigoLevel, CannibalismNBT.getNBT(player));
 		}
 	}
 
-	private void addWendigoAbility(EntityPlayer player, float wendigoLevel)
+	private void addWendigoEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
@@ -50,6 +49,12 @@ public class EntityNBTEvents
 			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10, 1));
 			player.addExhaustion(0.04F);
 		}
+		if (wendigoLevel >= 100 && nbt.doWarningEffect())
+		{
+			player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100));
+			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 100));
+			nbt.setWarningEffect(false);
+		}
 		if (wendigoLevel >= 150)
 		{
 			player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 10, 2));
@@ -59,17 +64,6 @@ public class EntityNBTEvents
 		{
 			player.addPotionEffect(new PotionEffect(Potion.resistance.id, 10, 1));
 		}
-	}
-
-	private void wendigoSpawn(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
-	{
-		if (wendigoLevel >= 100 && nbt.doWarningEffect())
-		{
-			player.addPotionEffect(new PotionEffect(Potion.blindness.id, 100));
-			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 100));
-			nbt.setWarningEffect(false);
-		}
-
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
 			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);

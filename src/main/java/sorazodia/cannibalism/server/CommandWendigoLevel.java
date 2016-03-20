@@ -3,27 +3,22 @@ package sorazodia.cannibalism.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
-
 public class CommandWendigoLevel implements ICommand
 {
-
-	@Override
-	public int compareTo(Object o)
-	{
-		return Cannibalism.MODID.compareTo(((ICommand) o).getCommandName());
-	}
+	private final String commandSet = "set";
+	private final String commandStat = "stat";
 
 	@Override
 	public String getCommandName()
@@ -39,10 +34,14 @@ public class CommandWendigoLevel implements ICommand
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List getCommandAliases()
+	public List<String> getCommandAliases()
 	{
-		return null;
+		ArrayList<String> aliases = new ArrayList<>();
+		
+		aliases.add(Cannibalism.MODID);
+		aliases.add(commandSet);
+		aliases.add(commandStat);	
+		return aliases;
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class CommandWendigoLevel implements ICommand
 	{
 		if (args.length >= 2)
 		{
-			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(args[1]);
+			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[1]);
 
 			if (player == null)
 			{
@@ -62,7 +61,7 @@ public class CommandWendigoLevel implements ICommand
 
 			switch (args[0])
 			{
-			case "set":
+			case commandSet:
 				if (isFloat(args[2]))
 				{
 					nbt.setWendigoValue(Float.parseFloat(args[2]));
@@ -73,7 +72,7 @@ public class CommandWendigoLevel implements ICommand
 					sender.addChatMessage(new ChatComponentTranslation("command.error.number"));
 				}
 				break;
-			case "stat":
+			case commandStat:
 				sender.addChatMessage(new ChatComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				break;
 			}
@@ -116,29 +115,27 @@ public class CommandWendigoLevel implements ICommand
 		return sender.canCommandSenderUseCommand(2, Cannibalism.MODID);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args)
+	public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos blockpos)
 	{
-		ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
-		ArrayList<String> argsList = new ArrayList<>();
+	    ArrayList<String> argsList = new ArrayList<>();
 
 		if (args.length >= 1)
 		{
 			String lastLetter = args[args.length - 1];
-			GameProfile[] profiles = MinecraftServer.getServer().func_152357_F();
+			GameProfile[] profiles = MinecraftServer.getServer().getGameProfiles();
 
 			if (args.length == 1)
 			{
-				argsList.add("stat");
-				argsList.add("set");
+				argsList.add(commandStat);
+				argsList.add(commandSet);
 			}
 
 			if (args.length > 1)
 			{
 				for (int x = 0; x < profiles.length; x++)
 				{
-					if (manager.func_152596_g(profiles[x]) && lastLetter.regionMatches(true, 0, profiles[x].getName(), 0, profiles[x].getName().length()))
+					if (lastLetter.regionMatches(true, 0, profiles[x].getName(), 0, profiles[x].getName().length()))
 					{
 						argsList.add(profiles[x].getName());
 					}
@@ -157,4 +154,11 @@ public class CommandWendigoLevel implements ICommand
 
 		return false;
 	}
+
+	@Override
+	public int compareTo(ICommand command)
+	{
+		return Cannibalism.MODID.compareTo(((ICommand) command).getCommandName());
+	}
+
 }

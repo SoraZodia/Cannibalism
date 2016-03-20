@@ -1,6 +1,10 @@
 package sorazodia.cannibalism.config;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,15 +13,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import org.apache.logging.log4j.Logger;
+
 import sorazodia.api.json.JSONArray;
 import sorazodia.api.json.JSONWriter;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.main.Cannibalism;
 
 import com.google.gson.JsonSyntaxException;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class JSONConfig
 {
@@ -27,6 +32,7 @@ public class JSONConfig
 	private final String dirPath;
 	private final String filePath;
 	private String fileName;
+	private static Logger log = Cannibalism.getLogger();
 
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
@@ -62,7 +68,7 @@ public class JSONConfig
 		if (new File(dirPath).exists() && new File(filePath).exists())
 			return;
 
-		FMLLog.info("[Cannibalism] Default JSON not found! Creating new file");
+		log.info("[Cannibalism] Default JSON not found! Creating new file");
 
 		File folder = new File(dirPath);
 
@@ -71,11 +77,16 @@ public class JSONConfig
 		write = new JSONWriter(filePath);
 		writeDefault();
 
-		FMLLog.info("[Cannibalism] Default JSON created");
+		//ConfigHandler.updateOldConfig(configDir, this);
+
+		log.info("[Cannibalism] Default JSON created");
 	}
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
+		if ((!entityMap.isEmpty() || !wildcardMap.isEmpty()))
+			return;
+		
 		for (File files : new File(dirPath).listFiles())
 		{
 			fileName = files.getName();
@@ -86,7 +97,83 @@ public class JSONConfig
 				entityName.delete(0, entityName.length());
 			}
 		}
+		
+		wildcardMap.sort((firstData, secordData) -> firstData.compareTo(secordData));
+	}
 
+	public void updateAndRead()
+	{
+		File oldJSON = new File(filePath);
+		File tempJSON = new File(dirPath + "\\json.temp");
+
+		log.info("[Cannibalism] Updating JSON to include new entry");
+
+		try
+		{
+			if (oldJSON.exists())
+				this.read();
+		}
+		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException e)
+		{
+			log.info("[Cannibalism] The JSON is misformatted, the entry will still be included but please fix the error");
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			log.info("[Cannibalism] Unable to read JSON, defaulting to adding the new entry instead of checking if it's already included");
+			e.printStackTrace();
+		}
+
+		try
+		{
+			if (oldJSON.exists() && (!isWildCardEntry("minecraft:Sheep") || !entityMap.containsKey("minecraft:Sheep")))
+			{
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
+				BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
+
+				String line = reader.readLine();
+				StringBuilder newEntry = new StringBuilder();
+
+				if (line.length() > 1)
+				{
+					for (int x = 1; x < line.length(); x++)
+						newEntry.append(line.charAt(x));
+
+					newEntry.append("\n");
+					line = "[";
+				}
+
+				writer.write(line + "\n");
+				writer.write("{\n");
+				writer.write("\"entityID\":\"Sheep\",\n");
+				writer.write("\"modID\":\"minecraft\",\n");
+				writer.write("\"drops\":\"minecraft:wool,minecraft:mutton\",\n");
+				writer.write("\"minDamage\":\"2.5\",\n");
+				writer.write("\"maxDamage\":\"3.0\"\n");
+				writer.write("},\n");
+				writer.write(newEntry.toString());
+
+				while ((line = reader.readLine()) != null)
+					writer.write(line + "\n");
+
+				reader.close();
+				writer.close();
+			}
+			else
+				log.info("[Cannibalism] Update not needed, new entry is already there");
+		}
+		catch (IOException io)
+		{
+			log.info("[Cannibalism] Unable to update JSON!");
+			io.printStackTrace();
+		}
+
+		oldJSON.delete();
+
+		if (!tempJSON.renameTo(oldJSON))
+			log.info("[Cannibalism] Unable to update JSON!");
+		else
+			log.info("[Cannibalism] JSON updated");
 	}
 
 	private void parseEntity(int index)
@@ -124,6 +211,7 @@ public class JSONConfig
 		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
 		addEntity("Chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
 		addEntity("Pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
+		addEntity("Sheep", "minecraft", new String[] { "minecraft:wool", "minecraft:mutton" }, "2.5", "3.0");
 		addEntity("Villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
 		addEntity("Zombie*", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
 		write.write();
@@ -159,6 +247,27 @@ public class JSONConfig
 
 		return index;
 	}
+	
+	public boolean isWildCardEntry(String name)
+	{
+		int lastIndex = wildcardMap.size() - 1;
+		int firstIndex = 0;
+		
+		while (lastIndex > firstIndex)
+		{
+			int midIndex = lastIndex / firstIndex;
+			int compare = wildcardMap.get(midIndex).getName().compareTo(name);
+			
+			if (compare == 1)
+				lastIndex = midIndex;
+			if (compare == -1)
+				firstIndex = midIndex;
+			else
+				return true;
+		}
+		
+		return false;
+	}
 
 	public EntityData getData(EntityLivingBase entity)
 	{
@@ -174,6 +283,7 @@ public class JSONConfig
 	{
 		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
 		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
+		entityMap.put("Sheep", new EntityData(new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
 		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));

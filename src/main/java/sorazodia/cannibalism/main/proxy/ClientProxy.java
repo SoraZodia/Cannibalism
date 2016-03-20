@@ -1,9 +1,8 @@
 package sorazodia.cannibalism.main.proxy;
 
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import sorazodia.cannibalism.mob.EntityWendigo;
-import sorazodia.cannibalism.mob.mobel.ModelWendigo;
 import sorazodia.cannibalism.mob.render.RenderWendigo;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends ServerProxy
 {
@@ -17,7 +16,7 @@ public class ClientProxy extends ServerProxy
 	@Override
 	protected void registerRender()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityWendigo.class, new RenderWendigo(new ModelWendigo(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityWendigo.class, RenderWendigo::new);
 	}
 
 }

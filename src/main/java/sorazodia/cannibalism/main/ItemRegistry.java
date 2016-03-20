@@ -18,13 +18,13 @@ public class ItemRegistry
 		SimpleItemsRegistry.registerItems(ItemList.goldKnife, ItemList.goldKnifeName);
 		SimpleItemsRegistry.registerItems(ItemList.ironKnife, ItemList.ironKnifeName);
 		SimpleItemsRegistry.registerItems(ItemList.diamondKnife, ItemList.diamondKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.devKnife, ItemList.devKnifeName, "flintKnife");
+		SimpleItemsRegistry.registerItems(ItemList.devKnife, ItemList.devKnifeName, ItemList.flintKnifeName);
 
 		// initializate the flesh
-		SimpleItemsRegistry.registerEasterItems(ItemList.playerFlesh, ItemList.playerFleshName, "playerPoptart");
-		SimpleItemsRegistry.registerEasterItems(ItemList.villagerFlesh, ItemList.villagerFleshName, "villagerPoptart");
-		SimpleItemsRegistry.registerEasterItems(ItemList.playerFleshCooked, ItemList.playerFleshCookedName, "playerPoptartCooked");
-		SimpleItemsRegistry.registerEasterItems(ItemList.villagerFleshCooked, ItemList.villagerFleshCookedName, "villagerPoptartCooked");
+		SimpleItemsRegistry.registerItems(ItemList.playerFlesh, ItemList.playerFleshName);
+		SimpleItemsRegistry.registerItems(ItemList.villagerFlesh, ItemList.villagerFleshName);
+		SimpleItemsRegistry.registerItems(ItemList.playerFleshCooked, ItemList.playerFleshCookedName);
+		SimpleItemsRegistry.registerItems(ItemList.villagerFleshCooked, ItemList.villagerFleshCookedName);
 
 	}
 

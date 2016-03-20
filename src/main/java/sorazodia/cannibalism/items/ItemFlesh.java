@@ -2,10 +2,12 @@ package sorazodia.cannibalism.items;
 
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 
 public class ItemFlesh extends ItemFood
 {

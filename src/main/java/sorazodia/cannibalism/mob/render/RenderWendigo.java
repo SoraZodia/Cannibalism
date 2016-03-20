@@ -1,23 +1,23 @@
 package sorazodia.cannibalism.mob.render;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import sorazodia.cannibalism.main.Cannibalism;
+import sorazodia.cannibalism.mob.EntityWendigo;
+import sorazodia.cannibalism.mob.mobel.ModelWendigo;
 
-public class RenderWendigo extends RenderLiving
+public class RenderWendigo extends RenderLiving<EntityWendigo>
 {
+	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID, "textures/entity/wendigo.png");
 
-	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID + ":textures/entity/wendigo.png");
-
-	public RenderWendigo(ModelBase mobel, float shadowSize)
+	public RenderWendigo(RenderManager manager)
 	{
-		super(mobel, shadowSize);
+		super(manager, new ModelWendigo(), 0.5F);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(Entity entity)
+	public ResourceLocation getEntityTexture(EntityWendigo entity)
 	{
 		return wendigoTexture;
 	}

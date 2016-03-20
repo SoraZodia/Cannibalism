@@ -1,8 +1,8 @@
 package sorazodia.cannibalism.main;
 
-import sorazodia.cannibalism.mob.EntityWendigo;
 import net.minecraft.entity.EntityLiving;
-import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import sorazodia.cannibalism.mob.EntityWendigo;
 
 public class EntitysRegistry
 {
@@ -12,7 +12,7 @@ public class EntitysRegistry
 
 	public static void init()
 	{
-		registerEntity(EntityWendigo.class, WENDIGO_NAME, 40);
+		registerEntity(EntityWendigo.class, WENDIGO_NAME, 42);
 	}
 
 	private static void registerEntity(Class<? extends EntityLiving> entity, String name, int range)

@@ -4,6 +4,14 @@ import java.io.IOException;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+
 import org.apache.logging.log4j.Logger;
 
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -17,22 +25,12 @@ import sorazodia.cannibalism.tab.CannibalismTab;
 
 import com.google.gson.JsonSyntaxException;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
 {
-
-	// @MOD variables
+	
 	public static final String MODID = "cannibalism";
-	public static final String VERSION = "1.2.3";
+	public static final String VERSION = "2.2.3";
 	public static final String NAME = "Cannibalism";
 	public static final String GUI_FACTORY = "sorazodia.cannibalism.config.ConfigGUIFactory";
 
@@ -64,11 +62,12 @@ public class Cannibalism
 
 		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items and Syncing Config");
-		config = new ConfigHandler(preEvent);
-
+		
 		try
 		{
 			json = new JSONConfig(preEvent);
+			config = new ConfigHandler(preEvent, json);
+			
 			json.initJSON();
 		}
 		catch (IOException e)
@@ -77,7 +76,7 @@ public class Cannibalism
 			e.printStackTrace();
 			error = true;
 		}
-
+		
 		ItemRegistry.init();
 		common.preInit();
 	}
@@ -91,9 +90,7 @@ public class Cannibalism
 		EntitysRegistry.init();
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
-		FMLCommonHandler.instance().bus().register(new EntityNBTEvents());
-		FMLCommonHandler.instance().bus().register(new ConfigEvent());
-
+		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
 	}
 
 	@EventHandler
@@ -128,7 +125,7 @@ public class Cannibalism
 
 	private void error(Exception e, String fileName)
 	{
-		log.error("[Cannibalism] **********************UNABLE TO READ %s, PLAN B GOOOOOOO*******************************************", fileName);
+		log.error("[Cannibalism] **********************UNABLE TO READ " + fileName + " PLAN B GOOOOOOO*******************************************");
 		e.printStackTrace();
 		log.error("[Cannibalism] Defaulting to backup");
 		json.codeRed();

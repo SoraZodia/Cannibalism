@@ -9,8 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import sorazodia.cannibalism.main.Cannibalism;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ConfigHandler
 {
@@ -20,9 +20,10 @@ public class ConfigHandler
 	private static float screamPinch;
 	private static int bloodAmount;
 
-	public ConfigHandler(FMLPreInitializationEvent event)
+	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
 	{
-		if (!removeOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
+
+		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath(), json))
 			Cannibalism.getLogger().info("Failed to remove old config");
 
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
@@ -59,6 +60,7 @@ public class ConfigHandler
 		return myth;
 	}
 
+<<<<<<< HEAD
 	private static boolean removeOldConfig(String path)
 	{
 		boolean success = false;
@@ -113,6 +115,68 @@ public class ConfigHandler
 			oldFile.delete();
 			success = tempFile.renameTo(new File(path + "\\cannibalism.cfg"));
 			Cannibalism.getLogger().info("Config updated");
+=======
+	public static boolean updateOldConfig(String dirPath, JSONConfig json)
+	{
+		boolean success = false;
+		boolean removed = false;
+		final String key = "# Old Config Removed (v1.2.3);JSON Updated (v2.2.2)";
+
+		try
+		{
+			File oldFile = new File(dirPath + "\\cannibalism.cfg");
+
+			if (oldFile.exists())
+			{
+				BufferedReader reader = new BufferedReader(new FileReader(oldFile));
+				String str = reader.readLine();
+
+				if (str.equals(key))
+				{
+					reader.close();
+					return true;
+				}
+
+				json.updateAndRead();
+
+				Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
+				File tempFile = new File(dirPath + "\\cannibalism.temp");
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+				while (str != null)
+				{
+					if (removed == false)
+					{
+						writer.write(key);
+						writer.write('\n');
+						removed = true;
+					}
+
+					if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
+					{
+						str = reader.readLine();
+						continue;
+					}
+
+					if (str.contains("Scream Pinch"))
+					{
+						str = str.replace("Pinch", "Pitch");
+					}
+
+					writer.write(str);
+					writer.write('\n');
+					str = reader.readLine();
+
+				}
+
+				writer.close();
+				reader.close();
+
+				oldFile.delete();
+				success = tempFile.renameTo(oldFile);
+				Cannibalism.getLogger().info("[Cannibalism] Config updated");
+			}
+>>>>>>> Cannibalism1.8
 		}
 		catch (FileNotFoundException e)
 		{
@@ -120,7 +184,11 @@ public class ConfigHandler
 		}
 		catch (IOException e)
 		{
+<<<<<<< HEAD
 			Cannibalism.getLogger().info("Failed to open file");
+=======
+			Cannibalism.getLogger().info("[Cannibalism] Failed to open file");
+>>>>>>> Cannibalism1.8
 			e.printStackTrace();
 		}
 

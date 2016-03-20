@@ -1,10 +1,11 @@
 package sorazodia.api.registryhelper;
 
-import java.util.Random;
-
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Item registry class for Cannibalism mod, have methods to make item
@@ -16,8 +17,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class SimpleItemsRegistry
 {
 
-	private static String MODID;
 	private static CreativeTabs tabs;
+	private static String modid;
 
 	/**
 	 * Intitizate the MODID and CreativeTabs variable for the rest of the class
@@ -29,8 +30,8 @@ public class SimpleItemsRegistry
 	 */
 	public static void init(String modID, CreativeTabs tab)
 	{
-		MODID = modID;
 		tabs = tab;
+		modid = modID;
 	}
 
 	/**
@@ -39,7 +40,15 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
+<<<<<<< HEAD
 		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID + ":" + imageName);
+=======
+		GameRegistry.registerItem(item, itemName);
+		item.setCreativeTab(tabs).setUnlocalizedName(itemName);
+		
+		 if(FMLCommonHandler.instance().getSide().isClient())
+	            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modid + ":" + imageName, "inventory"));
+>>>>>>> Cannibalism1.8
 	}
 
 	/**
@@ -49,6 +58,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
+<<<<<<< HEAD
 		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID + ":" + name);
 	}
 
@@ -75,6 +85,9 @@ public class SimpleItemsRegistry
 			output = defaultName;
 
 		return output;
+=======
+		registerItems(item, name, name);
+>>>>>>> Cannibalism1.8
 	}
 
 }

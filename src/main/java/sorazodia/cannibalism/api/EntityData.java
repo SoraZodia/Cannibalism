@@ -4,9 +4,10 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityData
+public class EntityData implements Comparable<EntityData>
 {
 	private ItemStack[] drops;
 	private String[] itemList;
@@ -53,7 +54,8 @@ public class EntityData
 				if (isInteger(itemData[1]))
 					metadata = Integer.parseInt(itemData[1]);
 
-			Item item = (Item) Item.itemRegistry.getObject(itemData[0]);
+
+			Item item = (Item) Item.itemRegistry.getObject(new ResourceLocation(itemData[0]));
 
 			drops[x] = new ItemStack(item, 1, metadata);
 		}
@@ -78,6 +80,9 @@ public class EntityData
 
 	public void setMinDamage(float minDamage)
 	{
+		if(minDamage < 0)
+			minDamage = 0;
+		
 		this.minDamage = minDamage;
 	}
 
@@ -154,7 +159,15 @@ public class EntityData
 		drops.deleteCharAt(drops.lastIndexOf(",")).append("]");
 
 		return "EntityID: " + getName() + ", Drops: " + drops.toString() + ", Min/Max Damage: " + getMinDamage() + "/" + getMaxDamage();
+		
+	}
 
+	@Override
+	public int compareTo(EntityData secordData)
+	{
+		String name = secordData.getName();
+		
+		return this.getName().compareTo(name);
 	}
 
 }
