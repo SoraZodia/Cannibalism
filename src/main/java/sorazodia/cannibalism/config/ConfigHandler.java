@@ -60,62 +60,6 @@ public class ConfigHandler
 		return myth;
 	}
 
-<<<<<<< HEAD
-	private static boolean removeOldConfig(String path)
-	{
-		boolean success = false;
-		boolean removed = false;
-		final String KEY = "# Old Config Removed (v1.2.3)";
-
-		try
-		{
-			File oldFile = new File(path + "\\cannibalism.cfg");
-			BufferedReader reader = new BufferedReader(new FileReader(oldFile));
-			String str = reader.readLine();
-
-			if (str.equals(KEY))
-			{
-				reader.close();
-				return true;
-			}
-
-			Cannibalism.getLogger().info("Updating config");
-			File tempFile = new File(path + "\\cannibalism.temp");
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-			while (str != null)
-			{
-				if (removed == false)
-				{
-					writer.write(KEY);
-					writer.write('\n');
-					removed = true;
-				}
-
-				if (str.contains("[Alpha]Enable Mythological Mode") || str.contains("# Old Config Removed"))
-				{
-					str = reader.readLine();
-					continue;
-				}
-				
-				if (str.contains("Scream Pinch"))
-				{
-					str = str.replace("Pinch", "Pitch");
-				}
-
-				writer.write(str);
-				writer.write('\n');
-				str = reader.readLine();
-
-			}
-
-			writer.close();
-			reader.close();
-
-			oldFile.delete();
-			success = tempFile.renameTo(new File(path + "\\cannibalism.cfg"));
-			Cannibalism.getLogger().info("Config updated");
-=======
 	public static boolean updateOldConfig(String dirPath, JSONConfig json)
 	{
 		boolean success = false;
@@ -176,7 +120,6 @@ public class ConfigHandler
 				success = tempFile.renameTo(oldFile);
 				Cannibalism.getLogger().info("[Cannibalism] Config updated");
 			}
->>>>>>> Cannibalism1.8
 		}
 		catch (FileNotFoundException e)
 		{
@@ -184,11 +127,7 @@ public class ConfigHandler
 		}
 		catch (IOException e)
 		{
-<<<<<<< HEAD
-			Cannibalism.getLogger().info("Failed to open file");
-=======
 			Cannibalism.getLogger().info("[Cannibalism] Failed to open file");
->>>>>>> Cannibalism1.8
 			e.printStackTrace();
 		}
 
