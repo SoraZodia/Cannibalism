@@ -101,7 +101,7 @@ public class ItemKnife extends ItemSword
 
 			if (target instanceof EntityPlayerMP)
 			{
-                cutEntity(player, target, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
+				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
 			}
 
 		}

@@ -26,7 +26,6 @@ public class DeathEvent
 			if (living instanceof EntityPlayer)
 			{
 				ItemStack playerFlesh = new ItemStack(ItemList.playerFlesh);
-
 				setMeatName(playerFlesh, living.getName() + "'s Flesh");
 				living.entityDropItem(playerFlesh, amount);
 			}

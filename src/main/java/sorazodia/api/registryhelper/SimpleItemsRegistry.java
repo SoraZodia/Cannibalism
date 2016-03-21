@@ -40,15 +40,11 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
-<<<<<<< HEAD
-		GameRegistry.registerItem(item, itemName, MODID).setCreativeTab(tabs).setUnlocalizedName(itemName).setTextureName(MODID + ":" + imageName);
-=======
 		GameRegistry.registerItem(item, itemName);
 		item.setCreativeTab(tabs).setUnlocalizedName(itemName);
 		
 		 if(FMLCommonHandler.instance().getSide().isClient())
 	            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modid + ":" + imageName, "inventory"));
->>>>>>> Cannibalism1.8
 	}
 
 	/**
@@ -58,36 +54,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String name)
 	{
-<<<<<<< HEAD
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(name).setTextureName(MODID + ":" + name);
-	}
-
-	/**
-	 * This one... allows for alternate names... under... conditions
-	 * 
-	 * @param item
-	 * @param name
-	 */
-	public static void registerEasterItems(Item item, String name, String easterName)
-	{
-		GameRegistry.registerItem(item, name, MODID).setCreativeTab(tabs).setUnlocalizedName(doEasterEgg(name, easterName)).setTextureName(MODID + ":" + name);
-	}
-
-	private static String doEasterEgg(String defaultName, String easterName)
-	{
-		String output;
-		Random rand = new Random();
-		short chance = (short) rand.nextInt(1000000);
-
-		if (chance == 1)
-			output = easterName;
-		else
-			output = defaultName;
-
-		return output;
-=======
 		registerItems(item, name, name);
->>>>>>> Cannibalism1.8
 	}
 
 }

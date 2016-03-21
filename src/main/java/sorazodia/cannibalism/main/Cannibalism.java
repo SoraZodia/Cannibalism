@@ -3,7 +3,6 @@ package sorazodia.cannibalism.main;
 import java.io.IOException;
 
 import net.minecraftforge.common.MinecraftForge;
-
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -61,7 +60,7 @@ public class Cannibalism
 		log = preEvent.getModLog();
 
 		log.info("[Cannibalism] Initializating Mod");
-		log.info("[Cannibalism] Adding Items and Syncing Config");
+		log.info("[Cannibalism] Adding Items, events, and Syncing Config");
 		
 		try
 		{
@@ -79,18 +78,19 @@ public class Cannibalism
 		
 		ItemRegistry.init();
 		common.preInit();
+		
+		MinecraftForge.EVENT_BUS.register(new DeathEvent());
+		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
+		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		log.info("[Cannibalism] Initializating Recipes and Events");
+		log.info("[Cannibalism] Initializating Recipes");
 		RecipesRegistry.init();
 		CookingRegistry.init();
 		EntitysRegistry.init();
-		MinecraftForge.EVENT_BUS.register(new DeathEvent());
-		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
-		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
 	}
 
 	@EventHandler
