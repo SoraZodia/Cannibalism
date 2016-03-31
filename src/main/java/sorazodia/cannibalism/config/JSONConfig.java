@@ -33,6 +33,7 @@ public class JSONConfig
 	private final String filePath;
 	private String fileName;
 	private static Logger log = Cannibalism.getLogger();
+	public static boolean jsonRead = false;
 
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
@@ -84,9 +85,6 @@ public class JSONConfig
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
-		if ((!entityMap.isEmpty() || !wildcardMap.isEmpty()))
-			return;
-		
 		for (File files : new File(dirPath).listFiles())
 		{
 			fileName = files.getName();
@@ -105,13 +103,17 @@ public class JSONConfig
 	{
 		File oldJSON = new File(filePath);
 		File tempJSON = new File(dirPath + "\\json.temp");
+		boolean neededUpdate = false;
 
 		log.info("[Cannibalism] Updating JSON to include new entry");
 
 		try
 		{
 			if (oldJSON.exists())
+			{
 				this.read();
+				jsonRead = true;
+			}
 		}
 		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException e)
 		{
@@ -126,13 +128,15 @@ public class JSONConfig
 
 		try
 		{
-			if (oldJSON.exists() && (!isWildCardEntry("minecraft:Sheep") || !entityMap.containsKey("minecraft:Sheep")))
+			if (jsonRead && !(!isWildCardEntry("minecraft:Sheep") || !entityMap.containsKey("minecraft:Sheep")))
 			{
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tempJSON));
 				BufferedReader reader = new BufferedReader(new FileReader(oldJSON));
 
 				String line = reader.readLine();
 				StringBuilder newEntry = new StringBuilder();
+				
+				neededUpdate = true;
 
 				if (line.length() > 1)
 				{
@@ -170,7 +174,7 @@ public class JSONConfig
 
 		oldJSON.delete();
 
-		if (!tempJSON.renameTo(oldJSON))
+		if (!tempJSON.renameTo(oldJSON) && neededUpdate)
 			log.info("[Cannibalism] Unable to update JSON!");
 		else
 			log.info("[Cannibalism] JSON updated");
@@ -250,12 +254,15 @@ public class JSONConfig
 	
 	public boolean isWildCardEntry(String name)
 	{
+		if (wildcardMap.size() <= 0)
+			return false;
+		
 		int lastIndex = wildcardMap.size() - 1;
 		int firstIndex = 0;
 		
 		while (lastIndex > firstIndex)
 		{
-			int midIndex = lastIndex / firstIndex;
+			int midIndex = lastIndex / 2;
 			int compare = wildcardMap.get(midIndex).getName().compareTo(name);
 			
 			if (compare == 1)

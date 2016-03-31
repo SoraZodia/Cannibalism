@@ -101,7 +101,7 @@ public class Cannibalism
 
 		if (error == true)
 			error();
-		else
+		else if (!JSONConfig.jsonRead)
 			tryRead();
 
 		log.info("[Cannibalism] Mod Locked and Loaded");
