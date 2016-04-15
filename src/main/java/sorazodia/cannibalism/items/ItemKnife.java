@@ -1,6 +1,8 @@
 package sorazodia.cannibalism.items;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemArmor;
@@ -16,7 +18,7 @@ import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.main.Cannibalism;
-import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
+import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
 public class ItemKnife extends ItemSword
 {
@@ -40,7 +42,7 @@ public class ItemKnife extends ItemSword
 			player.swingItem();
 			if (!world.isRemote)
 			{
-				cutEntity(player, player, getDamage(5.0F, 5.5F), player.getName(), ItemList.playerFlesh);
+				cutPlayer(player, getDamage(5.0F, 5.5F), player.getName(), ItemList.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}
@@ -51,8 +53,8 @@ public class ItemKnife extends ItemSword
 
 	private void setMeatName(ItemStack meat, String owner)
 	{
-		MeatOriginNBT.addNameToNBT(meat, owner);
-		MeatOriginNBT.getNameFromNBT(meat);
+		FleshNBTHelper.addName(meat, owner);
+		FleshNBTHelper.setItemNickname(meat);
 	}
 
 	private void spookyEffect(World world, EntityPlayer player)
@@ -101,7 +103,7 @@ public class ItemKnife extends ItemSword
 
 			if (target instanceof EntityPlayerMP)
 			{
-				cutEntity(player, target, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
+				cutPlayer(player, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
 			}
 
 		}
@@ -116,17 +118,17 @@ public class ItemKnife extends ItemSword
 		return interact;
 	}
 
-	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, String owner, ItemFlesh flesh)
+	private void cutPlayer(EntityPlayer player, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
 		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
-		
-		if (!entity.worldObj.isRemote)
+
+		if (!player.worldObj.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
 			setMeatName(meat, name);
-			cutDamage(player, entity, damage);
-			entity.entityDropItem(meat, 0.0F);
+			cutDamage(player, player, damage);
+			player.entityDropItem(meat, 0.0F);
 		}
 	}
 
@@ -138,6 +140,14 @@ public class ItemKnife extends ItemSword
 			cutDamage(player, entity, damage);
 			for (ItemStack item : drops)
 			{
+				if (item.getItem() == ItemList.villagerFlesh)
+				{
+		            if (entity instanceof EntityWitch)
+					    FleshNBTHelper.addProfession(item, "witch");
+				    if (entity instanceof EntityVillager && ((EntityVillager)entity).getProfession() == 2)
+				    	FleshNBTHelper.addProfession(item, "priest");			    	
+				}
+				
 				entity.entityDropItem(item.copy(), 0.0F);
 			}
 		}

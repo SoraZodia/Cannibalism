@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import sorazodia.cannibalism.items.manager.ItemList;
-import sorazodia.cannibalism.mechanic.nbt.MeatOriginNBT;
+import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
 public class DeathEvent
 {
@@ -38,8 +38,8 @@ public class DeathEvent
 
 	private void setMeatName(ItemStack meat, String owner)
 	{
-		MeatOriginNBT.addNameToNBT(meat, owner);
-		MeatOriginNBT.getNameFromNBT(meat);
+		FleshNBTHelper.addName(meat, owner);
+		FleshNBTHelper.setItemNickname(meat);
 	}
 
 }

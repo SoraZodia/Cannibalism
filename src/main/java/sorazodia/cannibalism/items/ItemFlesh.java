@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
+import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
 public class ItemFlesh extends ItemFood
 {
@@ -23,14 +24,23 @@ public class ItemFlesh extends ItemFood
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true && !world.isRemote)
+		if (!world.isRemote)
 		{
-			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-			float wendigoLevel = nbt.getWendigoValue();
-			
-			nbt.changeWendigoValue(10);
-			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
+			if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true)
+			{
+				CannibalismNBT nbt = CannibalismNBT.getNBT(player);
+				float wendigoLevel = nbt.getWendigoValue();
+				String meatOwner = FleshNBTHelper.getProfession(stack);
+
+				if (meatOwner.equalsIgnoreCase("priest"))
+					nbt.changeWendigoValue(-10);
+				else
+					nbt.changeWendigoValue(10);
+				
+				player.getFoodStats().addStats((int) wendigoLevel / 10, wendigoLevel / 10);
+			}
 		}
+
 	}
 
 }
