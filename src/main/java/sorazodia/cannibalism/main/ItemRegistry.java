@@ -10,8 +10,7 @@ public class ItemRegistry
 	{
 		SimpleItemsRegistry.init(Cannibalism.MODID, Cannibalism.cannibalismTab);
 
-		// initializate the knifes, goanna figure out how to do copper (wait, is
-		// that good?) and stuff later
+		// initializate the knifes
 		SimpleItemsRegistry.registerItems(ItemList.woodenKnife, ItemList.woodenKnifeName);
 		SimpleItemsRegistry.registerItems(ItemList.flintKnife, ItemList.flintKnifeName);
 		SimpleItemsRegistry.registerItems(ItemList.stoneKnife, ItemList.stoneKnifeName);
@@ -23,6 +22,7 @@ public class ItemRegistry
 		// initializate the flesh
 		SimpleItemsRegistry.registerItems(ItemList.playerFlesh, ItemList.playerFleshName);
 		SimpleItemsRegistry.registerItems(ItemList.villagerFlesh, ItemList.villagerFleshName);
+		SimpleItemsRegistry.registerItems(ItemList.witchFlesh, ItemList.witchFleshName);
 		SimpleItemsRegistry.registerItems(ItemList.playerFleshCooked, ItemList.playerFleshCookedName);
 		SimpleItemsRegistry.registerItems(ItemList.villagerFleshCooked, ItemList.villagerFleshCookedName);
 

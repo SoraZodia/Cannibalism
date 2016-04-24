@@ -1,8 +1,6 @@
 package sorazodia.cannibalism.items;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemArmor;
@@ -139,15 +137,7 @@ public class ItemKnife extends ItemSword
 		{
 			cutDamage(player, entity, damage);
 			for (ItemStack item : drops)
-			{
-				if (item.getItem() == ItemList.villagerFlesh)
-				{
-		            if (entity instanceof EntityWitch)
-					    FleshNBTHelper.addProfession(item, "witch");
-				    if (entity instanceof EntityVillager && ((EntityVillager)entity).getProfession() == 2)
-				    	FleshNBTHelper.addProfession(item, "priest");			    	
-				}
-				
+			{	
 				entity.entityDropItem(item.copy(), 0.0F);
 			}
 		}

@@ -107,7 +107,7 @@ public class ItemDevKnife extends ItemKnife
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFail", EnumChatFormatting.RED);
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFailCheck", EnumChatFormatting.WHITE, fileName);
 		Chat.displayLocalizatedChat(player, errorMessage);
-		json.codeRed();
+		json.loadMapData();
 		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
 	}
 

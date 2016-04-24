@@ -3,10 +3,12 @@ package sorazodia.cannibalism.items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.config.ConfigHandler;
+import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
-import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
 public class ItemFlesh extends ItemFood
 {
@@ -24,23 +26,27 @@ public class ItemFlesh extends ItemFood
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (!world.isRemote)
+		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true && !world.isRemote)
 		{
-			if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true)
+			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
+			float wendigoLevel = nbt.getWendigoValue();
+			
+			nbt.changeWendigoValue(10);
+			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
+			
+			if (this.getUnlocalizedName().equals(ItemList.witchFleshName))
 			{
-				CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-				float wendigoLevel = nbt.getWendigoValue();
-				String meatOwner = FleshNBTHelper.getProfession(stack);
-
-				if (meatOwner.equalsIgnoreCase("priest"))
-					nbt.changeWendigoValue(-10);
+				if (wendigoLevel >= 100)
+					player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 1, 20));
 				else
-					nbt.changeWendigoValue(10);
-				
-				player.getFoodStats().addStats((int) wendigoLevel / 10, wendigoLevel / 10);
+					player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 20));
 			}
 		}
-
+		else
+		{
+			if (this.getUnlocalizedName().equals(ItemList.witchFleshName))
+				player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 20));
+		}
 	}
 
 }

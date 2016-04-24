@@ -47,7 +47,7 @@ public class JSONConfig
 	// private static String regEx = "[\\s+[\"+]]";
 	private static String regEx = "[\"+]";
 
-	public JSONConfig(FMLPreInitializationEvent preEvent) throws IOException
+	public JSONConfig(FMLPreInitializationEvent preEvent)
 	{
 		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath() + "\\" + Cannibalism.MODID;
 		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
@@ -64,21 +64,23 @@ public class JSONConfig
 		write.writeArrayEnd();
 	}
 
-	public void initJSON() throws IOException
-	{
-		if (new File(dirPath).exists() && new File(filePath).exists())
-			return;
-
-		log.info("[Cannibalism] Default JSON not found! Creating new file");
-
+	public void initEntityMappings() throws IOException
+	{	
 		File folder = new File(dirPath);
 
-		folder.mkdir();
-
-		write = new JSONWriter(filePath);
-		writeDefault();
-
-		//ConfigHandler.updateOldConfig(configDir, this);
+		if (!folder.exists())
+		{
+			log.info("[Cannibalism] JSON Folder created");
+			folder.mkdir();
+		}
+			
+		if (!new File(filePath).exists())
+		{
+			log.info("[Cannibalism] cannibalism.json not found, loading default data");
+			this.loadMapData();
+		}
+		
+		read();
 
 		log.info("[Cannibalism] Default JSON created");
 	}
@@ -209,16 +211,30 @@ public class JSONConfig
 
 	}
 
-	private void writeDefault() throws IOException
+	public void writeDefault() throws IOException
 	{
+		write = new JSONWriter(filePath);
+		
 		write.writeStart();
 		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
 		addEntity("Chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
 		addEntity("Pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
 		addEntity("Sheep", "minecraft", new String[] { "minecraft:wool", "minecraft:mutton" }, "2.5", "3.0");
 		addEntity("Villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
+		addEntity("Witch", "minecraft", new String[] { "cannibalism:witchFlesh" }, "5.0", "6.0");
 		addEntity("Zombie*", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
 		write.write();
+	}
+	
+	public void loadMapData()
+	{
+		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
+		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
+		entityMap.put("Sheep", new EntityData(new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
+		entityMap.put("Witch", new EntityData(new String[] { "cannibalism:witchFlesh" }, 5.0F, 6.0F));
+		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
 	}
 
 	public HashMap<String, EntityData> getEntityMap()
@@ -284,16 +300,6 @@ public class JSONConfig
 	public EntityData getData(EntityLivingBase entity, World world)
 	{
 		return wildcardMap.get(getWildCardIndex(entity, world));
-	}
-
-	public void codeRed()
-	{
-		entityMap.put("Chicken", new EntityData(new String[] { "" }, 10.0F, 10.0F));
-		entityMap.put("Pig", new EntityData(new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
-		entityMap.put("Sheep", new EntityData(new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
 	}
 
 	public String getDirPath()

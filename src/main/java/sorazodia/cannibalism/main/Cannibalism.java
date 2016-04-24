@@ -61,20 +61,9 @@ public class Cannibalism
 
 		log.info("[Cannibalism] Initializating Mod");
 		log.info("[Cannibalism] Adding Items, events, and Syncing Config");
-		
-		try
-		{
-			json = new JSONConfig(preEvent);
-			config = new ConfigHandler(preEvent, json);
-			
-			json.initJSON();
-		}
-		catch (IOException e)
-		{
-			log.error("**********************UNABLE TO START NOR CREATE JSON*******************************************");
-			e.printStackTrace();
-			error = true;
-		}
+
+		json = new JSONConfig(preEvent);
+	    config = new ConfigHandler(preEvent, json);
 		
 		ItemRegistry.init();
 		common.preInit();
@@ -97,12 +86,7 @@ public class Cannibalism
 	public void postInit(FMLPostInitializationEvent postEvent)
 	{
 
-		log.info("[Cannibalism] Reading JSON");
-
-		if (error == true)
-			error();
-		else if (!JSONConfig.jsonRead)
-			tryRead();
+		log.info("[Cannibalism] JSON Found! Reading Data...");
 
 		log.info("[Cannibalism] Mod Locked and Loaded");
 	}
@@ -128,14 +112,14 @@ public class Cannibalism
 		log.error("[Cannibalism] **********************UNABLE TO READ " + fileName + " PLAN B GOOOOOOO*******************************************");
 		e.printStackTrace();
 		log.error("[Cannibalism] Defaulting to backup");
-		json.codeRed();
+		json.loadMapData();
 	}
 
 	private void error()
 	{
 		log.error("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
 		log.error("[Cannibalism] Defaulting to backup");
-		json.codeRed();
+		json.loadMapData();
 	}
 
 	public static JSONConfig getJson()

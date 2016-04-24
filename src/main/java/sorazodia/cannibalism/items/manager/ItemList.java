@@ -40,6 +40,9 @@ public class ItemList
 
 	public static ItemFlesh villagerFlesh = (ItemFlesh) new ItemFlesh(4, 0.3F);
 	public static String villagerFleshName = "villagerFlesh";
+	
+	public static ItemFlesh witchFlesh = (ItemFlesh) new ItemFlesh(4, 0.3F);
+	public static String witchFleshName = "witchFlesh";
 
 	public static ItemFlesh playerFleshCooked = (ItemFlesh) new ItemFlesh(8, 0.8F);
 	public static String playerFleshCookedName = "playerFleshCooked";
