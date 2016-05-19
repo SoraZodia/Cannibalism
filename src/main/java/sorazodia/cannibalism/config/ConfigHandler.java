@@ -63,7 +63,7 @@ public class ConfigHandler
 	{
 		boolean success = false;
 		boolean removed = false;
-		final String key = "# Old Config Removed (v1.2.3);JSON Updated (v2.2.2)";
+		final String key = "# Old Config Removed (v2.2.4)";
 
 		try
 		{
@@ -79,8 +79,6 @@ public class ConfigHandler
 					reader.close();
 					return true;
 				}
-
-				json.updateAndRead();
 
 				Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
 				File tempFile = new File(dirPath + "\\cannibalism.temp");

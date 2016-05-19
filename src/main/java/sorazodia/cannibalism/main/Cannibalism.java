@@ -29,7 +29,7 @@ public class Cannibalism
 {
 	
 	public static final String MODID = "cannibalism";
-	public static final String VERSION = "2.2.3";
+	public static final String VERSION = "2.2.4";
 	public static final String NAME = "Cannibalism";
 	public static final String GUI_FACTORY = "sorazodia.cannibalism.config.ConfigGUIFactory";
 
@@ -44,7 +44,6 @@ public class Cannibalism
 	@SuppressWarnings("unused")
 	private static ConfigHandler config;
 	private static JSONConfig json;
-	private static boolean error = false;
 
 	private static Logger log;
 
@@ -85,17 +84,16 @@ public class Cannibalism
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent postEvent)
 	{
-
-		log.info("[Cannibalism] JSON Found! Reading Data...");
-
+		log.info("[Cannibalism] Checking Entity Mappings...");
+		this.initEntityMapping();
 		log.info("[Cannibalism] Mod Locked and Loaded");
 	}
 
-	private void tryRead()
+	private void initEntityMapping()
 	{
 		try
 		{
-			json.read();
+			json.initEntityMappings();
 		}
 		catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
 		{
@@ -111,13 +109,6 @@ public class Cannibalism
 	{
 		log.error("[Cannibalism] **********************UNABLE TO READ " + fileName + " PLAN B GOOOOOOO*******************************************");
 		e.printStackTrace();
-		log.error("[Cannibalism] Defaulting to backup");
-		json.loadMapData();
-	}
-
-	private void error()
-	{
-		log.error("[Cannibalism] **********************UNABLE TO FIND JSON, PLAN B GOOOOOOO*******************************************");
 		log.error("[Cannibalism] Defaulting to backup");
 		json.loadMapData();
 	}
