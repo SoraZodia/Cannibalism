@@ -27,6 +27,7 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
+	private final String overwriteFile = "overwrite.json";
 	private String fileName;
 	private static Logger log = Cannibalism.getLogger();
 
@@ -68,24 +69,37 @@ public class JSONConfig
 			folder.mkdir();
 		}
 
-		if (!new File(filePath).exists())
-		{
-			log.info("[Cannibalism] cannibalism.json not found, loading default data");
-			this.loadMapData();
-		}
-		else
-		{
-			log.info("[Cannibalism] JSON Found! Reading Data...");
-			read();
-		}
+		log.info("[Cannibalism] Loading and reading data...");
+		this.loadMapData();
+		read();
 	}
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
+		if (new File(dirPath + "\\" + overwriteFile).exists())
+		{
+			json = new JSONArray(dirPath + "\\" + overwriteFile);
+
+			log.info("[Cannibalism] Overwrite JSON Found! Changing Data...");
+
+			entityMap.clear();
+			wildcardMap.clear();
+
+			for (int x = 0; x < json.size(); x++)
+			{
+				parseEntity(x);
+				entityName.delete(0, entityName.length());
+			}
+		}
+
 		for (File files : new File(dirPath).listFiles())
 		{
 			fileName = files.getName();
 			json = new JSONArray(files.getAbsolutePath());
+
+			if (fileName.equals(overwriteFile))
+				continue;
+
 			for (int x = 0; x < json.size(); x++)
 			{
 				parseEntity(x);

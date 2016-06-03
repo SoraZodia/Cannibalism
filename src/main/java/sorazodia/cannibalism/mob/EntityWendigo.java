@@ -18,7 +18,7 @@ import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 public class EntityWendigo extends EntityMob
 {
-
+//Change attack target, attack witch + zombine
 	public EntityWendigo(World world)
 	{
 		super(world);
