@@ -83,7 +83,7 @@ public class ItemDevKnife extends ItemKnife
 			{
 				json.getEntityMap().clear();
 				json.getWildcardMap().clear();
-				json.read();
+				json.initEntityMappings();
 				Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.GREEN);
 			}
 			catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
