@@ -18,6 +18,9 @@ import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 public class EntityWendigo extends EntityMob
 {
+	
+	private EntityLivingBase attacker;
+	
 //Change attack target, attack witch + zombine
 	public EntityWendigo(World world)
 	{
@@ -46,25 +49,48 @@ public class EntityWendigo extends EntityMob
 		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(100D);
 	}
 
-	@Override
-	public void onUpdate()
-	{
-		super.onUpdate();
-		if (!isEntityAlive())
+	@Override 
+	public boolean attackEntityFrom(DamageSource source, float damage)
+    {
+		if (source.getEntity() instanceof Entity)
 		{
-			if (this.getAttackTarget() instanceof EntityPlayer)
+			attacker = (EntityLivingBase) source.getEntity();
+			this.setRevengeTarget(attacker);
+		}
+		
+		return super.attackEntityFrom(source, damage);
+    }
+	
+//	@Override
+//	public void setRevengeTarget(EntityLivingBase target)
+//    {
+//		super.setRevengeTarget(target);
+//    }
+	
+	@Override
+	public void setDead()
+	{
+		if (attacker instanceof EntityPlayer)
+		{
+			CannibalismNBT nbt = CannibalismNBT.getNBT((EntityPlayer) attacker);
+
+			if (nbt != null)
 			{
-				EntityPlayer player = (EntityPlayer) this.getAttackTarget();
-				if (CannibalismNBT.getNBT(player) != null)
-				{
-					CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-					
-					nbt.setWendigoValue(0);
-					nbt.setWedigoSpawn(false);
-					nbt.setWarningEffect(true);
-				}
+				nbt.setWendigoValue(0);
+				nbt.setWedigoSpawn(false);
+				nbt.setWarningEffect(true);
 			}
 		}
+		
+		super.setDead();
+	}
+	
+	@Override
+	public void onUpdate()
+	{	
+		super.onUpdate();
+		
+		this.stepHeight = 1.0F;
 	}
 
 	@Override

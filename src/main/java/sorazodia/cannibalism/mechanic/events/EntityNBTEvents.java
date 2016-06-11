@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
@@ -26,14 +26,21 @@ public class EntityNBTEvents
 	}
 
 	@SubscribeEvent
-	public void playerUpdate(LivingUpdateEvent updateEvent)
+	public void playerUpdate(PlayerTickEvent updateEvent)
 	{
-		if (!updateEvent.entityLiving.worldObj.isRemote && updateEvent.entityLiving instanceof EntityPlayer && ConfigHandler.getMyth() && CannibalismNBT.getNBT(updateEvent.entityLiving) != null)
+		if (!updateEvent.player.worldObj.isRemote && ConfigHandler.getMyth() && CannibalismNBT.getNBT(updateEvent.player) != null)
 		{
-			EntityPlayer player = (EntityPlayer) updateEvent.entityLiving;
-			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
+			EntityPlayer player = updateEvent.player;
+			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
+			float wendigoLevel = nbt.getWendigoValue();
 
-			addWendigoEffect(player, wendigoLevel, CannibalismNBT.getNBT(player));
+			if (wendigoLevel <= 100)
+			{
+				nbt.setWarningEffect(false);
+				nbt.setWedigoSpawn(false);
+			}
+			
+			addWendigoEffect(player, wendigoLevel, nbt);
 		}
 	}
 
@@ -66,8 +73,9 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
+			player.playSound("mob.wolf.howl", 5, 5);
 			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);
-			wendigo.setLocationAndAngles(player.posX * 2, player.posY, player.posZ * 2, 0, 0);
+			wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
 			player.worldObj.spawnEntityInWorld(wendigo);
 			CannibalismNBT.getNBT(player).setWedigoSpawn(true);
 

@@ -11,6 +11,7 @@ item.villagerFlesh.name=Villager Flesh
 item.playerFlesh.name=Player Flesh
 item.villagerFleshCooked.name=Cooked Villager Flesh
 item.playerFleshCooked.name=Cooked Player Flesh
+item.witchFlesh.name=Witch Flesh
 
 item.playerFleshOwner.name=%s's Flesh
 

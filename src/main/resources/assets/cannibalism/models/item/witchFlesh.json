@@ -1,6 +1,6 @@
 {
 	"parent": "cannibalism:item/itemRoot",
 	"textures": {
-		"layer0": "cannibalism:items/villagerFlesh"
+		"layer0": "cannibalism:items/witchFlesh"
 	}
 }
