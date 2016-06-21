@@ -27,7 +27,7 @@ public class JSONConfig
 	private StringBuilder entityName = new StringBuilder();
 	private final String dirPath;
 	private final String filePath;
-	private final String overwriteFile = "overwrite.json";
+	private final String overwriteFiles[] = {"overwrite.json", "overwrite.txt"};
 	private String fileName;
 	private static Logger log = Cannibalism.getLogger();
 
@@ -76,9 +76,16 @@ public class JSONConfig
 
 	public void read() throws JsonSyntaxException, NumberFormatException, ClassCastException, NullPointerException, IOException
 	{
-		if (new File(dirPath + "\\" + overwriteFile).exists())
+		File overwriteFile = null;
+		
+		if (new File(dirPath + "\\" + overwriteFiles[0]).exists())
+			overwriteFile = new File(dirPath + "\\overwrite.json");
+		else if (new File(dirPath + "\\" + overwriteFiles[1]).exists())
+			overwriteFile = new File(dirPath + "\\overwrite.txt");
+		
+		if (overwriteFile != null)
 		{
-			json = new JSONArray(dirPath + "\\" + overwriteFile);
+			json = new JSONArray(overwriteFile.getAbsolutePath());
 
 			log.info("[Cannibalism] Overwrite JSON Found! Changing Data...");
 
@@ -97,7 +104,7 @@ public class JSONConfig
 			fileName = files.getName();
 			json = new JSONArray(files.getAbsolutePath());
 
-			if (fileName.equals(overwriteFile))
+			if (fileName.equals(overwriteFiles[0]) || fileName.equals(overwriteFiles[1]))
 				continue;
 
 			for (int x = 0; x < json.size(); x++)

@@ -33,19 +33,19 @@ public class ItemFlesh extends ItemFood
 			
 			nbt.changeWendigoValue(10);
 			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
-			
-			if (this.getRegistryName().equals(ItemList.witchFleshName))
+			System.out.println(stack.getItem().getRegistryName());
+			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
 			{
 				if (wendigoLevel >= 100)
-					player.addPotionEffect(new PotionEffect(Potion.heal.id, 1, 20));
+					player.addPotionEffect(new PotionEffect(Potion.heal.id, 1, 1));
 				else
-					player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 20));
+					player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 1));
 			}
 		}
 		else if (!world.isRemote)
 		{
-			if (this.getUnlocalizedName().equals(ItemList.witchFleshName))
-				player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 20));
+			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
+				player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 1));
 		}
 	}
 

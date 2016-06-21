@@ -22,7 +22,7 @@ public class ConfigHandler
 
 	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
 	{
-		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath(), json))
+		if (!updateOldConfig(event.getModConfigurationDirectory().getAbsolutePath()))
 			Cannibalism.getLogger().info("Failed to remove old config");
 
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
@@ -59,7 +59,7 @@ public class ConfigHandler
 		return myth;
 	}
 
-	public static boolean updateOldConfig(String dirPath, JSONConfig json)
+	public static boolean updateOldConfig(String dirPath)
 	{
 		boolean success = false;
 		boolean removed = false;
