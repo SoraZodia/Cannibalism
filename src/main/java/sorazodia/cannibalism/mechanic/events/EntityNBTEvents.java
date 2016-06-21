@@ -34,9 +34,9 @@ public class EntityNBTEvents
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();
 
-			if (wendigoLevel <= 100)
+			if (wendigoLevel < 100)
 			{
-				nbt.setWarningEffect(false);
+				nbt.setWarningEffect(true);
 				nbt.setWedigoSpawn(false);
 			}
 			
@@ -73,7 +73,7 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
-			player.playSound("mob.wolf.howl", 5, 5);
+			player.worldObj.playSoundAtEntity(player, "mob.wolf.howl", 1, 0.5F);
 			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);
 			wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
 			player.worldObj.spawnEntityInWorld(wendigo);

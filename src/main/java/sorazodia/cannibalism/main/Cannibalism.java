@@ -29,7 +29,7 @@ public class Cannibalism
 {
 	
 	public static final String MODID = "cannibalism";
-	public static final String VERSION = "2.2.4";
+	public static final String VERSION = "2.3.0";
 	public static final String NAME = "Cannibalism";
 	public static final String GUI_FACTORY = "sorazodia.cannibalism.config.ConfigGUIFactory";
 
