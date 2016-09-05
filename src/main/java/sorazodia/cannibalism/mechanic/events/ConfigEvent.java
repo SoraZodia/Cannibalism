@@ -11,7 +11,7 @@ public class ConfigEvent
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent config)
 	{
-		if (config.modID.equals(Cannibalism.MODID))
+		if (config.getModID().equals(Cannibalism.MODID))
 			ConfigHandler.syncConfig();
 	}
 

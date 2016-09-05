@@ -1,32 +1,37 @@
 package sorazodia.api.localization;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 public class Chat
 {
 
-	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText)
-	{
-		displayLocalizatedChat(receiver, unlocalizatedText, EnumChatFormatting.WHITE);
-	}
-
 	public static void displayPlainChat(EntityPlayer receiver, String text)
 	{
-		receiver.addChatComponentMessage(new ChatComponentText(text));
+		receiver.addChatComponentMessage(new TextComponentString(text));
 	}
 
-	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color)
+	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText)
 	{
-		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText).setChatStyle(new ChatStyle().setColor(color)));
+		displayLocalizatedChat(receiver, unlocalizatedText, TextFormatting.WHITE);
+	}
+	
+	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, Object... variables)
+	{
+		displayLocalizatedChat(receiver, unlocalizatedText, TextFormatting.WHITE, variables);
 	}
 
-	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, EnumChatFormatting color, Object... variables)
+	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, TextFormatting color)
 	{
-		receiver.addChatMessage(new ChatComponentTranslation(unlocalizatedText, variables).setChatStyle(new ChatStyle().setColor(color)));
+		displayLocalizatedChat(receiver, unlocalizatedText, color, "");
+	}
+	
+	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, TextFormatting color, Object... variables)
+	{
+		receiver.addChatMessage(new TextComponentTranslation(unlocalizatedText, variables).setStyle(new Style().setColor(color)));
 	}
 
 }

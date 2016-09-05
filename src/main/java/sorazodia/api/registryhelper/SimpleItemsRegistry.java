@@ -1,8 +1,9 @@
 package sorazodia.api.registryhelper;
 
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -40,7 +41,7 @@ public class SimpleItemsRegistry
 	 */
 	public static void registerItems(Item item, String itemName, String imageName)
 	{
-		GameRegistry.registerItem(item, itemName);
+		GameRegistry.register(item, new ResourceLocation(modid + ":" + itemName));
 		item.setCreativeTab(tabs).setUnlocalizedName(itemName);
 		
 		 if(FMLCommonHandler.instance().getSide().isClient())

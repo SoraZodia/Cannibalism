@@ -54,7 +54,7 @@ public class EntityData implements Comparable<EntityData>
 				if (isInteger(itemData[1]))
 					metadata = Integer.parseInt(itemData[1]);
 
-			Item item = (Item) Item.itemRegistry.getObject(new ResourceLocation(itemData[0]));
+			Item item = (Item) Item.REGISTRY.getObject(new ResourceLocation(itemData[0]));
 
 			drops[x] = new ItemStack(item, 1, metadata);
 		}

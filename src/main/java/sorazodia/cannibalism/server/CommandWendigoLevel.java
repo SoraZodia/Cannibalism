@@ -3,13 +3,14 @@ package sorazodia.cannibalism.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.translation.I18n;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
@@ -29,8 +30,8 @@ public class CommandWendigoLevel implements ICommand
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		sender.addChatMessage(new ChatComponentTranslation("command.set"));
-		return StatCollector.translateToLocalFormatted("command.stat");
+		sender.addChatMessage(new TextComponentTranslation("command.set"));
+		return I18n.translateToLocalFormatted("command.stat");
 	}
 
 	@Override
@@ -45,15 +46,15 @@ public class CommandWendigoLevel implements ICommand
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args)
+	public void execute(MinecraftServer server,ICommandSender sender, String[] args) throws CommandException
 	{
 		if (args.length >= 2)
 		{
-			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[1]);
+			EntityPlayerMP player = server.getPlayerList().getPlayerByUsername(args[1]);
 
 			if (player == null)
 			{
-				sender.addChatMessage(new ChatComponentTranslation("command.error.player"));
+				sender.addChatMessage(new TextComponentTranslation("command.error.player"));
 				return;
 			}
 
@@ -65,15 +66,15 @@ public class CommandWendigoLevel implements ICommand
 				if (isFloat(args[2]))
 				{
 					nbt.setWendigoValue(Float.parseFloat(args[2]));
-					sender.addChatMessage(new ChatComponentTranslation("command.wendigolevelchange"));
+					sender.addChatMessage(new TextComponentTranslation("command.wendigolevelchange"));
 				}
 				else
 				{
-					sender.addChatMessage(new ChatComponentTranslation("command.error.number"));
+					sender.addChatMessage(new TextComponentTranslation("command.error.number"));
 				}
 				break;
 			case commandStat:
-				sender.addChatMessage(new ChatComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
+				sender.addChatMessage(new TextComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				break;
 			}
 		}
@@ -110,20 +111,20 @@ public class CommandWendigoLevel implements ICommand
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender)
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender)
 	{
 		return sender.canCommandSenderUseCommand(2, Cannibalism.MODID);
 	}
 
 	@Override
-	public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos blockpos)
+	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos blockpos)
 	{
 	    ArrayList<String> argsList = new ArrayList<>();
 
 		if (args.length >= 1)
 		{
 			String lastLetter = args[args.length - 1];
-			GameProfile[] profiles = MinecraftServer.getServer().getGameProfiles();
+			GameProfile[] profiles = server.getGameProfiles();
 
 			if (args.length == 1)
 			{

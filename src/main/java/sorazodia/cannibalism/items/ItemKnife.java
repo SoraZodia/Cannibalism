@@ -3,12 +3,19 @@ package sorazodia.cannibalism.items;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.api.ICutable;
@@ -28,16 +35,20 @@ public class ItemKnife extends ItemSword
 	{
 		super(material);
 	}
+	
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.BLOCK;
+    }
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{
-		player.setItemInUse(stack, getMaxItemUseDuration(stack));
-
 		if (!interact && player.isSneaking())
 		{
 			spookyEffect(world, player);
-			player.swingItem();
+			player.swingArm(hand);
 			if (!world.isRemote)
 			{
 				cutPlayer(player, getDamage(5.0F, 5.5F), player.getName(), ItemList.playerFlesh);
@@ -46,7 +57,7 @@ public class ItemKnife extends ItemSword
 		}
 		interact = false;
 
-		return stack;
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
 	private void setMeatName(ItemStack meat, String owner)
@@ -58,24 +69,24 @@ public class ItemKnife extends ItemSword
 	private void spookyEffect(World world, EntityPlayer player)
 	{
 		if (ConfigHandler.doScream())
-			world.playSoundEffect(player.posX, player.posY, player.posZ, "mob.ghast.scream", 1.0F, ConfigHandler.getPinch());
+			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 		if (!ConfigHandler.doScream())
-			world.playSoundEffect(player.posX, player.posY, player.posZ, "game.player.hurt", 1.0F, ConfigHandler.getPinch());
+			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 		spawnBlood(player, world, 1);
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target)
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand)
 	{
 
 		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
 
-			if (!player.isSneaking() && target.getEquipmentInSlot(3) != null && target.getEquipmentInSlot(3).getItem() instanceof ItemArmor)
+			if (!player.isSneaking() && target.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null &&  target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemArmor)
 			{
-				ItemArmor armor = (ItemArmor) target.getEquipmentInSlot(3).getItem();
-				player.swingItem();
-				player.worldObj.playSoundAtEntity(player, "dig.glass", 1.0f, 1.0f);
+				ItemArmor armor = (ItemArmor) target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
+				player.swingArm(hand);
+				player.worldObj.playSound(null, player.getPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
 				stack.damageItem(15 * armor.damageReduceAmount, player);
 				return true;
 			}
@@ -108,7 +119,7 @@ public class ItemKnife extends ItemSword
 
 		if (interact == true)
 		{
-			player.swingItem();
+			player.swingArm(hand);
 			stack.damageItem(1, player);
 			spawnBlood(target, target.worldObj, 0);
 		}
@@ -119,7 +130,7 @@ public class ItemKnife extends ItemSword
 	private void cutPlayer(EntityPlayer player, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
-		String name = StatCollector.translateToLocalFormatted("item.playerFleshOwner.name", owner);
+		String name = I18n.translateToLocalFormatted("item.playerFleshOwner.name", owner);
 
 		if (!player.worldObj.isRemote)
 		{

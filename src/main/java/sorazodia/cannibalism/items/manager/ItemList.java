@@ -28,7 +28,7 @@ public class ItemList
 	public static ItemKnife ironKnife = (ItemKnife) new ItemKnife(Item.ToolMaterial.IRON);
 	public static String ironKnifeName = "ironKnife";
 
-	public static ItemKnife diamondKnife = (ItemKnife) new ItemKnife(Item.ToolMaterial.EMERALD);
+	public static ItemKnife diamondKnife = (ItemKnife) new ItemKnife(Item.ToolMaterial.DIAMOND);
 	public static String diamondKnifeName = "diamondKnife";
 
 	public static ItemKnife devKnife = (ItemDevKnife) new ItemDevKnife();

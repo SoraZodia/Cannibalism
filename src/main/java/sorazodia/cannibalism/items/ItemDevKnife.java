@@ -10,12 +10,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 
@@ -37,7 +39,7 @@ import com.google.gson.JsonSyntaxException;
 public class ItemDevKnife extends ItemKnife
 {
 
-	private static final ToolMaterial dev = EnumHelper.addToolMaterial("Dev", 4, -1, 100.0F, -4, 5);
+	private static final ToolMaterial dev = EnumHelper.addToolMaterial("Dev", 4, -1, 100.0F, 0, 5);
 	private JSONConfig json = Cannibalism.getJson();
 
 	public ItemDevKnife()
@@ -69,12 +71,16 @@ public class ItemDevKnife extends ItemKnife
 
 		return true;
 	}
+	
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.BLOCK;
+    }
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{
-
-		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
 		if (!world.isRemote)
 		{
@@ -84,7 +90,7 @@ public class ItemDevKnife extends ItemKnife
 				json.getEntityMap().clear();
 				json.getWildcardMap().clear();
 				json.initEntityMappings();
-				Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.GREEN);
+				Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", TextFormatting.GREEN);
 			}
 			catch (JsonSyntaxException | NumberFormatException | ClassCastException | NullPointerException | IOException error)
 			{
@@ -99,41 +105,41 @@ public class ItemDevKnife extends ItemKnife
 			}
 		}
 
-		return stack;
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
 	private void error(EntityPlayer player, String errorMessage, String fileName)
 	{
-		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFail", EnumChatFormatting.RED);
-		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFailCheck", EnumChatFormatting.WHITE, fileName);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFail", TextFormatting.RED);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFailCheck", TextFormatting.WHITE, fileName);
 		Chat.displayLocalizatedChat(player, errorMessage);
 		json.loadMapData();
-		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", EnumChatFormatting.YELLOW);
+		Chat.displayLocalizatedChat(player, "item.devKnife.reloadFinish", TextFormatting.YELLOW);
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target)
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand)
 	{
 		if (!(player.worldObj.isRemote))
 		{
 			if (!player.isSneaking())
 			{
 				Chat.displayLocalizatedChat(player, "item.devKnife.format");
-				player.addChatMessage(new ChatComponentTranslation("item.devKnife.mobName", EntityList.getEntityString(target)));
-				player.addChatMessage(new ChatComponentTranslation("item.devKnife.superName", EntityList.getEntityString(getSuperEntity(target))));
+				Chat.displayLocalizatedChat(player, "item.devKnife.mobName", EntityList.getEntityString(target));
+				Chat.displayLocalizatedChat(player, "item.devKnife.superName", EntityList.getEntityString(getSuperEntity(target)));
 			}
 			else
 			{
 				if (json.checkEntity(target))
 				{
 					EntityData data = json.getData(target);
-					player.addChatMessage(new ChatComponentText(data.toString()));
+					Chat.displayPlainChat(player, data.toString());
 				}
 
 				else if (json.getWildCardIndex(target, player.worldObj) >= 0)
 				{
 					EntityData data = json.getData(target, player.worldObj);
-					player.addChatMessage(new ChatComponentText(data.toString()));
+					Chat.displayPlainChat(player, data.toString());
 				}
 			}
 
@@ -142,12 +148,11 @@ public class ItemDevKnife extends ItemKnife
 		return true;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
 	{
-		list.add(StatCollector.translateToLocal("item.devKnife.lore1"));
-		list.add(StatCollector.translateToLocal("item.devKnife.lore2"));
+		list.add(I18n.translateToLocal("item.devKnife.lore1"));
+		list.add(I18n.translateToLocal("item.devKnife.lore2"));
 	}
 
 	private Entity getSuperEntity(Entity child)

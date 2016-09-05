@@ -15,7 +15,7 @@ public class RecipesRegistry
 	private static String cobblestone = "cobblestone";
 	private static String stone = "stone";
 	private static String woodPlank = "plankWood";
-	private static Item flint = Items.flint;
+	private static Item flint = Items.FLINT;
 
 	private static ItemStack woodenKnife = new ItemStack(ItemList.woodenKnife);
 	private static ItemStack flintKnife = new ItemStack(ItemList.flintKnife);

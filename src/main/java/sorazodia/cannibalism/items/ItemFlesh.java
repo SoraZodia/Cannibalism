@@ -1,9 +1,9 @@
 package sorazodia.cannibalism.items;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -37,15 +37,15 @@ public class ItemFlesh extends ItemFood
 			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
 			{
 				if (wendigoLevel >= 100)
-					player.addPotionEffect(new PotionEffect(Potion.heal.id, 1, 1));
+					player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 1));
 				else
-					player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 1));
+					player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 1, 1));
 			}
 		}
 		else if (!world.isRemote)
 		{
 			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
-				player.addPotionEffect(new PotionEffect(Potion.harm.id, 1, 1));
+				player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 1, 1));
 		}
 	}
 
