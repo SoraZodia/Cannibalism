@@ -69,7 +69,7 @@ public class ItemKnife extends ItemSword
 	private void spookyEffect(World world, EntityPlayer player)
 	{
 		if (ConfigHandler.doScream())
-			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GHAST_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 		if (!ConfigHandler.doScream())
 			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 		spawnBlood(player, world, 1);
