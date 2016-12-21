@@ -1,24 +1,30 @@
 package sorazodia.api.nbt;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class PlayerInfo 
 {	
-	protected static HashMap<String, Object> data = new HashMap<>();
+	protected HashMap<String, Optional<Object>> data = new HashMap<>();
 
-	public static boolean add (String key, Object info)
+	public boolean add(String key, Object info)
 	{
-		return data.put(key, info) != null;
+		return !data.containsKey(key) && data.put(key, Optional.ofNullable(info)) == null;
 	}
 	
-	public static Object get(String key)
+	public Optional<Object> get(String key)
 	{
 		return data.get(key);
 	}
 	
-	public static boolean set(String key, Object newInfo)
+	public Optional<Object> set(String key, Object newInfo)
 	{
-		return data.replace(key, newInfo) != null;
+		return data.replace(key, Optional.ofNullable(newInfo));
+	}
+	
+	public Optional<Object> remove(String key)
+	{
+		return data.remove(key);
 	}
 	
 }
