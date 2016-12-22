@@ -63,4 +63,9 @@ public class Database
 		return data.replace(id, newData);
 	}
 	
+	public HashMap<UUID, PlayerInfo> getDatabase()
+	{
+		return data;
+	}
+	
 }

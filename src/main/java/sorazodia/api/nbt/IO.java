@@ -11,28 +11,35 @@ import java.util.UUID;
 
 public class IO
 {
-	private ObjectOutputStream writer;
-	private ObjectInputStream reader;
-	
-	public IO(String path) throws IOException
+	public static void write(String path, HashMap<UUID, PlayerInfo> data) throws IOException
 	{
 		File file = new File(path);
-		writer = new ObjectOutputStream(new FileOutputStream(file));
-		reader = new ObjectInputStream(new FileInputStream(file));
-	}
-	
-	public void write(HashMap<UUID, PlayerInfo> data) throws IOException
-	{
+		ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(file));
+
 		writer.writeObject(data);
 		writer.close();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public Database read() throws ClassNotFoundException, IOException
+	public static Database read(String path) throws ClassNotFoundException, IOException
 	{
-		HashMap<UUID, PlayerInfo> data = (HashMap<UUID, PlayerInfo>) reader.readObject();
-		reader.close();
-		
-		return new Database(data);
+		File file = new File(path);
+		Database database;
+
+		if (file.exists())
+		{
+			ObjectInputStream reader = new ObjectInputStream(new FileInputStream(file));
+
+			HashMap<UUID, PlayerInfo> data = (HashMap<UUID, PlayerInfo>) reader.readObject();
+			reader.close();
+
+			database = new Database(data);
+		}
+		else
+		{
+			database = new Database();
+		}
+
+		return database;
 	}
 }
