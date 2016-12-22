@@ -1,28 +1,29 @@
 package sorazodia.api.nbt;
 
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Optional;
 
-public class PlayerInfo 
+public class PlayerInfo implements Serializable
 {	
-	protected HashMap<String, Optional<Object>> data = new HashMap<>();
+	private static final long serialVersionUID = 8771112364964905112L;
+	protected HashMap<String, Object> data = new HashMap<>();
 
 	public boolean add(String key, Object info)
 	{
-		return !data.containsKey(key) && data.put(key, Optional.ofNullable(info)) == null;
+		return !data.containsKey(key) && data.put(key, info) == null;
 	}
 	
-	public Optional<Object> get(String key)
+	public Object get(String key)
 	{
 		return data.get(key);
 	}
 	
-	public Optional<Object> set(String key, Object newInfo)
+	public Object set(String key, Object newInfo)
 	{
-		return data.replace(key, Optional.ofNullable(newInfo));
+		return data.replace(key, newInfo);
 	}
 	
-	public Optional<Object> remove(String key)
+	public Object remove(String key)
 	{
 		return data.remove(key);
 	}
