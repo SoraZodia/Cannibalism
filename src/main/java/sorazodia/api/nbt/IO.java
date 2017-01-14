@@ -9,8 +9,18 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * Read and write the Database object to file
+ */
 public class IO
 {
+	/**
+	 * Convert the Database into an external file for later use
+	 * 
+	 * @param File path to write the file to
+	 * @param The HashMap stored in the Database object
+	 * @throws IOException
+	 */
 	public static void write(String path, HashMap<UUID, PlayerInfo> data) throws IOException
 	{
 		File file = new File(path);
@@ -20,6 +30,14 @@ public class IO
 		writer.close();
 	}
 
+	/**
+	 * Convert a Database file into a object to be used
+	 * 
+	 * @param File path in which the Database file can be found
+	 * @return a Database object
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public static Database read(String path) throws ClassNotFoundException, IOException
 	{
