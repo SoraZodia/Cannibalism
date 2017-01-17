@@ -9,7 +9,26 @@ import java.util.HashMap;
 public class PlayerInfo implements Serializable
 {	
 	private static final long serialVersionUID = 8771112364964905112L;
-	protected HashMap<String, Object> data = new HashMap<>();
+	protected HashMap<String, Object> data;
+	
+	/**
+	 * Create the object with a empty hashmap
+	 */
+	public PlayerInfo()
+	{
+		this.data = new HashMap<>();
+	}
+	
+	/**
+	 * Creates the object that will already have an value in the hashmap
+	 * @param key, the data label
+	 * @param value, the actual data
+	 */
+	public PlayerInfo(String key, Object value)
+	{
+		this.data = new HashMap<>();
+		this.data.put(key, value);
+	}
 
 	/**
 	 * Adds data about the player into a HashMap, which can later be 
@@ -22,7 +41,7 @@ public class PlayerInfo implements Serializable
 	 */
 	public boolean add(String key, Object info)
 	{
-		return !data.containsKey(key) && data.put(key, info) == null;
+		return !this.data.containsKey(key) && this.data.put(key, info) == null;
 	}
 	
 	/**
@@ -34,7 +53,7 @@ public class PlayerInfo implements Serializable
 	 */
 	public Object get(String key)
 	{
-		return data.get(key);
+		return this.data.get(key);
 	}
 	
 	/**
@@ -46,7 +65,7 @@ public class PlayerInfo implements Serializable
 	 */
 	public Object set(String key, Object newInfo)
 	{
-		return data.replace(key, newInfo);
+		return this.data.replace(key, newInfo);
 	}
 	
 	/**
@@ -57,7 +76,7 @@ public class PlayerInfo implements Serializable
 	 */
 	public Object remove(String key)
 	{
-		return data.remove(key);
+		return this.data.remove(key);
 	}
 	
 }

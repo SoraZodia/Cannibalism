@@ -183,5 +183,10 @@ public class Cannibalism
 	{
 		return log;
 	}
+	
+	public static Database getDatabase()
+	{
+		return data;
+	}
 
 }

@@ -31,12 +31,41 @@ public class Database
 	}
 	
 	/**
+	 * Registers a player into the Database and adds information about them. This will
+	 * also work as a alternative to {@link PlayerInfo#add(String, Object)} and {@link PlayerInfo#set(String, Object)}.
+	 */
+	public boolean record(EntityPlayer player, String key, Object info)
+	{
+		UUID id = EntityPlayer.getUUID(player.getGameProfile());
+		boolean success = !this.data.containsKey(id) && this.data.put(id, new PlayerInfo(key, info)) == null;
+
+		if (!success && !this.data.get(id).add(key, info)) //means that player and key is registered
+			this.data.get(id).set(key, info);
+		
+		return success;
+	}
+	
+	/**
+	 * Registers a player into the Database and adds information about them. This will
+	 * also work as a alternative to {@link PlayerInfo#add(String, Object)} and {@link PlayerInfo#set(String, Object)}.
+	 */
+	public boolean record(UUID id, String key, Object info)
+	{
+		boolean success = !this.data.containsKey(id) && this.data.put(id, new PlayerInfo(key, info)) == null;
+
+		if (!success && !this.data.get(id).add(key, info)) //means that player and key is registered
+			this.data.get(id).set(key, info);
+		
+		return success;
+	}
+	
+	/**
 	 * Adds a player to the Database
 	 */
 	public boolean register(EntityPlayer player)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return !data.containsKey(id) && data.put(id, new PlayerInfo()) == null;
+		return !this.data.containsKey(id) && this.data.put(id, new PlayerInfo()) == null;
 	}
 	
 	/**
@@ -44,28 +73,72 @@ public class Database
 	 */
 	public boolean register(UUID id)
 	{
-		return !data.containsKey(id) && data.put(id, new PlayerInfo()) == null;
+		return !this.data.containsKey(id) && this.data.put(id, new PlayerInfo()) == null;
 	}
 	
 	/**
-	 * Provides the information associated with that player.
+	 * Provides the PlayerInfo associated with that player.
 	 * @param EntityPlayer
 	 * @return PlayerInfo
 	 */
 	public PlayerInfo get(EntityPlayer player)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return data.get(id);
+		return this.data.get(id);
 	}
 	
 	/**
-	 * Provides the information associated with that player.
+	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
+	 * 
+	 * The data is returned as a Object
+	 */
+	public Object get(EntityPlayer player, String key)
+	{
+		return this.get(player).get(key);
+	}
+	
+	/**
+	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
+	 * 
+	 * The data is returned as a Object
+	 */
+	public Object get(UUID id, String key)
+	{
+		return this.get(id).get(key);
+	}
+	
+	/**
+	 * Provides the PlayerInfo associated with that player.
 	 * @param EntityPlayer
 	 * @return PlayerInfo
 	 */
 	public PlayerInfo get(UUID id)
 	{
-		return data.get(id);
+		return this.data.get(id);
+	}
+	
+	/**
+	 * Delete a existing player data from the player. An alternative to {@link PlayerInfo#remove(String)}
+	 * 
+	 * @param player EntityPlayer
+	 * @param key the name of the info to remove
+	 * @return the deleted player data
+	 */
+	public Object remove(EntityPlayer player, String key)
+	{
+		return this.get(player).remove(key);
+	}
+	
+	/**
+	 * Delete a existing player data from the player. An alternative to {@link PlayerInfo#remove(String)}
+	 * 
+	 * @param player EntityPlayer
+	 * @param key the name of the info to remove
+	 * @return the deleted player data
+	 */
+	public Object remove(UUID id, String key)
+	{
+		return this.get(id).remove(key);
 	}
 	
 	/**
@@ -76,7 +149,7 @@ public class Database
 	public PlayerInfo remove(EntityPlayer player)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return data.remove(id);
+		return this.data.remove(id);
 	}
 	
 	/**
@@ -86,7 +159,7 @@ public class Database
 	 */
 	public PlayerInfo remove(UUID id)
 	{
-		return data.remove(id);
+		return this.data.remove(id);
 	}
 	
 	/**
@@ -98,7 +171,7 @@ public class Database
 	public PlayerInfo overwrite(EntityPlayer player, PlayerInfo newData)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return data.replace(id, newData);
+		return this.data.replace(id, newData);
 	}
 	
 	/**
@@ -109,7 +182,7 @@ public class Database
 	 */
 	public PlayerInfo overwrite(UUID id, PlayerInfo newData)
 	{
-		return data.replace(id, newData);
+		return this.data.replace(id, newData);
 	}
 	
 	/**
@@ -118,7 +191,7 @@ public class Database
 	 */
 	public HashMap<UUID, PlayerInfo> getDatabase()
 	{
-		return data;
+		return this.data;
 	}
 	
 }
