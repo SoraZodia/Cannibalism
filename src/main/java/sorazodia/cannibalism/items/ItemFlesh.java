@@ -33,7 +33,7 @@ public class ItemFlesh extends ItemFood
 			
 			nbt.changeWendigoValue(10);
 			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
-			System.out.println(stack.getItem().getRegistryName());
+			//System.out.println(stack.getItem().getRegistryName());
 			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
 			{
 				if (wendigoLevel >= 100)

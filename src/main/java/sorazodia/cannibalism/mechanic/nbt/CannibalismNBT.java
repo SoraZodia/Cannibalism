@@ -18,7 +18,7 @@ public class CannibalismNBT
 
 	public void changeWendigoValue(float amount)
 	{
-		float level = (float) DATA.get(player, tags[0]);
+		float level = this.getWendigoValue();
 		level += amount;
 		
 		DATA.record(player, tags[0], level);
@@ -31,7 +31,14 @@ public class CannibalismNBT
 
 	public float getWendigoValue()
 	{
-		return (float) DATA.get(player, tags[0]);
+		float value;
+		
+		if (DATA.get(player) == null || DATA.get(player, tags[0]) == null)
+			value = 0;
+		else
+			value = (float) DATA.get(player, tags[0]);
+
+		return value;
 	}
 
 	public static CannibalismNBT getNBT(EntityPlayer player)
@@ -41,7 +48,14 @@ public class CannibalismNBT
 
 	public boolean wendigoSpawned()
 	{
-		return (boolean) DATA.get(player, tags[1]);
+		boolean value;
+		
+		if (DATA.get(player) == null || DATA.get(player, tags[1]) == null)
+			value = true;
+		else
+			value = (boolean) DATA.get(player, tags[1]);
+
+		return value;
 	}
 
 	public void setWedigoSpawn(boolean doSpawn)
@@ -51,7 +65,14 @@ public class CannibalismNBT
 	
 	public boolean doWarningEffect()
 	{
-		return (boolean) DATA.get(player, tags[2]);
+		boolean value;
+		
+		if (DATA.get(player) == null || DATA.get(player, tags[2]) == null)
+			value = true;
+		else
+			value = (boolean) DATA.get(player, tags[2]);
+
+		return value;
 	}
 
 	public void setWarningEffect(boolean doApply)

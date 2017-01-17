@@ -69,7 +69,9 @@ public class Cannibalism
 	{
 		try
 		{
+			log.info("[Cannibalism] Writing playerdata to file...");
 			IO.write(dirPath + "\\cannibalismData.dat", data.getDatabase());
+			log.info("[Cannibalism] Completed");
 		}
 		catch (IOException e)
 		{
@@ -81,17 +83,20 @@ public class Cannibalism
 	private void setupData()
 
 	{
+		log.info("[Cannibalism] Parsing playerdata...");
+		
 		File dir = new File(dirPath);
 
 		if (!dir.exists())
 		{
 			dir.mkdirs();
-			System.out.println("Folder made!");
+			log.info("[Cannibalism] Created missing folder");
 		}
 		
 		try
 		{
 			data = IO.read(dirPath + "\\cannibalismData.dat");
+			log.info("[Cannibalism] Parsed");
 		}
 		catch (ClassNotFoundException | IOException e)
 		{
