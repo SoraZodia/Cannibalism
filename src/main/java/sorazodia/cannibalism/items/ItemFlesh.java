@@ -26,7 +26,7 @@ public class ItemFlesh extends ItemFood
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (CannibalismNBT.getNBT(player) != null && ConfigHandler.getMyth() == true && !world.isRemote)
+		if (ConfigHandler.getMyth() == true && !world.isRemote)
 		{
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();

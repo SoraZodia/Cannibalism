@@ -22,6 +22,8 @@ import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
+import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
+import sorazodia.cannibalism.server.CommandWendigoLevel;
 import sorazodia.cannibalism.tab.CannibalismTab;
 
 import com.google.gson.JsonSyntaxException;
@@ -55,7 +57,7 @@ public class Cannibalism
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent event)
 	{
-		//event.registerServerCommand(new CommandWendigoLevel());
+		event.registerServerCommand(new CommandWendigoLevel());
 		dirPath = ".\\saves\\" + event.getServer().getFolderName() + "\\SavedPlayerData";
 		setupData();
 		System.out.println(dirPath);
@@ -129,7 +131,7 @@ public class Cannibalism
 		common.preInit();
 
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
-		//MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
+		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
 	}
 

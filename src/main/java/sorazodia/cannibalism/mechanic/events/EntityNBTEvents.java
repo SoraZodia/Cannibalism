@@ -1,16 +1,11 @@
 package sorazodia.cannibalism.mechanic.events;
 
-import java.util.concurrent.Callable;
-
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -21,25 +16,10 @@ import sorazodia.cannibalism.mob.EntityWendigo;
 public class EntityNBTEvents
 {
 
-	//@SubscribeEvent
-	public void entityCreateEvent(AttachCapabilitiesEvent.Entity create)
-	{
-		if (ConfigHandler.getMyth() == true && (create.getEntity() instanceof EntityPlayer) && CannibalismNBT.getNBT((EntityLivingBase) create.getEntity()) == null)
-		{
-			CapabilityManager.INSTANCE.register(CannibalismNBT.class, new CannibalismNBT(), new Callable<CannibalismNBT>() {
-	            @Override
-	            public CannibalismNBT call() throws Exception
-	            {
-	                return new CannibalismNBT();
-	            }
-	        });
-		}
-	}
-
-	//@SubscribeEvent
+	@SubscribeEvent
 	public void playerUpdate(PlayerTickEvent updateEvent)
 	{
-		if (!updateEvent.player.worldObj.isRemote && ConfigHandler.getMyth() && CannibalismNBT.getNBT(updateEvent.player) != null)
+		if (!updateEvent.player.worldObj.isRemote && ConfigHandler.getMyth())
 		{
 			EntityPlayer player = updateEvent.player;
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
