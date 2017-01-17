@@ -61,7 +61,6 @@ public class Cannibalism
 		dirPath = ".\\saves\\" + event.getServer().getFolderName() + "\\SavedPlayerData";
 		setupData();
 		System.out.println(dirPath);
-		
 	}
 	
 	@EventHandler
@@ -83,7 +82,7 @@ public class Cannibalism
 	private void setupData()
 
 	{
-		log.info("[Cannibalism] Parsing playerdata...");
+		log.info("[Cannibalism] Reading playerdata...");
 		
 		File dir = new File(dirPath);
 
@@ -96,7 +95,7 @@ public class Cannibalism
 		try
 		{
 			data = IO.read(dirPath + "\\cannibalismData.dat");
-			log.info("[Cannibalism] Parsed");
+			log.info("[Cannibalism] Completed");
 		}
 		catch (ClassNotFoundException | IOException e)
 		{

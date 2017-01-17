@@ -8,11 +8,12 @@ public class CannibalismNBT
 {	
 	public static final String NBTNAME = "cannibalismVariables";
 	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect"};
-	private static final Database DATA = Cannibalism.getDatabase();
+	private static Database data;
 	private EntityPlayer player;
 
 	public CannibalismNBT(EntityPlayer player)
 	{
+		data = Cannibalism.getDatabase();
 		this.player = player;
 	}
 
@@ -21,22 +22,22 @@ public class CannibalismNBT
 		float level = this.getWendigoValue();
 		level += amount;
 		
-		DATA.record(player, tags[0], level);
+		data.record(player, tags[0], level);
 	}
 
 	public void setWendigoValue(float amount)
 	{
-		DATA.record(player, tags[0], amount);
+		data.record(player, tags[0], amount);
 	}
 
 	public float getWendigoValue()
 	{
 		float value;
 		
-		if (DATA.get(player) == null || DATA.get(player, tags[0]) == null)
+		if (data.get(player) == null || data.get(player, tags[0]) == null)
 			value = 0;
 		else
-			value = (float) DATA.get(player, tags[0]);
+			value = (float) data.get(player, tags[0]);
 
 		return value;
 	}
@@ -50,34 +51,34 @@ public class CannibalismNBT
 	{
 		boolean value;
 		
-		if (DATA.get(player) == null || DATA.get(player, tags[1]) == null)
+		if (data.get(player) == null || data.get(player, tags[1]) == null)
 			value = true;
 		else
-			value = (boolean) DATA.get(player, tags[1]);
+			value = (boolean) data.get(player, tags[1]);
 
 		return value;
 	}
 
 	public void setWedigoSpawn(boolean doSpawn)
 	{
-		DATA.record(player, tags[1], doSpawn);
+		data.record(player, tags[1], doSpawn);
 	}
 	
 	public boolean doWarningEffect()
 	{
 		boolean value;
 		
-		if (DATA.get(player) == null || DATA.get(player, tags[2]) == null)
+		if (data.get(player) == null || data.get(player, tags[2]) == null)
 			value = true;
 		else
-			value = (boolean) DATA.get(player, tags[2]);
+			value = (boolean) data.get(player, tags[2]);
 
 		return value;
 	}
 
 	public void setWarningEffect(boolean doApply)
 	{
-		DATA.record(player, tags[2], doApply);
+		data.record(player, tags[2], doApply);
 	}
 	
 }
