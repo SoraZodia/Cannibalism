@@ -1,7 +1,7 @@
 Cannibalism
 ===========
 
-Adds in the aspect of eating villagers... or yourself
+Minecraft mod that provides the player to either eat villagers or themselves during times of a food shorage. 
 
 License 
 ===========
