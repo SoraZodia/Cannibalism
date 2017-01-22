@@ -1,6 +1,5 @@
 package sorazodia.cannibalism.main;
 
-import java.io.File;
 import java.io.IOException;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -33,7 +32,7 @@ public class Cannibalism
 {
 
 	public static final String MODID = "cannibalism";
-	public static final String VERSION = "3.0.0";
+	public static final String VERSION = "3.1.1";
 	public static final String NAME = "Cannibalism";
 	public static final String GUI_FACTORY = "sorazodia.cannibalism.config.ConfigGUIFactory";
 
@@ -51,58 +50,25 @@ public class Cannibalism
 
 	private static Logger log;
 
-	private static Database data;
-	private String dirPath;
+	private static Database data = new Database();
+	private IO io;
 
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandWendigoLevel());
-		dirPath = ".\\saves\\" + event.getServer().getFolderName() + "\\SavedPlayerData";
-		setupData();
-		System.out.println(dirPath);
+		io = new IO(event, "cannibalismData");
+		log.info("[Cannibalism] Attempting to read playerdata...");
+		data = io.read();
+		log.info("[Cannibalism] Completed");
 	}
-	
+
 	@EventHandler
 	public void serverStop(FMLServerStoppingEvent event)
 	{
-		try
-		{
-			log.info("[Cannibalism] Writing playerdata to file...");
-			IO.write(dirPath + "\\cannibalismData.dat", data.getDatabase());
-			log.info("[Cannibalism] Completed");
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-	}
-	
-	private void setupData()
-
-	{
-		log.info("[Cannibalism] Reading playerdata...");
-		
-		File dir = new File(dirPath);
-
-		if (!dir.exists())
-		{
-			dir.mkdirs();
-			log.info("[Cannibalism] Created missing folder");
-		}
-		
-		try
-		{
-			data = IO.read(dirPath + "\\cannibalismData.dat");
-			log.info("[Cannibalism] Completed");
-		}
-		catch (ClassNotFoundException | IOException e)
-		{
-			log.info("[Cannibalism] File not found! Defaulting to empty database");
-			data = new Database();
-			e.printStackTrace();
-		}
+		log.info("[Cannibalism] Writing playerdata to file...");
+		io.write(data.getDatabase());
+		log.info("[Cannibalism] Completed");
 
 	}
 
@@ -116,20 +82,6 @@ public class Cannibalism
 
 		json = new JSONConfig(preEvent);
 		config = new ConfigHandler(preEvent, json);
-		
-//		UUID id = UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f");
-//		UUID id2 = UUID.fromString("220064ee-8daa-4786-af5c-15b24d175812");
-//
-//		data.register(id);
-//		data.register(id2);
-//
-//		System.out.println(data.get(id).get("test"));
-//		System.out.println(data.get(id2).get("test"));
-//
-//		data.get(id).add("test", "Success");
-//		data.get(id2).add("test", 76);
-//
-
 
 		ItemRegistry.init();
 		common.preInit();
@@ -189,7 +141,7 @@ public class Cannibalism
 	{
 		return log;
 	}
-	
+
 	public static Database getDatabase()
 	{
 		return data;
