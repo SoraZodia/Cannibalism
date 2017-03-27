@@ -99,7 +99,7 @@ public class EntityData implements Comparable<EntityData>
 	{
 		try
 		{
-			return (EntityLivingBase) EntityList.createEntityByName(name, world);
+			return (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
 		}
 		catch (NullPointerException nu)
 		{

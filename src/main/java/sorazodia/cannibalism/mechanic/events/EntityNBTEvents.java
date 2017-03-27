@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -19,7 +20,7 @@ public class EntityNBTEvents
 	@SubscribeEvent
 	public void playerUpdate(PlayerTickEvent updateEvent)
 	{
-		if (!updateEvent.player.worldObj.isRemote && ConfigHandler.getMyth())
+		if (!updateEvent.player.world.isRemote && ConfigHandler.getMyth())
 		{
 			EntityPlayer player = updateEvent.player;
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
@@ -64,10 +65,10 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
-			player.worldObj.playSound(null, player.getPosition(), SoundEvents.ENTITY_WOLF_HOWL, SoundCategory.HOSTILE, 1, 0.5F);
-			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", player.worldObj);
+			player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_WOLF_HOWL, SoundCategory.HOSTILE, 1, 0.5F);
+			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByIDFromName(new ResourceLocation(Cannibalism.MODID + ":wendigo"), player.world);
 			wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
-			player.worldObj.spawnEntityInWorld(wendigo);
+			player.world.spawnEntity(wendigo);
 			CannibalismNBT.getNBT(player).setWedigoSpawn(true);
 
 		}

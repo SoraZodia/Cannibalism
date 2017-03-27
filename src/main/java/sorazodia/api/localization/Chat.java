@@ -11,7 +11,7 @@ public class Chat
 
 	public static void displayPlainChat(EntityPlayer receiver, String text)
 	{
-		receiver.addChatComponentMessage(new TextComponentString(text));
+		receiver.sendMessage(new TextComponentString(text));
 	}
 
 	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText)
@@ -31,7 +31,7 @@ public class Chat
 	
 	public static void displayLocalizatedChat(EntityPlayer receiver, String unlocalizatedText, TextFormatting color, Object... variables)
 	{
-		receiver.addChatMessage(new TextComponentTranslation(unlocalizatedText, variables).setStyle(new Style().setColor(color)));
+		receiver.sendMessage(new TextComponentTranslation(unlocalizatedText, variables).setStyle(new Style().setColor(color)));
 	}
 
 }

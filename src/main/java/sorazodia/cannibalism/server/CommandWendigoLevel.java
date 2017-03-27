@@ -22,20 +22,20 @@ public class CommandWendigoLevel implements ICommand
 	private final String commandStat = "stat";
 
 	@Override
-	public String getCommandName()
+	public String getName()
 	{
 		return Cannibalism.MODID;
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender)
+	public String getUsage(ICommandSender sender)
 	{
-		sender.addChatMessage(new TextComponentTranslation("command.set"));
+		sender.sendMessage(new TextComponentTranslation("command.set"));
 		return I18n.translateToLocalFormatted("command.stat");
 	}
 
 	@Override
-	public List<String> getCommandAliases()
+	public List<String> getAliases()
 	{
 		ArrayList<String> aliases = new ArrayList<>();
 		
@@ -54,7 +54,7 @@ public class CommandWendigoLevel implements ICommand
 
 			if (player == null)
 			{
-				sender.addChatMessage(new TextComponentTranslation("command.error.player"));
+				sender.sendMessage(new TextComponentTranslation("command.error.player"));
 				return;
 			}
 
@@ -66,15 +66,15 @@ public class CommandWendigoLevel implements ICommand
 				if (isFloat(args[2]))
 				{
 					nbt.setWendigoValue(Float.parseFloat(args[2]));
-					sender.addChatMessage(new TextComponentTranslation("command.wendigolevelchange"));
+					sender.sendMessage(new TextComponentTranslation("command.wendigolevelchange"));
 				}
 				else
 				{
-					sender.addChatMessage(new TextComponentTranslation("command.error.number"));
+					sender.sendMessage(new TextComponentTranslation("command.error.number"));
 				}
 				break;
 			case commandStat:
-				sender.addChatMessage(new TextComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
+				sender.sendMessage(new TextComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				break;
 			}
 		}
@@ -113,18 +113,18 @@ public class CommandWendigoLevel implements ICommand
 	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender sender)
 	{
-		return sender.canCommandSenderUseCommand(2, Cannibalism.MODID);
+		return sender.canUseCommand(2, Cannibalism.MODID);
 	}
 
 	@Override
-	public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos blockpos)
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos blockpos)
 	{
 	    ArrayList<String> argsList = new ArrayList<>();
 
 		if (args.length >= 1)
 		{
 			String lastLetter = args[args.length - 1];
-			GameProfile[] profiles = server.getGameProfiles();
+			GameProfile[] profiles = server.getOnlinePlayerProfiles();
 
 			if (args.length == 1)
 			{
@@ -159,7 +159,7 @@ public class CommandWendigoLevel implements ICommand
 	@Override
 	public int compareTo(ICommand command)
 	{
-		return Cannibalism.MODID.compareTo(((ICommand) command).getCommandName());
+		return Cannibalism.MODID.compareTo(((ICommand) command).getName());
 	}
 
 }

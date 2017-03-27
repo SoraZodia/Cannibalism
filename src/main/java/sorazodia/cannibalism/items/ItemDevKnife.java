@@ -16,6 +16,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -50,12 +51,12 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public boolean hitEntity(ItemStack item, EntityLivingBase victim, EntityLivingBase user)
 	{
-		World world = user.worldObj;
+		World world = user.world;
 
 		if (!(user instanceof EntityPlayer))
 			return false;
 
-		victim.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
+		victim.attackEntityFrom(DamageSource.OUT_OF_WORLD, Float.MAX_VALUE);
 
 		// As much as it would be funny to see players accidentally Wendigos,
 		// don't really want that to happen...
@@ -63,9 +64,9 @@ public class ItemDevKnife extends ItemKnife
 		{
 			if (user.isSneaking() && user.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f")))
 			{
-				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByName(Cannibalism.MODID + ".wendigo", world);
+				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByIDFromName(new ResourceLocation(Cannibalism.MODID + ":wendigo"), world);
 				wendigo.setLocationAndAngles(user.posX + 1, user.posY, user.posZ, 0, 0);
-				world.spawnEntityInWorld(wendigo);
+				world.spawnEntity(wendigo);
 			}
 		}
 
@@ -79,7 +80,7 @@ public class ItemDevKnife extends ItemKnife
     }
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 
 		if (!world.isRemote)
@@ -105,7 +106,7 @@ public class ItemDevKnife extends ItemKnife
 			}
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 
 	private void error(EntityPlayer player, String errorMessage, String fileName)
@@ -120,7 +121,7 @@ public class ItemDevKnife extends ItemKnife
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand)
 	{
-		if (!(player.worldObj.isRemote))
+		if (!(player.world.isRemote))
 		{
 			if (!player.isSneaking())
 			{
@@ -136,9 +137,9 @@ public class ItemDevKnife extends ItemKnife
 					Chat.displayPlainChat(player, data.toString());
 				}
 
-				else if (json.getWildCardIndex(target, player.worldObj) >= 0)
+				else if (json.getWildCardIndex(target, player.world) >= 0)
 				{
-					EntityData data = json.getData(target, player.worldObj);
+					EntityData data = json.getData(target, player.world);
 					Chat.displayPlainChat(player, data.toString());
 				}
 			}
@@ -163,7 +164,7 @@ public class ItemDevKnife extends ItemKnife
 		{
 			superClass = Class.forName(child.getClass().getSuperclass().getName());
 			Constructor<?> cons = superClass.getConstructor(World.class);
-			entity = (Entity) cons.newInstance(child.worldObj);
+			entity = (Entity) cons.newInstance(child.world);
 
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)

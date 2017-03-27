@@ -1,6 +1,7 @@
 package sorazodia.cannibalism.main;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import sorazodia.cannibalism.mob.EntityWendigo;
 
@@ -17,7 +18,7 @@ public class EntitysRegistry
 
 	private static void registerEntity(Class<? extends EntityLiving> entity, String name, int range)
 	{
-		EntityRegistry.registerModEntity(entity, name, modID++, Cannibalism.instance, range, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Cannibalism.MODID + ":" + name), entity, name, modID++, Cannibalism.instance, range, 1, true);
 	}
 
 }

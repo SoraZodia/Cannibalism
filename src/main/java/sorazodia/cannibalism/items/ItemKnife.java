@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -25,7 +25,7 @@ import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
-public class ItemKnife extends ItemSword
+public class ItemKnife extends Item
 {
 
 	private boolean interact = false;
@@ -33,18 +33,22 @@ public class ItemKnife extends ItemSword
 
 	public ItemKnife(ToolMaterial material)
 	{
-		super(material);
+		super();
 	}
-	
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack)
-    {
-        return EnumAction.BLOCK;
-    }
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
+	public EnumAction getItemUseAction(ItemStack stack)
 	{
+		return EnumAction.BLOCK;
+	}
+
+	
+	
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+	{
+		ItemStack stack = player.getHeldItem(hand);
+		
 		if (!interact && player.isSneaking())
 		{
 			spookyEffect(world, player);
@@ -82,11 +86,11 @@ public class ItemKnife extends ItemSword
 		if (target.hurtTime < 1 && target.getHealth() > 0)
 		{
 
-			if (!player.isSneaking() && target.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null &&  target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemArmor)
+			if (!player.isSneaking() && target.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemArmor)
 			{
 				ItemArmor armor = (ItemArmor) target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 				player.swingArm(hand);
-				player.worldObj.playSound(null, player.getPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+				player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
 				stack.damageItem(15 * armor.damageReduceAmount, player);
 				return true;
 			}
@@ -97,9 +101,9 @@ public class ItemKnife extends ItemSword
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 
-			else if (json.getWildCardIndex(target, player.worldObj) >= 0)
+			else if (json.getWildCardIndex(target, player.world) >= 0)
 			{
-				EntityData data = json.getData(target, player.worldObj);
+				EntityData data = json.getData(target, player.world);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
 
@@ -121,7 +125,7 @@ public class ItemKnife extends ItemSword
 		{
 			player.swingArm(hand);
 			stack.damageItem(1, player);
-			spawnBlood(target, target.worldObj, 0);
+			spawnBlood(target, target.world, 0);
 		}
 
 		return interact;
@@ -132,7 +136,7 @@ public class ItemKnife extends ItemSword
 		interact = true;
 		String name = I18n.translateToLocalFormatted("item.playerFleshOwner.name", owner);
 
-		if (!player.worldObj.isRemote)
+		if (!player.world.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
 			setMeatName(meat, name);
@@ -144,11 +148,11 @@ public class ItemKnife extends ItemSword
 	private void cutEntity(EntityPlayer player, EntityLivingBase entity, float damage, ItemStack[] drops)
 	{
 		interact = true;
-		if (!entity.worldObj.isRemote)
+		if (!entity.world.isRemote)
 		{
 			cutDamage(player, entity, damage);
 			for (ItemStack item : drops)
-			{	
+			{
 				entity.entityDropItem(item.copy(), 0.0F);
 			}
 		}

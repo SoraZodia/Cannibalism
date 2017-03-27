@@ -21,7 +21,7 @@ public class DeathEvent
 	{
 		int amount = rand.nextInt(3) + 1;
 		EntityLivingBase living = livingDeath.getEntityLiving();
-		if (!living.worldObj.isRemote)
+		if (!living.world.isRemote)
 		{
 			if (living instanceof EntityPlayer)
 			{
