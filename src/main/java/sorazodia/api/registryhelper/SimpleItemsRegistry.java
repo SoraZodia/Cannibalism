@@ -3,7 +3,6 @@ package sorazodia.api.registryhelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -39,15 +38,14 @@ public class SimpleItemsRegistry
 	 * A more steamline way to register your items, does all of the extra stuff
 	 * for you, just make sure your item object is initializated
 	 */
-	public static void registerItems(Item item, String itemName, String imageName)
+	public static void registerItems(Item item, String itemName, String textureName)
 	{
-		GameRegistry.register(item, new ResourceLocation(modid + ":" + itemName));
-		item.setCreativeTab(tabs).setUnlocalizedName(itemName);
+		item.setCreativeTab(tabs).setUnlocalizedName(itemName).setRegistryName(itemName);
+		GameRegistry.register(item);
 		
 		 if(FMLCommonHandler.instance().getSide().isClient())
-	            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modid + ":" + imageName, "inventory"));
+	            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modid + ":" + textureName, "inventory"));
 	}
-
 	/**
 	 * This method is used when the item's name is the same as its texture name.
 	 * Helps reduce repetivite typing #lazy:P. Please make sure your item object
