@@ -1,7 +1,8 @@
 package sorazodia.cannibalism.main;
 
 import sorazodia.api.registryhelper.SimpleItemsRegistry;
-import sorazodia.cannibalism.items.manager.ItemList;
+
+import static sorazodia.cannibalism.items.manager.ItemList.*;
 
 public class ItemRegistry
 {
@@ -11,20 +12,20 @@ public class ItemRegistry
 		SimpleItemsRegistry.init(Cannibalism.MODID, Cannibalism.cannibalismTab);
 
 		// initializate the knifes
-		SimpleItemsRegistry.registerItems(ItemList.woodenKnife, ItemList.woodenKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.flintKnife, ItemList.flintKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.stoneKnife, ItemList.stoneKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.goldKnife, ItemList.goldKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.ironKnife, ItemList.ironKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.diamondKnife, ItemList.diamondKnifeName);
-		SimpleItemsRegistry.registerItems(ItemList.devKnife, ItemList.devKnifeName, ItemList.flintKnifeName);
+		SimpleItemsRegistry.registerItems(woodenKnife, woodenKnifeName, woodenKnifeTexture);
+		SimpleItemsRegistry.registerItems(flintKnife, flintKnifeName, flintKnifeTexture);
+		SimpleItemsRegistry.registerItems(stoneKnife, stoneKnifeName, stoneKnifeTexture);
+		SimpleItemsRegistry.registerItems(goldKnife, goldKnifeName, goldKnifeTexture);
+		SimpleItemsRegistry.registerItems(ironKnife, ironKnifeName, ironKnifeTexture);
+		SimpleItemsRegistry.registerItems(diamondKnife, diamondKnifeName, diamondKnifeTexture);
+		SimpleItemsRegistry.registerItems(devKnife, devKnifeName, flintKnifeTexture);
 
 		// initializate the flesh
-		SimpleItemsRegistry.registerItems(ItemList.playerFlesh, ItemList.playerFleshName);
-		SimpleItemsRegistry.registerItems(ItemList.villagerFlesh, ItemList.villagerFleshName);
-		SimpleItemsRegistry.registerItems(ItemList.witchFlesh, ItemList.witchFleshName);
-		SimpleItemsRegistry.registerItems(ItemList.playerFleshCooked, ItemList.playerFleshCookedName);
-		SimpleItemsRegistry.registerItems(ItemList.villagerFleshCooked, ItemList.villagerFleshCookedName);
+		SimpleItemsRegistry.registerItems(playerFlesh, playerFleshName, playerFleshTexture);
+		SimpleItemsRegistry.registerItems(villagerFlesh, villagerFleshName, villagerFleshTexture);
+		SimpleItemsRegistry.registerItems(witchFlesh, witchFleshName, witchFleshTexture);
+		SimpleItemsRegistry.registerItems(playerFleshCooked, playerFleshCookedName, playerFleshCookedTexture);
+		SimpleItemsRegistry.registerItems(villagerFleshCooked, villagerFleshCookedName, villagerFleshCookedTexture);
 
 	}
 
