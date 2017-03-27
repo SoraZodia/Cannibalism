@@ -1,24 +1,24 @@
 itemGroup.cannibalism=Cannibalism
 
-item.woodenKnife.name=Wooden Knife
-item.diamondKnife.name=Diamond Knife
-item.goldKnife.name=Golden Knife
-item.ironKnife.name=Iron Knife
-item.stoneKnife.name=Stone Knife
-item.flintKnife.name=Flint Knife
+item.woodenknife.name=Wooden Knife
+item.diamondknife.name=Diamond Knife
+item.goldknife.name=Golden Knife
+item.ironknife.name=Iron Knife
+item.stoneknife.name=Stone Knife
+item.flintknife.name=Flint Knife
 
-item.villagerFlesh.name=Villager Flesh
-item.playerFlesh.name=Player Flesh
-item.villagerFleshCooked.name=Cooked Villager Flesh
-item.playerFleshCooked.name=Cooked Player Flesh
-item.witchFlesh.name=Witch Flesh
+item.villagerflesh.name=Villager Flesh
+item.playerflesh.name=Player Flesh
+item.villagerfleshCooked.name=Cooked Villager Flesh
+item.playerfleshCooked.name=Cooked Player Flesh
+item.witchflesh.name=Witch Flesh
 
 item.playerFleshOwner.name=%s's Flesh
 
-item.villagerPoptart.name=Villager Poptart
-item.playerPoptart.name=Player Poptart
-item.villagerPoptartCooked.name=Cooked Villager Poptart
-item.playerPoptartCooked.name=Cooked Player Poptart
+item.villagerpoptart.name=Villager Poptart
+item.playerpoptart.name=Player Poptart
+item.villagerpoptartcooked.name=Cooked Villager Poptart
+item.playerpoptartcooked.name=Cooked Player Poptart
 
 item.devKnife.format=[Format] "modID.name" or "name" if mob is part of vanilla
 item.devKnife.mobName=[Name] %s

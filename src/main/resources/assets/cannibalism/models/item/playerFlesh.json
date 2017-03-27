@@ -1,6 +1,6 @@
 {
-	"parent": "cannibalism:item/itemRoot",
+	"parent": "cannibalism:item/itemroot",
 	"textures": {
-		"layer0": "cannibalism:items/playerFlesh"
+		"layer0": "cannibalism:items/playerflesh"
 	}
 }
