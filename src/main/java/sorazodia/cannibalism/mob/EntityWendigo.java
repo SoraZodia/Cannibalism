@@ -35,15 +35,22 @@ public class EntityWendigo extends EntityMob
 		this.stepHeight = 1.0F;
 		this.experienceValue = 50;
 
-		this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
+		
+	}
+	
+	@Override
+    public void initEntityAI()
+    {
+    	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAILookIdle(this));
+		this.tasks.addTask(3, new EntityAILookIdle(this));
 		
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
-	}
+    }
+
 
 	@Override
 	public void applyEntityAttributes()

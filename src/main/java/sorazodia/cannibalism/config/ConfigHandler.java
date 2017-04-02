@@ -54,7 +54,7 @@ public class ConfigHandler
 		return bloodAmount;
 	}
 
-	public static boolean getMyth()
+	public static boolean allowMyth()
 	{
 		return myth;
 	}

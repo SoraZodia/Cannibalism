@@ -20,7 +20,7 @@ public class EntityNBTEvents
 	@SubscribeEvent
 	public void playerUpdate(PlayerTickEvent updateEvent)
 	{
-		if (!updateEvent.player.world.isRemote && ConfigHandler.getMyth())
+		if (!updateEvent.player.world.isRemote && ConfigHandler.allowMyth())
 		{
 			EntityPlayer player = updateEvent.player;
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
@@ -57,11 +57,12 @@ public class EntityNBTEvents
 		if (wendigoLevel >= 150)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10, 2));
+			player.getCooldownTracker().removeCooldown(player.getActiveItemStack().getItem());
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));
+			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));		
 		}
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
