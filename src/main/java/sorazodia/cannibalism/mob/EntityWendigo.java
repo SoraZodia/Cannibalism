@@ -3,10 +3,10 @@ package sorazodia.cannibalism.mob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
@@ -41,9 +41,10 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
+		
     	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
-		this.tasks.addTask(3, new EntityAILookIdle(this));
+		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
 		
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
@@ -109,6 +110,8 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
 	{
+		super.attackEntityAsMob(entity);
+		
 		boolean attacked = false;
 		if (entity instanceof EntityLivingBase)
 		{
