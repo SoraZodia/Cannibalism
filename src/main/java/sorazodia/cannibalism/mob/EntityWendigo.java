@@ -45,10 +45,10 @@ public class EntityWendigo extends EntityMob
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAILookIdle(this));
 		
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
+		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
     }
 
 
@@ -56,7 +56,7 @@ public class EntityWendigo extends EntityMob
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0D);
+		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
 		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
