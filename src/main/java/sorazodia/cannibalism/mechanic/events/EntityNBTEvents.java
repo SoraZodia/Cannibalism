@@ -7,6 +7,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -18,11 +19,11 @@ public class EntityNBTEvents
 {
 
 	@SubscribeEvent
-	public void playerUpdate(PlayerTickEvent updateEvent)
+	public void playerUpdate(PlayerTickEvent event)
 	{
-		if (!updateEvent.player.world.isRemote && ConfigHandler.allowMyth())
+		if (!event.player.world.isRemote && ConfigHandler.allowMyth())
 		{
-			EntityPlayer player = updateEvent.player;
+			EntityPlayer player = event.player;
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();
 
@@ -31,7 +32,7 @@ public class EntityNBTEvents
 				nbt.setWarningEffect(true);
 				nbt.setWedigoSpawn(false);
 			}
-			
+
 			addWendigoEffect(player, wendigoLevel, nbt);
 		}
 	}
@@ -48,21 +49,25 @@ public class EntityNBTEvents
 			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 10, 1));
 			player.addExhaustion(0.04F);
 		}
-		if (wendigoLevel >= 100 && nbt.doWarningEffect())
+		if (wendigoLevel >= 100)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100));
-			player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100));
-			nbt.setWarningEffect(false);
+			if (nbt.doWarningEffect())
+			{
+				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100));
+				player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100));
+				nbt.setWarningEffect(false);
+			}
+			//TODO player attack cooldown, remember that the timer needs to be increased and not reset
+			player.getCooldownTracker().removeCooldown(player.getHeldItem(player.getActiveHand()).getItem());
 		}
 		if (wendigoLevel >= 150)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10, 2));
-			player.getCooldownTracker().removeCooldown(player.getActiveItemStack().getItem());
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));		
+			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));
 		}
 		if (wendigoLevel >= 250 && nbt.wendigoSpawned() == false)
 		{
