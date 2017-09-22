@@ -7,7 +7,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -21,23 +20,23 @@ public class EntityNBTEvents
 	@SubscribeEvent
 	public void playerUpdate(PlayerTickEvent event)
 	{
-		if (!event.player.world.isRemote && ConfigHandler.allowMyth())
+		if (ConfigHandler.allowMyth())
 		{
 			EntityPlayer player = event.player;
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();
-
 			if (wendigoLevel < 100)
 			{
 				nbt.setWarningEffect(true);
 				nbt.setWedigoSpawn(false);
 			}
 
-			addWendigoEffect(player, wendigoLevel, nbt);
+			if (!event.player.world.isRemote)
+				addServerEffect(player, wendigoLevel, nbt);;
 		}
 	}
-
-	private void addWendigoEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
+	
+	private void addServerEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
@@ -56,9 +55,10 @@ public class EntityNBTEvents
 				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100));
 				player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100));
 				nbt.setWarningEffect(false);
-			}
+			}	
+			
 			//TODO player attack cooldown, remember that the timer needs to be increased and not reset
-			player.getCooldownTracker().removeCooldown(player.getHeldItem(player.getActiveHand()).getItem());
+			player.getCooldownTracker().setCooldown(player.getHeldItem(player.getActiveHand()).getItem(), 0);
 		}
 		if (wendigoLevel >= 150)
 		{
