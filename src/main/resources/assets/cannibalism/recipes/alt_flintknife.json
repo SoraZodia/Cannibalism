@@ -4,8 +4,8 @@
   },
   "type": "forge:ore_shaped",
   "pattern": [
-    "m  ",
-    " s "
+    " m ",
+    "s  "
   ],
   "key": {
     "m": {

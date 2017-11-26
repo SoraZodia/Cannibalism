@@ -2,40 +2,19 @@
   "result": {
     "item": "cannibalism:woodenknife"
   },
-  "type": "minecraft:crafting_shaped",
+  "type": "forge:ore_shaped",
   "pattern": [
     "m  ",
     " s "
   ],
   "key": {
-    "m": [
-	  {
-        "item": "minecraft:planks",
-        "data": 0
-      },
-      {
-        "item": "minecraft:planks",
-        "data": 1
-      },
-      {
-        "item": "minecraft:planks",
-        "data": 2
-      },
-      {
-        "item": "minecraft:planks",
-        "data": 3
-      },
-      {
-        "item": "minecraft:planks",
-        "data": 4
-      },
-      {
-        "item": "minecraft:planks",
-        "data": 5
-      }
-    ],
+    "m": {
+	  "type": "forge:ore_dict",
+        "ore": "plankWood"
+	},
 	"s": {
-	  "item": "minecraft:stick"
+	  "type": "forge:ore_dict",
+        "ore": "stickWood"
 	}
   }
 }

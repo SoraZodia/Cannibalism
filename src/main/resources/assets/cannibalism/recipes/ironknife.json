@@ -2,17 +2,19 @@
   "result": {
     "item": "cannibalism:ironknife"
   },
-  "type": "minecraft:crafting_shaped",
+  "type": "forge:ore_shaped",
   "pattern": [
     "m  ",
     " s "
   ],
   "key": {
     "m": {
-        "item": "minecraft:iron_ingot"
-    },
+	  "type": "forge:ore_dict",
+        "ore": "ingotIron"
+	},
 	"s": {
-	  "item": "minecraft:stick"
+	  "type": "forge:ore_dict",
+        "ore": "stickWood"
 	}
   }
 }

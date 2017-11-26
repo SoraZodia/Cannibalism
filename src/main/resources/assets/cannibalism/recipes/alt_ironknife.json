@@ -1,16 +1,17 @@
 {
   "result": {
-    "item": "cannibalism:flintknife"
+    "item": "cannibalism:ironknife"
   },
   "type": "forge:ore_shaped",
   "pattern": [
-    "m  ",
-    " s "
+    " m ",
+    "s  "
   ],
   "key": {
     "m": {
-        "item": "minecraft:flint"
-    },
+	  "type": "forge:ore_dict",
+        "ore": "ingotIron"
+	},
 	"s": {
 	  "type": "forge:ore_dict",
         "ore": "stickWood"
