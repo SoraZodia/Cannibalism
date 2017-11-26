@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "cannibalism:stoneknife"
+  },
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "m  ",
+    " s "
+  ],
+  "key": {
+    "m": [
+		{
+			"item": "minecraft:stone",
+			"data": 0
+		},
+		{
+			"item": "minecraft:cobblestone"
+		}
+	],
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  }
+}

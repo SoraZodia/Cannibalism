@@ -15,9 +15,9 @@ public class ConfigGUIFactory implements IModGuiFactory
 	}
 
 	@Override
-	public Class<? extends GuiScreen> mainConfigGuiClass()
+	public GuiScreen createConfigGui(GuiScreen screen)
 	{
-		return ConfigGUI.class;
+		return new ConfigGUI(screen);
 	}
 
 	@Override
@@ -27,8 +27,8 @@ public class ConfigGUIFactory implements IModGuiFactory
 	}
 
 	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
+	public boolean hasConfigGui()
 	{
-		return null;
+		return false;
 	}
 }

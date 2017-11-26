@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.main.ItemRegistry;
 
 public class CannibalismTab extends CreativeTabs
 {
@@ -18,7 +18,7 @@ public class CannibalismTab extends CreativeTabs
 	@SideOnly(Side.CLIENT)
 	public ItemStack getTabIconItem()
 	{
-		return new ItemStack(ItemList.ironKnife);
+		return new ItemStack(ItemRegistry.ironKnife);
 	}
 
 }

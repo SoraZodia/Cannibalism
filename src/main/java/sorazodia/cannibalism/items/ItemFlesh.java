@@ -7,20 +7,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.config.ConfigHandler;
-import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.main.Cannibalism;
+import sorazodia.cannibalism.main.ItemRegistry;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 public class ItemFlesh extends ItemFood
 {
 
-	public ItemFlesh(int hunger, float saturation, boolean isWolfFood)
+	public ItemFlesh(String name, int hunger, float saturation, boolean isWolfFood)
 	{
 		super(hunger, saturation, isWolfFood);
+		this.setUnlocalizedName(name);
+		this.setRegistryName(name);
+		this.setCreativeTab(Cannibalism.cannibalismTab);
 	}
 
-	public ItemFlesh(int hunger, float saturation)
+	public ItemFlesh(String name, int hunger, float saturation)
 	{
-		this(hunger, saturation, true);
+		this(name, hunger, saturation, true);
 	}
 
 	@Override
@@ -34,7 +38,7 @@ public class ItemFlesh extends ItemFood
 			nbt.changeWendigoValue(10);
 			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
 			//System.out.println(stack.getItem().getRegistryName());
-			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
+			if (stack.getItem() == ItemRegistry.witchFlesh)
 			{
 				if (wendigoLevel >= 100)
 					player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 1));
@@ -44,7 +48,7 @@ public class ItemFlesh extends ItemFood
 		}
 		else if (!world.isRemote)
 		{
-			if (stack.getItem().getUnlocalizedName().contains(ItemList.witchFleshName))
+			if (stack.getItem() == ItemRegistry.witchFlesh)
 				player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 1, 1));
 		}
 	}

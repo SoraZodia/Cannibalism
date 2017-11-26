@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "cannibalism:goldknife"
+  },
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "m  ",
+    " s "
+  ],
+  "key": {
+    "m": {
+        "item": "minecraft:gold_ingot"
+    },
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  }
+}

@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +22,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import org.apache.logging.log4j.Level;
 
@@ -45,7 +49,7 @@ public class ItemDevKnife extends ItemKnife
 
 	public ItemDevKnife()
 	{
-		super(dev);
+		super("knifeoftesting", dev);
 	}
 
 	@Override
@@ -150,7 +154,7 @@ public class ItemDevKnife extends ItemKnife
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag tooltipFlage)
 	{
 		list.add(I18n.translateToLocal("item.devKnife.lore1"));
 		list.add(I18n.translateToLocal("item.devKnife.lore2"));

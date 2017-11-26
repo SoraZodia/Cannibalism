@@ -1,0 +1,41 @@
+{
+  "result": {
+    "item": "cannibalism:woodenknife"
+  },
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "m  ",
+    " s "
+  ],
+  "key": {
+    "m": [
+	  {
+        "item": "minecraft:planks",
+        "data": 0
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 1
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 2
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 3
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 4
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 5
+      }
+    ],
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  }
+}

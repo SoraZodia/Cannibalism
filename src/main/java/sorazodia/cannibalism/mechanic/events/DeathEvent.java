@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import sorazodia.cannibalism.items.manager.ItemList;
+import sorazodia.cannibalism.main.ItemRegistry;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
@@ -26,16 +26,16 @@ public class DeathEvent
 		{
 			if (entity instanceof EntityPlayer)
 			{
-				ItemStack playerFlesh = new ItemStack(ItemList.playerFlesh);
+				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh);
 				setMeatName(playerFlesh, entity.getName() + "'s Flesh");
 				entity.entityDropItem(playerFlesh, amount);
 
-				if (event.getSource().getEntity() instanceof EntityPlayer)
-					possessKiller((EntityPlayer) event.getSource().getEntity(), CannibalismNBT.getNBT((EntityPlayer) entity));
+				if (event.getSource().getTrueSource() instanceof EntityPlayer)
+					possessKiller((EntityPlayer) event.getSource().getTrueSource(), CannibalismNBT.getNBT((EntityPlayer) entity));
 			}
 			if (entity instanceof EntityVillager)
 			{
-				entity.dropItem(ItemList.villagerFlesh, amount);
+				entity.dropItem(ItemRegistry.villagerFlesh, amount);
 			}
 		}
 	}

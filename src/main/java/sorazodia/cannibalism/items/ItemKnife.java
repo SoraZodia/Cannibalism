@@ -21,8 +21,8 @@ import sorazodia.cannibalism.api.EntityData;
 import sorazodia.cannibalism.api.ICutable;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
-import sorazodia.cannibalism.items.manager.ItemList;
 import sorazodia.cannibalism.main.Cannibalism;
+import sorazodia.cannibalism.main.ItemRegistry;
 import sorazodia.cannibalism.mechanic.nbt.FleshNBTHelper;
 
 public class ItemKnife extends Item
@@ -31,9 +31,12 @@ public class ItemKnife extends Item
 	private boolean interact = false;
 	private JSONConfig json = Cannibalism.getJson();
 
-	public ItemKnife(ToolMaterial material)
+	public ItemKnife(String name, ToolMaterial material)
 	{
 		super();
+		this.setUnlocalizedName(name);
+		this.setRegistryName(name);
+		this.setCreativeTab(Cannibalism.cannibalismTab);
 	}
 
 	@Override
@@ -55,7 +58,7 @@ public class ItemKnife extends Item
 			player.swingArm(hand);
 			if (!world.isRemote)
 			{
-				cutPlayer(player, getDamage(5.0F, 5.5F), player.getName(), ItemList.playerFlesh);
+				cutPlayer(player, getDamage(5.0F, 5.5F), player.getName(), ItemRegistry.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}
@@ -116,7 +119,7 @@ public class ItemKnife extends Item
 
 			if (target instanceof EntityPlayerMP)
 			{
-				cutPlayer(player, getDamage(5.0F, 5.5F), target.getName(), ItemList.playerFlesh);
+				cutPlayer(player, getDamage(5.0F, 5.5F), target.getName(), ItemRegistry.playerFlesh);
 			}
 
 		}

@@ -41,7 +41,7 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		
+		super.initEntityAI();
     	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
@@ -57,18 +57,18 @@ public class EntityWendigo extends EntityMob
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
-		getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
+		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
 	}
 
 	@Override 
 	public boolean attackEntityFrom(DamageSource source, float damage)
     {
-		if (source.getEntity() instanceof Entity)
+		if (source.getTrueSource() instanceof Entity)
 		{
-			attacker = (EntityLivingBase) source.getEntity();
+			attacker = (EntityLivingBase) source.getTrueSource();
 			this.setRevengeTarget(attacker);
 		}
 		
@@ -147,7 +147,7 @@ public class EntityWendigo extends EntityMob
 	}
 
 	@Override
-	public SoundEvent getHurtSound()
+	public SoundEvent getHurtSound(DamageSource source)
 	{
 		return hurtSound;
 	}
