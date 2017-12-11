@@ -3,6 +3,9 @@ package sorazodia.cannibalism.mob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -27,7 +30,6 @@ public class EntityWendigo extends EntityMob
 	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.hurt"));
 	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
 	
-//Change attack target, attack witch + zombine
 	public EntityWendigo(World world)
 	{
 		super(world);
@@ -41,23 +43,26 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		super.initEntityAI();
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.0D, true));
+	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 1.0D, 32F));
     	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
 		
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
 		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
     }
+	
 
 
 	@Override
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.50D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
@@ -74,12 +79,6 @@ public class EntityWendigo extends EntityMob
 		
 		return super.attackEntityFrom(source, damage);
     }
-	
-//	@Override
-//	public void setRevengeTarget(EntityLivingBase target)
-//    {
-//		super.setRevengeTarget(target);
-//    }
 	
 	@Override
 	public void setDead()
@@ -98,20 +97,10 @@ public class EntityWendigo extends EntityMob
 		
 		super.setDead();
 	}
-	
-	@Override
-	public void onUpdate()
-	{	
-		super.onUpdate();
-		
-		this.stepHeight = 1.0F;
-	}
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
-	{
-		super.attackEntityAsMob(entity);
-		
+	{	
 		boolean attacked = false;
 		if (entity instanceof EntityLivingBase)
 		{
@@ -131,7 +120,7 @@ public class EntityWendigo extends EntityMob
 
 		}
 
-		return attacked;
+		return super.attackEntityAsMob(entity);
 	}
 
 	@Override

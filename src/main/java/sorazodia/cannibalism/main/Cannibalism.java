@@ -1,5 +1,7 @@
 package sorazodia.cannibalism.main;
 
+import static sorazodia.cannibalism.main.ItemRegistry.*;
+
 import java.io.IOException;
 
 import net.minecraft.item.Item;
@@ -14,7 +16,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.logging.log4j.Logger;
 
@@ -30,8 +31,6 @@ import sorazodia.cannibalism.server.CommandWendigoLevel;
 import sorazodia.cannibalism.tab.CannibalismTab;
 
 import com.google.gson.JsonSyntaxException;
-
-import static sorazodia.cannibalism.main.ItemRegistry.*;
 
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
