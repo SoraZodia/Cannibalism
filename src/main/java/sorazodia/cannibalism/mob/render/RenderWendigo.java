@@ -9,7 +9,6 @@ import sorazodia.cannibalism.mob.mobel.ModelWendigo;
 
 public class RenderWendigo extends RenderLiving<EntityWendigo>
 {
-	private ResourceLocation wendigoTexture = new ResourceLocation(Cannibalism.MODID, "textures/entity/wendigo.png");
 
 	public RenderWendigo(RenderManager manager)
 	{
@@ -19,7 +18,7 @@ public class RenderWendigo extends RenderLiving<EntityWendigo>
 	@Override
 	public ResourceLocation getEntityTexture(EntityWendigo entity)
 	{
-		return wendigoTexture;
+		return new ResourceLocation(Cannibalism.MODID, "textures/entity/wendigo.png");
 	}
 
 }
