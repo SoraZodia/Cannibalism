@@ -18,7 +18,7 @@ public class RenderTurnedVillager extends RenderLiving<EntityTurnedVillager>
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTurnedVillager entity)
 	{
-		return new ResourceLocation(Cannibalism.MODID, "textures/entity/wendigo.png");
+		return new ResourceLocation(Cannibalism.MODID, "textures/entity/villager_turned.png");
 	}
 
 }
