@@ -14,6 +14,13 @@ $RECYCLE.BIN/
 bin/*
 build/*
 eclipse/*
+.classpath
+.project
+CannibalismLatest_Client.launch
+Cannibalism_Client.launch
+Cannibalism_Server.launch
+compile.bat
+setup.bat
 
 # Windows Installer files
 *.cab
