@@ -1,0 +1,44 @@
+itemGroup.cannibalism=Cannibalism
+
+item.woodenknife.name=Holzmesser
+item.diamondknife.name=Diamantmesser
+item.goldknife.name=Goldmesser
+item.ironknife.name=Eisenmesser
+item.stoneknife.name=Steinmesser
+item.flintknife.name=Feuersteinmesser
+
+item.villagerflesh.name=Dorfbewohnerfleisch
+item.playerflesh.name=Spielerfleisch
+item.villagerfleshCooked.name=Gekochtes Dorfbewohnerfleisch
+item.playerfleshCooked.name=Gekochtes Spielerfleisch
+item.witchflesh.name=Hexenfleisch
+
+item.playerFleshOwner.name=Fleisch von %s
+
+item.villagerpoptart.name=Dorfbewohner-Pop-Tart
+item.playerpoptart.name=Spieler-Pop-Tart
+item.villagerpoptartcooked.name=Gekochter Dorfbewohner-Pop-Tart
+item.playerpoptartcooked.name=Gekochter Spieler-Pop-Tart
+
+item.devKnife.format=[Format] "modID.name" oder "name", falls Mob Vanilla-Bestandteil ist
+item.devKnife.mobName=[Name] %s
+item.devKnife.superName=Erweitert %s
+
+item.devKnife.reload=Lade JSON-Konfigurationen neu und leere die Zuordnungen der Lebewesen-Drops
+item.devKnife.reloadFinish=JSON-Datei neugeladen. Lebewesen-Drops neu zugeordnet.
+item.devKnife.reloadFail=Fehler beim Lesen der JSON-Datei! Verwende die Standardkonfigurationen.
+item.devKnife.reloadFailCheck=%s ist fehlerhaft formatiert!
+item.devKnife.errorCharacter=Es gibt ein fehlendes/zusätzliches Element in deiner JSON-Datei, das den Parser-Fehler verursacht
+item.devKnife.errorUnknown=Etwas, das nicht berücksichtigt wurde, verursachte einen Fehler des Parsers
+
+item.devKnife.lore1=Entwicklermesser
+item.devKnife.lore2=[Rechtsklick] Kann verwendet werden, um den Lebewesen-Namen für die JSON-Datei zu ermitteln
+
+command.wendigostat=Aktuelle Wendigo-Stufe: %f
+command.wendigolevelchange=Geändert
+command.error.player=Kann Spieler nicht finden
+command.error.number=Drittes Argument ist keine Zahl
+command.set=/cannibalism set <username>: Lege die Wendigo-Stufe des Ziels fest
+command.stat=/cannibalism stat <username>: Prüfe die Wendigo-Stufe des Ziels
+
+entity.wendigo.name=Wendigo
