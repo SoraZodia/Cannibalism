@@ -2,6 +2,7 @@ package sorazodia.cannibalism.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,8 +45,9 @@ public class JSONConfig
 
 	public JSONConfig(FMLPreInitializationEvent preEvent)
 	{
-		dirPath = preEvent.getModConfigurationDirectory().getAbsolutePath() + "\\" + Cannibalism.MODID;
-		filePath = dirPath + "\\" + Cannibalism.MODID + ".json";
+		dirPath = Paths.get(preEvent.getModConfigurationDirectory().getAbsolutePath(), Cannibalism.MODID).toString();
+		filePath = Paths.get(dirPath, Cannibalism.MODID + ".json").toString();
+		System.out.println("[Cannibalism] Config path: " + this.dirPath);
 	}
 
 	public void addEntity(String name, String modID, String[] drops, String min, String max)
@@ -78,10 +80,10 @@ public class JSONConfig
 	{
 		File overwriteFile = null;
 		
-		if (new File(dirPath + "\\" + overwriteFiles[0]).exists())
-			overwriteFile = new File(dirPath + "\\overwrite.json");
-		else if (new File(dirPath + "\\" + overwriteFiles[1]).exists())
-			overwriteFile = new File(dirPath + "\\overwrite.txt");
+		if (new File(Paths.get(dirPath, overwriteFiles[0]).toString()).exists())
+			overwriteFile = new File(Paths.get(dirPath, "overwrite.json").toString());
+		else if (new File(Paths.get(dirPath, overwriteFiles[1]).toString()).exists())
+			overwriteFile = new File(Paths.get(dirPath, "overwrite.txt").toString());
 		
 		if (overwriteFile != null)
 		{

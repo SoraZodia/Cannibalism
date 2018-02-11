@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -30,8 +31,9 @@ public class IO
 	 */
 	public IO(FMLServerStartingEvent event, String fileName)
 	{
-		this.dirPath = ".\\saves\\" + event.getServer().getFolderName() + "\\SavedPlayerData";
-		this.filePath = dirPath + "\\" + fileName + ".dat";
+		this.dirPath = Paths.get(".", "saves", event.getServer().getFolderName(), "SavedPlayerData").toString();
+		this.filePath =  Paths.get(dirPath, fileName + ".dat").toString();
+		System.out.println("[Cannibalism] NBT Location: " + this.dirPath);
 	}
 
 	/**
