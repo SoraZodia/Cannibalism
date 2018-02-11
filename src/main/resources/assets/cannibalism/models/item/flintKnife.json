@@ -1,6 +1,0 @@
-{
-	"parent": "cannibalism:item/itemroot",
-	"textures": {
-		"layer0": "cannibalism:items/flintknife"
-	}
-}
