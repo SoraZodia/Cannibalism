@@ -16,11 +16,9 @@ build/*
 eclipse/*
 .classpath
 .project
-CannibalismLatest_Client.launch
-Cannibalism_Client.launch
-Cannibalism_Server.launch
-compile.bat
-setup.bat
+*.launch
+*.bat
+*.log
 
 # Windows Installer files
 *.cab

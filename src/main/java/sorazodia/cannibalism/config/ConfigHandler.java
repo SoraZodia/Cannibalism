@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -67,7 +68,7 @@ public class ConfigHandler
 
 		try
 		{
-			File oldFile = new File(dirPath + "\\cannibalism.cfg");
+			File oldFile = Paths.get(dirPath, "cannibalism.cfg").toFile();
 
 			if (oldFile.exists())
 			{
@@ -81,7 +82,7 @@ public class ConfigHandler
 				}
 
 				Cannibalism.getLogger().info("[Cannibalism] Updating config settings");
-				File tempFile = new File(dirPath + "\\cannibalism.temp");
+				File tempFile = Paths.get(dirPath, "cannibalism.temp").toFile();
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 				while (str != null)
