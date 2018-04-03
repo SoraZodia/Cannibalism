@@ -3,6 +3,7 @@ package sorazodia.cannibalism.mechanic.events;
 import java.util.Random;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,16 +27,21 @@ public class DeathEvent
 		{
 			if (entity instanceof EntityPlayer)
 			{
-				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh);
+				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh, amount);
 				setMeatName(playerFlesh, entity.getName() + "'s Flesh");
-				entity.entityDropItem(playerFlesh, amount);
-
+				
+				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, playerFlesh);	
+				
+				entity.world.spawnEntity(drops);
+				
 				if (event.getSource().getTrueSource() instanceof EntityPlayer)
 					possessKiller((EntityPlayer) event.getSource().getTrueSource(), CannibalismNBT.getNBT((EntityPlayer) entity));
 			}
 			if (entity instanceof EntityVillager)
 			{
-				entity.dropItem(ItemRegistry.villagerFlesh, amount);
+				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, new ItemStack(ItemRegistry.villagerFlesh, amount));
+				
+				entity.world.spawnEntity(drops);
 			}
 		}
 	}
