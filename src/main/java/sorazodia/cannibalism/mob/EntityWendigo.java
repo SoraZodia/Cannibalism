@@ -43,17 +43,17 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.0D, true));
-	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 1.0D, 32F));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));
+	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 5.0D, 32F));
     	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
 		
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
-		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, true));
+		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, true));
     }
 	
 
@@ -73,8 +73,8 @@ public class EntityWendigo extends EntityMob
     {
 		if (source.getTrueSource() instanceof Entity)
 		{
-			attacker = (EntityLivingBase) source.getTrueSource();
-			this.setRevengeTarget(attacker);
+			this.attacker = (EntityLivingBase) source.getTrueSource();
+			this.setRevengeTarget(this.attacker);
 		}
 		
 		return super.attackEntityFrom(source, damage);
@@ -83,9 +83,9 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public void setDead()
 	{
-		if (attacker instanceof EntityPlayer)
+		if (this.attacker instanceof EntityPlayer)
 		{
-			CannibalismNBT nbt = CannibalismNBT.getNBT((EntityPlayer) attacker);
+			CannibalismNBT nbt = CannibalismNBT.getNBT((EntityPlayer) this.attacker);
 
 			if (nbt != null)
 			{
@@ -132,13 +132,13 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public SoundEvent getAmbientSound()
 	{
-		return livingSound;
+		return this.livingSound;
 	}
 
 	@Override
 	public SoundEvent getHurtSound(DamageSource source)
 	{
-		return hurtSound;
+		return this.hurtSound;
 	}
 
 	@Override
