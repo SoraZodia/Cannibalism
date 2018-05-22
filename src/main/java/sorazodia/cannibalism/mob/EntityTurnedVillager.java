@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class EntityTurnedVillager extends EntityMob
 {
 	private EntityLivingBase attacker;
-	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.hurt"));
+	private final SoundEvent hurtSound = SoundEvents.ENTITY_VILLAGER_HURT;
 	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
 	
 
@@ -38,14 +38,13 @@ public class EntityTurnedVillager extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.5D, true));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.6D, true));
 	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.6D, 32F));
-    	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
+    	this.tasks.addTask(1, new EntityAIWander(this, 0.3D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
 		
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, false));
 		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, false));
@@ -57,7 +56,7 @@ public class EntityTurnedVillager extends EntityMob
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.50D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(10D);
@@ -84,7 +83,7 @@ public class EntityTurnedVillager extends EntityMob
 
 			if (nbt != null)
 			{
-				nbt.setWendigoValue(0);
+				nbt.changeWendigoValue(-50);
 				nbt.setWedigoSpawn(false);
 				nbt.setWarningEffect(true);
 			}
@@ -104,10 +103,10 @@ public class EntityTurnedVillager extends EntityMob
 			attacked = target.attackEntityFrom(DamageSource.causeMobDamage(this), 1.0F);
 			if (attacked)
 			{
-				target.setHealth(target.getHealth() - 10);
-				target.motionY *= 2;
-				target.motionX *= 2;
-				target.motionZ *= 2;
+				target.setHealth((float) (target.getHealth()*0.8));
+				target.motionY *= 1.5;
+				target.motionX *= 1.5;
+				target.motionZ *= 1.5;
 
 				if (target.getHealth() <= 0.01F)
 					target.onDeath(DamageSource.causeMobDamage(this).setDamageBypassesArmor());

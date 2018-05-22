@@ -43,9 +43,9 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));
-	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 5.0D, 32F));
-    	this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.75D, true));
+	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 1.0D, 32F));
+    	this.tasks.addTask(1, new EntityAIWander(this, 0.7D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8F));
 		
@@ -62,7 +62,7 @@ public class EntityWendigo extends EntityMob
 	public void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.50D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);

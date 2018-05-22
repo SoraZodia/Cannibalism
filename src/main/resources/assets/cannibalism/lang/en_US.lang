@@ -35,6 +35,8 @@ item.devKnife.lore1=Dev Knife
 item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
 
 command.wendigostat=Currect Wendigo Level: %f
+command.wendigospawnchance=Currect Chance to Spawn Wendigo: %f
+command.wendigohasspawn=Can spawn Wendigo: %s
 command.wendigolevelchange=Changed
 command.error.player=Cannot find player
 command.error.number=Third argument is not a number
@@ -42,3 +44,4 @@ command.set=/cannibalism set <username>: set the target's wendigo level
 command.stat=/cannibalism stat <username>: check the target wendigo level
 
 entity.wendigo.name=Wendigo
+entity.wendigo_villager.name=Turned Villager

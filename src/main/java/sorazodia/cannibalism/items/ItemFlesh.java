@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.main.ItemRegistry;
+import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 public class ItemFlesh extends ItemFood
@@ -36,6 +37,10 @@ public class ItemFlesh extends ItemFood
 			float wendigoLevel = nbt.getWendigoValue();
 			
 			nbt.changeWendigoValue(10);
+			
+			if (nbt.getWendigoValue() > EntityNBTEvents.WENDIGO_LEVEL_CAP)
+				nbt.changeSpawnChance(0.1F);
+			
 			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
 			//System.out.println(stack.getItem().getRegistryName());
 			if (stack.getItem() == ItemRegistry.witchFlesh)
