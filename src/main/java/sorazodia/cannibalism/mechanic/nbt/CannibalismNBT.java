@@ -7,7 +7,7 @@ import sorazodia.cannibalism.main.Cannibalism;
 public class CannibalismNBT
 {	
 	public static final String NBTNAME = "cannibalismVariables";
-	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect"};
+	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect", "spawnchance"};
 	private static Database data;
 	private EntityPlayer player;
 
@@ -16,11 +16,26 @@ public class CannibalismNBT
 		data = Cannibalism.getDatabase();
 		this.player = player;
 	}
+	
+	public void changeSpawnChance(float amount) {
+		data.record(player, tags[3], this.getSpawnChance() + amount);
+	}
+	
+	public void setSpawnChance(float amount) {
+		data.record(player, tags[3], amount);
+	}
+
+	public float getSpawnChance()
+	{	
+		return (float) data.get(player, tags[3]).orElse(0.3F);
+	}
 
 	public void changeWendigoValue(float amount)
 	{
 		float level = this.getWendigoValue();
 		level += amount;
+		
+		if (level < 0) level = 0;
 		
 		data.record(player, tags[0], level);
 	}
@@ -32,14 +47,7 @@ public class CannibalismNBT
 
 	public float getWendigoValue()
 	{
-		float value;
-		
-		if (data.get(player) == null || data.get(player, tags[0]) == null)
-			value = 0;
-		else
-			value = (float) data.get(player, tags[0]);
-
-		return value;
+		return (float) data.get(player, tags[0]).orElse(0);
 	}
 
 	public static CannibalismNBT getNBT(EntityPlayer player)
@@ -49,14 +57,7 @@ public class CannibalismNBT
 
 	public boolean wendigoSpawned()
 	{
-		boolean value;
-		
-		if (data.get(player) == null || data.get(player, tags[1]) == null)
-			value = true;
-		else
-			value = (boolean) data.get(player, tags[1]);
-
-		return value;
+		return (boolean) data.get(player, tags[1]).orElse(true);
 	}
 
 	public void setWedigoSpawn(boolean doSpawn)
@@ -66,14 +67,7 @@ public class CannibalismNBT
 	
 	public boolean doWarningEffect()
 	{
-		boolean value;
-		
-		if (data.get(player) == null || data.get(player, tags[2]) == null)
-			value = true;
-		else
-			value = (boolean) data.get(player, tags[2]);
-
-		return value;
+		return (boolean) data.get(player, tags[2]).orElse(true);
 	}
 
 	public void setWarningEffect(boolean doApply)

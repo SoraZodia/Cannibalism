@@ -1,6 +1,7 @@
 package sorazodia.api.nbt;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,27 +85,7 @@ public class Database
 	public PlayerInfo get(EntityPlayer player)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return this.data.get(id);
-	}
-	
-	/**
-	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
-	 * 
-	 * The data is returned as a Object
-	 */
-	public Object get(EntityPlayer player, String key)
-	{
-		return this.get(player).get(key);
-	}
-	
-	/**
-	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
-	 * 
-	 * The data is returned as a Object
-	 */
-	public Object get(UUID id, String key)
-	{
-		return this.get(id).get(key);
+		return Optional.of(this.data.get(id)).orElse(new PlayerInfo());
 	}
 	
 	/**
@@ -114,7 +95,27 @@ public class Database
 	 */
 	public PlayerInfo get(UUID id)
 	{
-		return this.data.get(id);
+		return Optional.of(this.data.get(id)).orElse(new PlayerInfo());
+	}
+	
+	/**
+	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
+	 * 
+	 * The data is returned as a Object
+	 */
+	public Optional<Object> get(EntityPlayer player, String key)
+	{
+		return Optional.ofNullable(this.get(player).get(key));
+	}
+	
+	/**
+	 * Provides the player data associated with the provided key. An alternative to {@link PlayerInfo#get(String)}
+	 * 
+	 * The data is returned as a Object
+	 */
+	public Optional<Object> get(UUID id, String key)
+	{
+		return Optional.ofNullable(this.get(id).get(key));
 	}
 	
 	/**
