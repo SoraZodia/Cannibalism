@@ -79,7 +79,7 @@ public class EntityNBTEvents
 				wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
 				player.world.spawnEntity(wendigo);
 				CannibalismNBT.getNBT(player).setWedigoSpawn(true);
-				CannibalismNBT.getNBT(player).setSpawnChance(0.3F);
+				CannibalismNBT.getNBT(player).setSpawnChance(CannibalismNBT.WENDIGO_SPAWN_BASE);
 			}	
 		}
 	}

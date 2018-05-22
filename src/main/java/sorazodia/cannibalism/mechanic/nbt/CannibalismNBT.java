@@ -7,6 +7,7 @@ import sorazodia.cannibalism.main.Cannibalism;
 public class CannibalismNBT
 {	
 	public static final String NBTNAME = "cannibalismVariables";
+	public static final float WENDIGO_SPAWN_BASE = 0.1F;
 	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect", "spawnchance"};
 	private static Database data;
 	private EntityPlayer player;
@@ -27,7 +28,7 @@ public class CannibalismNBT
 
 	public float getSpawnChance()
 	{	
-		return (float) data.get(player, tags[3]).orElse(0.3F);
+		return (float) data.get(player, tags[3]).orElse(WENDIGO_SPAWN_BASE);
 	}
 
 	public void changeWendigoValue(float amount)
