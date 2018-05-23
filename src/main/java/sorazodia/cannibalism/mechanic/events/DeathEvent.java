@@ -27,6 +27,7 @@ public class DeathEvent
 		{
 			if (entity instanceof EntityPlayer)
 			{
+				CannibalismNBT stats = CannibalismNBT.getNBT((EntityPlayer) entity);
 				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh, amount);
 				setMeatName(playerFlesh, entity.getName() + "'s Flesh");
 				
@@ -35,7 +36,9 @@ public class DeathEvent
 				entity.world.spawnEntity(drops);
 				
 				if (event.getSource().getTrueSource() instanceof EntityPlayer)
-					possessKiller((EntityPlayer) event.getSource().getTrueSource(), CannibalismNBT.getNBT((EntityPlayer) entity));
+					possessKiller((EntityPlayer) event.getSource().getTrueSource(), stats);
+				else if (stats.getWendigoValue() >= 500)
+					EntityNBTEvents.spawnWendigo((EntityPlayer) entity);
 			}
 			if (entity instanceof EntityVillager)
 			{
@@ -51,7 +54,7 @@ public class DeathEvent
 		CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 
 		nbt.changeWendigoValue(stats.getWendigoValue() / 2);
-		player.getFoodStats().addStats(5, 5);
+		player.getFoodStats().addStats(10, 10);
 	}
 
 	private void setMeatName(ItemStack meat, String owner)

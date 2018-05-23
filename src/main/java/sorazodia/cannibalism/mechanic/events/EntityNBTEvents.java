@@ -70,18 +70,23 @@ public class EntityNBTEvents
 		if (wendigoLevel >= 240)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));
+			player.setAbsorptionAmount(10);
 		}
 		if (wendigoLevel >= WENDIGO_LEVEL_CAP)
 		{
 			if (player.ticksExisted % 600 == 0 && nbt.wendigoSpawned() == false && nbt.getSpawnChance() > Math.random()) {
-				player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_WOLF_HOWL, SoundCategory.HOSTILE, 1, 0.5F);
-				EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByIDFromName(new ResourceLocation(Cannibalism.MODID + ":wendigo"), player.world);
-				wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
-				player.world.spawnEntity(wendigo);
-				CannibalismNBT.getNBT(player).setWedigoSpawn(true);
-				CannibalismNBT.getNBT(player).setSpawnChance(CannibalismNBT.WENDIGO_SPAWN_BASE);
+				EntityNBTEvents.spawnWendigo(player);
 			}	
 		}
+	}
+	
+	public static void spawnWendigo(EntityPlayer player) {
+		player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_WOLF_HOWL, SoundCategory.HOSTILE, 1, 0.5F);
+		EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByIDFromName(new ResourceLocation(Cannibalism.MODID + ":wendigo"), player.world);
+		wendigo.setLocationAndAngles(player.posX + 25, player.posY, player.posZ + 25, 0, 0);
+		player.world.spawnEntity(wendigo);
+		CannibalismNBT.getNBT(player).setWedigoSpawn(true);
+		CannibalismNBT.getNBT(player).setSpawnChance(CannibalismNBT.WENDIGO_SPAWN_BASE);
 	}
 
 }

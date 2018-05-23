@@ -35,7 +35,7 @@ public class EntityWendigo extends EntityMob
 		super(world);
 		this.setSize(width, height * 2.0F);
 		this.stepHeight = 1.0F;
-		this.experienceValue = 50;
+		this.experienceValue = 100;
 
 		
 	}
@@ -43,7 +43,7 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.75D, true));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.765D, true));
 	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 1.0D, 32F));
     	this.tasks.addTask(1, new EntityAIWander(this, 0.7D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
