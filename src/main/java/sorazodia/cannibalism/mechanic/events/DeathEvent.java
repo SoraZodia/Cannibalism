@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -29,7 +30,7 @@ public class DeathEvent
 			{
 				CannibalismNBT stats = CannibalismNBT.getNBT((EntityPlayer) entity);
 				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh, amount);
-				setMeatName(playerFlesh, entity.getName() + "'s Flesh");
+				setMeatName(playerFlesh, I18n.translateToLocalFormatted("item.playerFleshOwner.name", entity.getName()));
 				
 				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, playerFlesh);	
 				
