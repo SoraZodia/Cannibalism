@@ -48,7 +48,7 @@ public class CannibalismNBT
 
 	public float getWendigoValue()
 	{
-		return (float) data.get(player, tags[0]).orElse(0);
+		return (float) data.get(player, tags[0]).orElse(0.0F);
 	}
 
 	public static CannibalismNBT getNBT(EntityPlayer player)

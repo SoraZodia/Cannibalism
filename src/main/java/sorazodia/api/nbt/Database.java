@@ -82,10 +82,10 @@ public class Database
 	 * @param EntityPlayer
 	 * @return PlayerInfo
 	 */
-	public PlayerInfo get(EntityPlayer player)
+	public Optional<PlayerInfo> get(EntityPlayer player)
 	{
 		UUID id = EntityPlayer.getUUID(player.getGameProfile());
-		return Optional.of(this.data.get(id)).orElse(new PlayerInfo());
+		return Optional.ofNullable(this.data.get(id));
 	}
 	
 	/**
@@ -93,9 +93,9 @@ public class Database
 	 * @param EntityPlayer
 	 * @return PlayerInfo
 	 */
-	public PlayerInfo get(UUID id)
+	public Optional<PlayerInfo> get(UUID id)
 	{
-		return Optional.of(this.data.get(id)).orElse(new PlayerInfo());
+		return Optional.ofNullable(this.data.get(id));
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class Database
 	 */
 	public Optional<Object> get(EntityPlayer player, String key)
 	{
-		return Optional.ofNullable(this.get(player).get(key));
+		return Optional.ofNullable(this.get(player).orElse(new PlayerInfo()).get(key));
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class Database
 	 */
 	public Optional<Object> get(UUID id, String key)
 	{
-		return Optional.ofNullable(this.get(id).get(key));
+		return Optional.ofNullable(this.get(id).orElse(new PlayerInfo()).get(key));
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class Database
 	 */
 	public Object remove(EntityPlayer player, String key)
 	{
-		return this.get(player).remove(key);
+		return this.get(player).orElse(new PlayerInfo()).remove(key);
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class Database
 	 */
 	public Object remove(UUID id, String key)
 	{
-		return this.get(id).remove(key);
+		return this.get(id).orElse(new PlayerInfo()).remove(key);
 	}
 	
 	/**

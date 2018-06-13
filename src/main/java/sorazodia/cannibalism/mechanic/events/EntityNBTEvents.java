@@ -59,7 +59,6 @@ public class EntityNBTEvents
 				nbt.setWarningEffect(false);
 			}	
 			
-			//TODO player attack cooldown, remember that the timer needs to be increased and not reset
 			player.getCooldownTracker().setCooldown(player.getHeldItem(player.getActiveHand()).getItem(), 0);
 		}
 		if (wendigoLevel >= 150)
