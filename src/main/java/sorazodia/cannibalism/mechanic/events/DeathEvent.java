@@ -8,6 +8,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -52,9 +53,14 @@ public class DeathEvent
 
 	private void possessKiller(EntityPlayer player, CannibalismNBT stats)
 	{
+		LevelingEvent event = new LevelingEvent(stats.getWendigoValue() / 2, 0.0F);
+		boolean fire = MinecraftForge.EVENT_BUS.post(event);
+		
 		CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 
-		nbt.changeWendigoValue(stats.getWendigoValue() / 2);
+		
+		if (fire) nbt.changeWendigoValue(event.increaseLevelBy);
+		
 		player.getFoodStats().addStats(10, 10);
 	}
 

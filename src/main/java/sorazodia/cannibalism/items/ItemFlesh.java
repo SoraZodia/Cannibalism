@@ -6,10 +6,13 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.main.ItemRegistry;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
+import sorazodia.cannibalism.mechanic.events.LevelingEvent;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
 public class ItemFlesh extends ItemFood
@@ -31,15 +34,20 @@ public class ItemFlesh extends ItemFood
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (ConfigHandler.allowMyth() == true && !world.isRemote)
-		{
+		LevelingEvent event = new LevelingEvent(10, 0.1F);
+		boolean fire = MinecraftForge.EVENT_BUS.post(event);
+		
+		if (fire && ConfigHandler.allowMyth() == true && !world.isRemote)
+		{	
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();
+			float levelUp = event.increaseLevelBy;
+			float spawnUp = event.increaseRateBy;
 			
-			nbt.changeWendigoValue(10);
+			nbt.changeWendigoValue(levelUp);
 			
 			if (nbt.getWendigoValue() > EntityNBTEvents.WENDIGO_LEVEL_CAP)
-				nbt.changeSpawnChance(0.1F);
+				nbt.changeSpawnChance(spawnUp);
 			
 			player.getFoodStats().addStats((int)wendigoLevel / 10, wendigoLevel / 10);
 			//System.out.println(stack.getItem().getRegistryName());
