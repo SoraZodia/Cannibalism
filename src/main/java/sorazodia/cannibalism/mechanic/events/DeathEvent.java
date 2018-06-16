@@ -53,7 +53,7 @@ public class DeathEvent
 
 	private void possessKiller(EntityPlayer player, CannibalismNBT stats)
 	{
-		LevelingEvent event = new LevelingEvent(stats.getWendigoValue() / 2, 0.0F);
+		LevelingEvent event = new LevelingEvent(player, stats.getWendigoValue() / 2, 0.0F);
 		boolean fire = MinecraftForge.EVENT_BUS.post(event);
 		
 		CannibalismNBT nbt = CannibalismNBT.getNBT(player);

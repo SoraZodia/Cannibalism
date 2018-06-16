@@ -34,7 +34,7 @@ public class ItemFlesh extends ItemFood
 	@Override
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
-		LevelingEvent event = new LevelingEvent(10, 0.1F);
+		LevelingEvent event = new LevelingEvent(player, 10, 0.1F);
 		boolean fire = MinecraftForge.EVENT_BUS.post(event);
 		
 		if (fire && ConfigHandler.allowMyth() == true && !world.isRemote)
