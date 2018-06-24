@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.main.ItemRegistry;
