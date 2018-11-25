@@ -9,9 +9,10 @@ item.flintknife.name=Flint Knife
 
 item.villagerflesh.name=Villager Flesh
 item.playerflesh.name=Player Flesh
-item.villagerfleshCooked.name=Cooked Villager Flesh
-item.playerfleshCooked.name=Cooked Player Flesh
+item.villagerfleshcooked.name=Cooked Villager Flesh
+item.playerfleshcooked.name=Cooked Player Flesh
 item.witchflesh.name=Witch Flesh
+item.heart.name=Wendigo's Heart
 
 item.playerFleshOwner.name=%s's Flesh
 

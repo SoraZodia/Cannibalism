@@ -9,8 +9,8 @@ item.flintknife.name=Feuersteinmesser
 
 item.villagerflesh.name=Dorfbewohnerfleisch
 item.playerflesh.name=Spielerfleisch
-item.villagerfleshCooked.name=Gekochtes Dorfbewohnerfleisch
-item.playerfleshCooked.name=Gekochtes Spielerfleisch
+item.villagerfleshcooked.name=Gekochtes Dorfbewohnerfleisch
+item.playerfleshcooked.name=Gekochtes Spielerfleisch
 item.witchflesh.name=Hexenfleisch
 
 item.playerFleshOwner.name=Fleisch von %s
