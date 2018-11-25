@@ -34,9 +34,9 @@ public class ItemFlesh extends ItemFood
 	public void onFoodEaten(ItemStack stack, World world, EntityPlayer player)
 	{
 		LevelingEvent event = new LevelingEvent(player, 10, 0.1F);
-		boolean fire = MinecraftForge.EVENT_BUS.post(event);
-		
-		if (fire && ConfigHandler.allowMyth() == true && !world.isRemote)
+		boolean isCanceled = MinecraftForge.EVENT_BUS.post(event);
+		System.out.println(isCanceled);
+		if (!isCanceled && ConfigHandler.allowMyth() == true && !world.isRemote)
 		{	
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 			float wendigoLevel = nbt.getWendigoValue();

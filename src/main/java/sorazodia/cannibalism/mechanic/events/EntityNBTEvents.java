@@ -38,6 +38,22 @@ public class EntityNBTEvents
 		}
 	}
 	
+	@SubscribeEvent
+	public void playerLevelIncrease(LevelingEvent event) 
+	{
+		if (event.getPlayer().isPresent()) 
+		{
+			EntityPlayer player = event.getPlayer().get();
+			if (!player.getEntityWorld().isRemote &&
+				player.getHeldItemOffhand().getTagCompound() != null &&
+				player.getHeldItemOffhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getInteger(InteractionEvent.NBT_TAG) == 1) 
+			{
+				event.setCanceled(true);
+			}
+			
+		}
+	}
+	
 	private void addServerEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)

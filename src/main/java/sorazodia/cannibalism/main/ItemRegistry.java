@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import sorazodia.cannibalism.items.ItemDevKnife;
 import sorazodia.cannibalism.items.ItemFlesh;
+import sorazodia.cannibalism.items.ItemHeirloom;
 import sorazodia.cannibalism.items.ItemKnife;
 
 public class ItemRegistry
@@ -39,6 +40,8 @@ public class ItemRegistry
 	public static ItemFlesh playerFleshCooked = (ItemFlesh) new ItemFlesh("playerfleshcooked", 8, 0.8F);
 
 	public static ItemFlesh villagerFleshCooked = (ItemFlesh) new ItemFlesh("villagerfleshcooked", 8, 0.8F);
+	
+	public static ItemHeirloom heart = new ItemHeirloom("heart");
 
 	public static void addAllTexture() {
 		ItemRegistry.addTexture(woodenKnife);
@@ -53,6 +56,7 @@ public class ItemRegistry
 		ItemRegistry.addTexture(witchFlesh);
 		ItemRegistry.addTexture(playerFleshCooked);
 		ItemRegistry.addTexture(villagerFleshCooked);
+		ItemRegistry.addTexture(heart);
 	}
 	
 	public static void addTexture(Item item) {

@@ -1,8 +1,24 @@
 package sorazodia.cannibalism.main;
 
-import static sorazodia.cannibalism.main.ItemRegistry.*;
+import static sorazodia.cannibalism.main.ItemRegistry.devKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.diamondKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.flintKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.goldKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.heart;
+import static sorazodia.cannibalism.main.ItemRegistry.ironKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.playerFlesh;
+import static sorazodia.cannibalism.main.ItemRegistry.playerFleshCooked;
+import static sorazodia.cannibalism.main.ItemRegistry.stoneKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.villagerFlesh;
+import static sorazodia.cannibalism.main.ItemRegistry.villagerFleshCooked;
+import static sorazodia.cannibalism.main.ItemRegistry.witchFlesh;
+import static sorazodia.cannibalism.main.ItemRegistry.woodenKnife;
 
 import java.io.IOException;
+
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,9 +32,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import org.apache.logging.log4j.Logger;
-
 import sorazodia.api.nbt.Database;
 import sorazodia.api.nbt.IO;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -27,10 +40,9 @@ import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
+import sorazodia.cannibalism.mechanic.events.InteractionEvent;
 import sorazodia.cannibalism.server.CommandWendigoLevel;
 import sorazodia.cannibalism.tab.CannibalismTab;
-
-import com.google.gson.JsonSyntaxException;
 
 @Mod(modid = Cannibalism.MODID, version = Cannibalism.VERSION, name = Cannibalism.NAME, guiFactory = Cannibalism.GUI_FACTORY)
 public class Cannibalism
@@ -92,13 +104,14 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
+		MinecraftForge.EVENT_BUS.register(new InteractionEvent());
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	@SubscribeEvent
 	public void register(RegistryEvent.Register<Item> event)
 	{
-		event.getRegistry().registerAll(woodenKnife, flintKnife, stoneKnife, goldKnife, ironKnife, diamondKnife, devKnife, playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked);
+		event.getRegistry().registerAll(woodenKnife, flintKnife, stoneKnife, goldKnife, ironKnife, diamondKnife, devKnife, playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked, heart);
 		ItemRegistry.addAllTexture();
 	}
 
