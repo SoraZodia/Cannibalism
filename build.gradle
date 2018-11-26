@@ -14,7 +14,7 @@ compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
-version = "5.1.4-1.12.2"
+version = "5.2.0-1.12.2"
 group= "sorazodia.cannibalism" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Cannibalism"
 
