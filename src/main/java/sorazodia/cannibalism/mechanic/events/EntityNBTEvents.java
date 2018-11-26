@@ -79,7 +79,7 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 150)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10, 2));
+			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10, (int)(wendigoLevel > 300 ? wendigoLevel - 300 + 2 : 2)));
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)

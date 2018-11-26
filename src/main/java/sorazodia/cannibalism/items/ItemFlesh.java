@@ -35,7 +35,6 @@ public class ItemFlesh extends ItemFood
 	{
 		LevelingEvent event = new LevelingEvent(player, 10, 0.1F);
 		boolean isCanceled = MinecraftForge.EVENT_BUS.post(event);
-		System.out.println(isCanceled);
 		if (!isCanceled && ConfigHandler.allowMyth() == true && !world.isRemote)
 		{	
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);

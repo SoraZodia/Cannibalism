@@ -40,9 +40,13 @@ command.wendigospawnchance=Currect Chance to Spawn Wendigo: %f
 command.wendigohasspawn=Can spawn Wendigo: %s
 command.wendigolevelchange=Changed
 command.error.player=Cannot find player
-command.error.number=Third argument is not a number
+command.error.number=Third argument is not a floating point number or fourth arugument is not a integer
 command.set=/cannibalism set <username>: set the target's wendigo level
 command.stat=/cannibalism stat <username>: check the target wendigo level
+command.wendigoheirlooms=Number of assigned heirlooms: %f
+
+hierloom.lore1=Treasured item of %s
+hierloom.lore2=You can't help but feel tethered to something
 
 entity.wendigo.name=Wendigo
 entity.wendigo_villager.name=Turned Villager

@@ -13,6 +13,7 @@ import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 public class InteractionEvent
 {
 	public static final String NBT_TAG = "heirloom";
+	
 	@SubscribeEvent
 	public void onPlayerRightClick(RightClickItem event) 
 	{
@@ -23,13 +24,15 @@ public class InteractionEvent
 		if (ConfigHandler.allowMyth() == true && player.isSneaking() && !world.isRemote) 
 		{
 			CannibalismNBT nbt = CannibalismNBT.getNBT(player);
-			if (nbt.getWendigoValue() <= 0) 
+			if (nbt.getWendigoValue() <= 0 && nbt.getHeirloomCount() <= 3) 
 			{
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger(InteractionEvent.NBT_TAG, 1);
 				
 				if (heldStack.getTagCompound() == null) heldStack.setTagCompound(new NBTTagCompound());
 				heldStack.getTagCompound().setTag(Cannibalism.MODID, tag);
+				
+				nbt.increaseHeirloomCount();
 			}
 		}
 	}

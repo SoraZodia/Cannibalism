@@ -8,7 +8,7 @@ public class CannibalismNBT
 {	
 	public static final String NBTNAME = "cannibalismVariables";
 	public static final float WENDIGO_SPAWN_BASE = 0.1F;
-	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect", "spawnchance"};
+	public final String tags[] = {"wendigo", "wendigoExist", "applyWarningEffect", "spawnchance", "heirloomCount"};
 	private static Database data;
 	private EntityPlayer player;
 
@@ -16,6 +16,18 @@ public class CannibalismNBT
 	{
 		data = Cannibalism.getDatabase();
 		this.player = player;
+	}
+	
+	public void increaseHeirloomCount() {
+		data.record(player, tags[4], this.getHeirloomCount() + 1);
+	}
+	
+	public void setHeirloomCount(int count) {
+		data.record(player, tags[4], count);
+	}
+	
+	public int getHeirloomCount() {
+		return (int) data.get(player, tags[4]).orElse(0);
 	}
 	
 	public void changeSpawnChance(float amount) {
@@ -38,7 +50,7 @@ public class CannibalismNBT
 		
 		if (level < 0) level = 0;
 		
-		data.record(player, tags[0], level);
+		if (level < Float.MAX_VALUE) data.record(player, tags[0], level);
 	}
 
 	public void setWendigoValue(float amount)

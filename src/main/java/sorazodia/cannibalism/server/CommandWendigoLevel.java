@@ -63,9 +63,20 @@ public class CommandWendigoLevel implements ICommand
 			switch (args[0])
 			{
 			case commandSet:
-				if (isFloat(args[2]))
+				if (args.length == 3 && isFloat(args[2], true))
 				{
 					nbt.setWendigoValue(Float.parseFloat(args[2]));
+					sender.sendMessage(new TextComponentTranslation("command.wendigolevelchange"));
+				}
+				else if (args.length == 4 && isFloat(args[2], true) && isFloat(args[3], false)) {
+					nbt.setWendigoValue(Float.parseFloat(args[2]));
+					nbt.setHeirloomCount(Integer.parseInt(args[3]));
+					sender.sendMessage(new TextComponentTranslation("command.wendigolevelchange"));
+				}
+				else if (args.length == 5 && isFloat(args[2], true) && isFloat(args[3], false) && isFloat(args[4], true)) {
+					nbt.setWendigoValue(Float.parseFloat(args[2]));
+					nbt.setHeirloomCount(Integer.parseInt(args[3]));
+					nbt.setSpawnChance(Float.parseFloat(args[4]));
 					sender.sendMessage(new TextComponentTranslation("command.wendigolevelchange"));
 				}
 				else
@@ -77,13 +88,14 @@ public class CommandWendigoLevel implements ICommand
 				sender.sendMessage(new TextComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
 				sender.sendMessage(new TextComponentTranslation("command.wendigospawnchance", nbt.getSpawnChance() * 100));
 				sender.sendMessage(new TextComponentTranslation("command.wendigohasspawn", !nbt.wendigoSpawned()));
+				sender.sendMessage(new TextComponentTranslation("command.wendigoheirlooms", nbt.getHeirloomCount() - 1));
 				break;
 			}
 		}
 	}
 
 	//http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
-	public static boolean isFloat(String arg)
+	public static boolean isFloat(String arg, boolean isFloat)
 	{
 		if (arg == null)
 			return false;
@@ -106,6 +118,8 @@ public class CommandWendigoLevel implements ICommand
 		{
 			char c = arg.charAt(x);
 			if ((c <= '/' || c >= ':') && c != '.')
+				return false;
+			if (!isFloat && c == '.')
 				return false;
 		}
 
