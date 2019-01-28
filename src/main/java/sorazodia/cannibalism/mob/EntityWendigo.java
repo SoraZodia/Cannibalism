@@ -16,6 +16,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -29,6 +30,8 @@ public class EntityWendigo extends EntityMob
 	private EntityLivingBase attacker;
 	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.hurt"));
 	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
+	private final String nbtKey = "wendigoStrength";
+	private int addictionalDamage = 0;
 	
 	public EntityWendigo(World world)
 	{
@@ -63,7 +66,7 @@ public class EntityWendigo extends EntityMob
 	{
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
 	}
@@ -102,14 +105,18 @@ public class EntityWendigo extends EntityMob
 	public boolean attackEntityAsMob(Entity entity)
 	{	
 		boolean attacked = false;
+		
 		if (entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase target = (EntityLivingBase) entity;
+			NBTTagCompound nbt = this.getEntityData().getCompoundTag(Cannibalism.MODID);
+			
+			if (nbt != null) this.addictionalDamage = nbt.getInteger(nbtKey);
 
 			attacked = target.attackEntityFrom(DamageSource.causeMobDamage(this), 1.0F);
 			if (attacked)
 			{
-				target.setHealth(target.getHealth() - 10);
+				target.setHealth(target.getHealth() - (4 + this.addictionalDamage));
 				target.motionY *= 2;
 				target.motionX *= 2;
 				target.motionZ *= 2;
@@ -121,6 +128,36 @@ public class EntityWendigo extends EntityMob
 		}
 
 		return super.attackEntityAsMob(entity);
+	}
+	
+	@Override
+	public void onKillEntity(EntityLivingBase victum) {
+		super.onKillEntity(victum);
+		
+		this.addictionalDamage++;
+		System.out.println(this.addictionalDamage);
+		this.setHealth(this.getHealth() + 2);
+	}
+	
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbt) {
+		super.writeEntityToNBT(nbt);
+		
+		if (nbt.getCompoundTag(Cannibalism.MODID) == null)
+			nbt.setTag(Cannibalism.MODID, new NBTTagCompound());
+		
+		NBTTagCompound modData = nbt.getCompoundTag(Cannibalism.MODID);
+		
+		modData.setInteger(nbtKey, addictionalDamage);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbt) {
+		super.readEntityFromNBT(nbt);
+		
+		NBTTagCompound modData = nbt.getCompoundTag(Cannibalism.MODID);
+		
+		if (modData != null) this.addictionalDamage = modData.getInteger(nbtKey);
 	}
 
 	@Override

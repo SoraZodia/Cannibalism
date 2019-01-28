@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -142,6 +143,13 @@ public class ItemDevKnife extends ItemKnife
 				{
 					EntityData data = json.getData(target, player.world);
 					Chat.displayPlainChat(player, data.toString());
+				}
+				
+				if (player.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f"))) {
+					NBTTagCompound nbt = target.getEntityData().getCompoundTag(Cannibalism.MODID);
+					if (nbt != null) {
+						Chat.displayPlainChat(player, "Wendigo Strength: " + nbt.getInteger("wendigoStrength"));
+					}
 				}
 			}
 
