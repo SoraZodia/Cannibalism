@@ -146,9 +146,9 @@ public class ItemDevKnife extends ItemKnife
 				}
 				
 				if (player.getUniqueID().equals(UUID.fromString("f10820b2-ad08-4b82-aca2-75b0445b6a1f"))) {
-					NBTTagCompound nbt = target.getEntityData().getCompoundTag(Cannibalism.MODID);
+					NBTTagCompound nbt = target.getEntityData();
 					if (nbt != null) {
-						Chat.displayPlainChat(player, "Wendigo Strength: " + nbt.getInteger("wendigoStrength"));
+						Chat.displayPlainChat(player, "Wendigo Strength: " + nbt.getInteger(EntityWendigo.nbtKey));
 					}
 				}
 			}

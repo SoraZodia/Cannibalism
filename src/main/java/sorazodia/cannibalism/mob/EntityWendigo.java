@@ -30,7 +30,7 @@ public class EntityWendigo extends EntityMob
 	private EntityLivingBase attacker;
 	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.hurt"));
 	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
-	private final String nbtKey = "wendigoStrength";
+	public static final String nbtKey = "wendigoStrength";
 	private int addictionalDamage = 0;
 	
 	public EntityWendigo(World world)
@@ -46,7 +46,7 @@ public class EntityWendigo extends EntityMob
 	@Override
     public void initEntityAI()
     {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.765D, true));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));
 	    this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 1.0D, 32F));
     	this.tasks.addTask(1, new EntityAIWander(this, 0.7D));
 		this.tasks.addTask(2, new EntityAISwimming(this));
@@ -109,11 +109,9 @@ public class EntityWendigo extends EntityMob
 		if (entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase target = (EntityLivingBase) entity;
-			NBTTagCompound nbt = this.getEntityData().getCompoundTag(Cannibalism.MODID);
+			NBTTagCompound nbt = this.getEntityData();
 			
-			if (nbt != null) this.addictionalDamage = nbt.getInteger(nbtKey);
-
-			attacked = target.attackEntityFrom(DamageSource.causeMobDamage(this), 1.0F);
+			attacked = target.attackEntityFrom(DamageSource.causeMobDamage(this), 0.01F);
 			if (attacked)
 			{
 				target.setHealth(target.getHealth() - (4 + this.addictionalDamage));
@@ -122,6 +120,10 @@ public class EntityWendigo extends EntityMob
 				target.motionZ *= 2;
 
 				if (target.getHealth() <= 0.01F)
+					this.addictionalDamage++;
+					this.setHealth(this.getHealth() + 2);
+					
+					nbt.setInteger(nbtKey, addictionalDamage);
 					target.onDeath(DamageSource.causeMobDamage(this).setDamageBypassesArmor());
 			}
 
@@ -129,35 +131,20 @@ public class EntityWendigo extends EntityMob
 
 		return super.attackEntityAsMob(entity);
 	}
-	
-	@Override
-	public void onKillEntity(EntityLivingBase victum) {
-		super.onKillEntity(victum);
-		
-		this.addictionalDamage++;
-		System.out.println(this.addictionalDamage);
-		this.setHealth(this.getHealth() + 2);
-	}
+
 	
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		
-		if (nbt.getCompoundTag(Cannibalism.MODID) == null)
-			nbt.setTag(Cannibalism.MODID, new NBTTagCompound());
-		
-		NBTTagCompound modData = nbt.getCompoundTag(Cannibalism.MODID);
-		
-		modData.setInteger(nbtKey, addictionalDamage);
+		nbt.setInteger(nbtKey, addictionalDamage);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		
-		NBTTagCompound modData = nbt.getCompoundTag(Cannibalism.MODID);
-		
-		if (modData != null) this.addictionalDamage = modData.getInteger(nbtKey);
+		this.addictionalDamage = nbt.getInteger(nbtKey);
 	}
 
 	@Override
