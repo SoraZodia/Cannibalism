@@ -42,6 +42,8 @@ public class ItemRegistry
 	public static ItemFlesh villagerFleshCooked = (ItemFlesh) new ItemFlesh("villagerfleshcooked", 8, 0.8F);
 	
 	public static ItemHeirloom heart = new ItemHeirloom("heart");
+	
+	public static ItemHeirloom groundedheart = new ItemHeirloom("groundedheart");
 
 	public static void addAllTexture() {
 		ItemRegistry.addTexture(woodenKnife);
@@ -57,6 +59,7 @@ public class ItemRegistry
 		ItemRegistry.addTexture(playerFleshCooked);
 		ItemRegistry.addTexture(villagerFleshCooked);
 		ItemRegistry.addTexture(heart);
+		ItemRegistry.addTexture(groundedheart);
 	}
 	
 	public static void addTexture(Item item) {

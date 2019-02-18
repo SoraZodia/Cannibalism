@@ -1,5 +1,7 @@
 package sorazodia.cannibalism.mob;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -69,6 +71,7 @@ public class EntityWendigo extends EntityMob
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
 	}
 
 	@Override 
@@ -104,32 +107,33 @@ public class EntityWendigo extends EntityMob
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
 	{	
-		boolean attacked = false;
 		
 		if (entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase target = (EntityLivingBase) entity;
 			NBTTagCompound nbt = this.getEntityData();
-			
-			attacked = target.attackEntityFrom(DamageSource.causeMobDamage(this), 0.01F);
-			if (attacked)
-			{
-				target.setHealth(target.getHealth() - (4 + this.addictionalDamage));
-				target.motionY *= 2;
-				target.motionX *= 2;
-				target.motionZ *= 2;
+			float postDamageHealth = target.getHealth() - (4 + this.addictionalDamage);
 
-				if (target.getHealth() <= 0.01F)
-					this.addictionalDamage++;
-					this.setHealth(this.getHealth() + 2);
-					
-					nbt.setInteger(nbtKey, addictionalDamage);
-					target.onDeath(DamageSource.causeMobDamage(this).setDamageBypassesArmor());
+			if (postDamageHealth <= 0) {
+				this.addictionalDamage++;
+				this.setHealth(this.getHealth() + 2);
+				nbt.setInteger(nbtKey, addictionalDamage);
+				target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor(), Float.MAX_VALUE);
+			}
+			else {
+				target.attackEntityFrom(DamageSource.causeMobDamage(this), 0);
+				target.setHealth(postDamageHealth);
 			}
 
 		}
 
 		return super.attackEntityAsMob(entity);
+	}
+	
+	@Nullable
+	@Override
+	public ResourceLocation getLootTable() {
+		return Cannibalism.wendigoLootTable;
 	}
 
 	

@@ -149,6 +149,7 @@ public class ItemDevKnife extends ItemKnife
 					NBTTagCompound nbt = target.getEntityData();
 					if (nbt != null) {
 						Chat.displayPlainChat(player, "Wendigo Strength: " + nbt.getInteger(EntityWendigo.nbtKey));
+						Chat.displayPlainChat(player, "Wendigo Health: " + target.getHealth());
 					}
 				}
 			}

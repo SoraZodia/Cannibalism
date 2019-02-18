@@ -1,18 +1,6 @@
 package sorazodia.cannibalism.main;
 
-import static sorazodia.cannibalism.main.ItemRegistry.devKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.diamondKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.flintKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.goldKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.heart;
-import static sorazodia.cannibalism.main.ItemRegistry.ironKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.playerFlesh;
-import static sorazodia.cannibalism.main.ItemRegistry.playerFleshCooked;
-import static sorazodia.cannibalism.main.ItemRegistry.stoneKnife;
-import static sorazodia.cannibalism.main.ItemRegistry.villagerFlesh;
-import static sorazodia.cannibalism.main.ItemRegistry.villagerFleshCooked;
-import static sorazodia.cannibalism.main.ItemRegistry.witchFlesh;
-import static sorazodia.cannibalism.main.ItemRegistry.woodenKnife;
+import static sorazodia.cannibalism.main.ItemRegistry.*;
 
 import java.io.IOException;
 
@@ -21,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,7 +54,8 @@ public class Cannibalism
 	@SuppressWarnings("unused")
 	private static ConfigHandler config;
 	private static JSONConfig json;
-
+	public static ResourceLocation wendigoLootTable;
+	
 	private static Logger log;
 
 	private static Database data = new Database();
@@ -100,7 +91,6 @@ public class Cannibalism
 		json = new JSONConfig(preEvent);
 		config = new ConfigHandler(preEvent, json);
 		common.preInit();
-
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
@@ -111,7 +101,7 @@ public class Cannibalism
 	@SubscribeEvent
 	public void register(RegistryEvent.Register<Item> event)
 	{
-		event.getRegistry().registerAll(woodenKnife, flintKnife, stoneKnife, goldKnife, ironKnife, diamondKnife, devKnife, playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked, heart);
+		event.getRegistry().registerAll(woodenKnife, flintKnife, stoneKnife, goldKnife, ironKnife, diamondKnife, devKnife, playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked, heart , groundedheart);
 		ItemRegistry.addAllTexture();
 	}
 
@@ -128,6 +118,7 @@ public class Cannibalism
 	{
 		log.info("[Cannibalism] Checking Entity Mappings...");
 		this.initEntityMapping();
+		wendigoLootTable = LootTableList.register(new ResourceLocation(MODID, "wendigo"));
 		log.info("[Cannibalism] Mod Locked and Loaded");
 	}
 

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "cannibalism:groundedheart"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "pip",
+    "ihi",
+	"pip"
+  ],
+  "key": {
+    "i": {
+	  "type": "forge:ore_dict",
+      "ore": "ingotIron"
+	},
+	"p": {
+	  "item": "minecraft:ender_pearl"
+	},
+	"h": {
+	  "item": "cannibalism:heart"
+	}
+  }
+}
