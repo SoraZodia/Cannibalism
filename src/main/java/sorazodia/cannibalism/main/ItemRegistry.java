@@ -41,9 +41,9 @@ public class ItemRegistry
 
 	public static ItemFlesh villagerFleshCooked = (ItemFlesh) new ItemFlesh("villagerfleshcooked", 8, 0.8F);
 	
-	public static ItemHeirloom heart = new ItemHeirloom("heart");
+	public static ItemHeirloom heart = new ItemHeirloom("wendigoheart");
 	
-	public static ItemHeirloom groundedheart = new ItemHeirloom("groundedheart");
+	public static ItemHeirloom groundedheart = new ItemHeirloom("groundedplayerheart");
 
 	public static void addAllTexture() {
 		ItemRegistry.addTexture(woodenKnife);

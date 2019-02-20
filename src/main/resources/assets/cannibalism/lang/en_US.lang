@@ -12,8 +12,8 @@ item.playerflesh.name=Player Flesh
 item.villagerfleshcooked.name=Cooked Villager Flesh
 item.playerfleshcooked.name=Cooked Player Flesh
 item.witchflesh.name=Witch Flesh
-item.heart.name=Wendigo's Heart
-item.groundedheart.name=Tethered Heart
+item.wendigoheart.name=Wendigo's Heart
+item.groundedplayerheart.name=Tethered Heart
 
 item.playerFleshOwner.name=%s's Flesh
 
