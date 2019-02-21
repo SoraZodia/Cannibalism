@@ -45,6 +45,7 @@ command.error.number=Third argument is not a floating point number or fourth aru
 command.set=/cannibalism set <username>: set the target's wendigo level
 command.stat=/cannibalism stat <username>: check the target wendigo level
 command.wendigoheirlooms=Number of assigned heirlooms: %f
+command.wendigoheart=Embedded heart: %s
 
 hierloom.lore1=Treasured item of %s
 hierloom.lore2=You can't help but feel tethered to something
