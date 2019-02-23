@@ -11,9 +11,9 @@ import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.main.ItemRegistry;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
-public class ItemHeirloom extends Item
+public class ItemHeart extends Item
 {
-	public ItemHeirloom(String name)
+	public ItemHeart(String name)
 	{
 		super();
 		this.setUnlocalizedName(name);

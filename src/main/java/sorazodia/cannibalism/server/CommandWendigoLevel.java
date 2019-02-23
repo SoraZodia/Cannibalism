@@ -85,11 +85,7 @@ public class CommandWendigoLevel implements ICommand
 				}
 				break;
 			case commandStat:
-				sender.sendMessage(new TextComponentTranslation("command.wendigostat", nbt.getWendigoValue()));
-				sender.sendMessage(new TextComponentTranslation("command.wendigospawnchance", nbt.getSpawnChance() * 100));
-				sender.sendMessage(new TextComponentTranslation("command.wendigohasspawn", !nbt.wendigoSpawned()));
-				sender.sendMessage(new TextComponentTranslation("command.wendigoheirlooms", nbt.getHeirloomCount() - 1));
-				sender.sendMessage(new TextComponentTranslation("command.wendigoheart", nbt.hasHeart()));
+				nbt.printDataRecords(sender);
 				break;
 			}
 		}

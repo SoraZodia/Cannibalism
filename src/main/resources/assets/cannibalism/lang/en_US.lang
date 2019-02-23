@@ -36,16 +36,18 @@ item.devKnife.errorUnknown=Something not accounted for caused the parser to fail
 item.devKnife.lore1=Dev Knife
 item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
 
-command.wendigostat=Currect Wendigo Level: %f
-command.wendigospawnchance=Currect Chance to Spawn Wendigo: %f
-command.wendigohasspawn=Can spawn Wendigo: %s
 command.wendigolevelchange=Changed
 command.error.player=Cannot find player
 command.error.number=Third argument is not a floating point number or fourth arugument is not a integer
 command.set=/cannibalism set <username>: set the target's wendigo level
 command.stat=/cannibalism stat <username>: check the target wendigo level
-command.wendigoheirlooms=Number of assigned heirlooms: %f
-command.wendigoheart=Embedded heart: %s
+
+command.stat.wendigo=Current Wendigo Level: %f
+command.stat.spawnchance=Current Chance to Spawn Wendigo: %f
+command.stat.applyWarningEffect=Trigger warning effect: %s
+command.stat.wendigoExist=Has spawned Wendigo: %s
+command.stat.embeddedHeart=Embedded heart: %s
+command.stat.heirloomCount=Number of assigned heirlooms: %f
 
 hierloom.lore1=Treasured item of %s
 hierloom.lore2=You can't help but feel tethered to something

@@ -1,6 +1,8 @@
 package sorazodia.cannibalism.mechanic.nbt;
 
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentTranslation;
 import sorazodia.api.nbt.Database;
 import sorazodia.cannibalism.main.Cannibalism;
 
@@ -95,5 +97,13 @@ public class CannibalismNBT
 	{
 		data.record(player, tags[2], doApply);
 	}
+	
+	public void printDataRecords(ICommandSender sender)
+	{
+		for (int x = 0; x < tags.length; x++) {
+			sender.sendMessage(new TextComponentTranslation("command.stat." + tags[x], data.get(player, tags[x]).orElse(x == 3 ? WENDIGO_SPAWN_BASE: 0)));
+		}
+	}
+	
 	
 }

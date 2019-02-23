@@ -98,6 +98,7 @@ public class EntityWendigo extends EntityMob
 				nbt.setWendigoValue(0);
 				nbt.setWedigoSpawn(false);
 				nbt.setWarningEffect(true);
+				nbt.setSpawnChance(CannibalismNBT.WENDIGO_SPAWN_BASE);
 			}
 		}
 		
