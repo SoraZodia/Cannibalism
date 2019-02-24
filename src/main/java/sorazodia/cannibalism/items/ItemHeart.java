@@ -22,12 +22,15 @@ public class ItemHeart extends Item
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) 
+	{
 		ItemStack heldHeart = player.getHeldItem(hand);
 		CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 		
 		if (!nbt.hasHeart() && heldHeart.getItem() == ItemRegistry.groundedheart) {
 			nbt.setHeart(true);
+			nbt.setWarningEffect(true);
+			nbt.setWendigoValue(500);
 			if (!player.capabilities.isCreativeMode)
 				heldHeart.shrink(1);
 		}

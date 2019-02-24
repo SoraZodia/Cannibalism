@@ -28,6 +28,7 @@ import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
+import sorazodia.cannibalism.mechanic.events.DamageEvent;
 import sorazodia.cannibalism.mechanic.events.DeathEvent;
 import sorazodia.cannibalism.mechanic.events.EntityNBTEvents;
 import sorazodia.cannibalism.mechanic.events.InteractionEvent;
@@ -91,6 +92,7 @@ public class Cannibalism
 		json = new JSONConfig(preEvent);
 		config = new ConfigHandler(preEvent, json);
 		common.preInit();
+		MinecraftForge.EVENT_BUS.register(new DamageEvent());
 		MinecraftForge.EVENT_BUS.register(new DeathEvent());
 		MinecraftForge.EVENT_BUS.register(new EntityNBTEvents());
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());

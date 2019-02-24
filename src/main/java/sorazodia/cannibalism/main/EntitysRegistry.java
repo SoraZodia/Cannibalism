@@ -1,6 +1,8 @@
 package sorazodia.cannibalism.main;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import sorazodia.cannibalism.mob.EntityTurnedVillager;
@@ -15,6 +17,7 @@ public class EntitysRegistry
 	{
 		registerEntity(EntityWendigo.class, "wendigo", 42);
 		registerEntity(EntityTurnedVillager.class, "wendigo_villager", 15);
+		EntityRegistry.addSpawn(EntityTurnedVillager.class, 8, 1, 1, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.BIRCH_FOREST, Biomes.DESERT, Biomes.MESA, Biomes.SAVANNA, Biomes.SWAMPLAND);
 	}
 
 	private static void registerEntity(Class<? extends EntityLiving> entity, String name, int range)

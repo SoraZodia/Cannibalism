@@ -31,17 +31,26 @@ public class DeathEvent
 			{
 				CannibalismNBT stats = CannibalismNBT.getNBT((EntityPlayer) entity);
 				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh, amount);
-				setMeatName(playerFlesh, I18n.translateToLocalFormatted("item.playerFleshOwner.name", entity.getName()));
+				setMeatName(playerFlesh, I18n.translateToLocalFormatted("item.info.playerFleshOwner", entity.getName()));
 				
 				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, playerFlesh);	
 				
 				entity.world.spawnEntity(drops);
+				if (stats.hasHeart()) 
+				{
+					ItemStack heart = new ItemStack(ItemRegistry.groundedheart);
+					setMeatName(heart, I18n.translateToLocalFormatted("item.info.playerHeartOwner", entity.getName()));
+					
+					stats.setHeart(false);
+					entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, heart));
+				}
 				
 				if (event.getSource().getTrueSource() instanceof EntityPlayer)
 					possessKiller((EntityPlayer) event.getSource().getTrueSource(), stats);
 				else if (stats.getWendigoValue() >= 500)
 					EntityNBTEvents.spawnWendigo((EntityPlayer) entity);
 			}
+			
 			if (entity instanceof EntityVillager)
 			{
 				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, new ItemStack(ItemRegistry.villagerFlesh, amount));

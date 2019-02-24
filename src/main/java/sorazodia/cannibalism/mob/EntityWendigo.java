@@ -68,7 +68,7 @@ public class EntityWendigo extends EntityMob
 	{
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.7D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(42D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
@@ -85,6 +85,11 @@ public class EntityWendigo extends EntityMob
 		
 		return super.attackEntityFrom(source, damage);
     }
+	
+	@Override
+	public void damageEntity(DamageSource source, float damage) {
+		super.damageEntity(source, source.isFireDamage() ? damage * 1.5f : damage);
+	}
 	
 	@Override
 	public void setDead()
@@ -113,7 +118,7 @@ public class EntityWendigo extends EntityMob
 		{
 			EntityLivingBase target = (EntityLivingBase) entity;
 			NBTTagCompound nbt = this.getEntityData();
-			float postDamageHealth = target.getHealth() - (4 + this.addictionalDamage);
+			float postDamageHealth = target.getHealth() - (7 + this.addictionalDamage);
 
 			if (postDamageHealth <= 0) {
 				this.addictionalDamage++;

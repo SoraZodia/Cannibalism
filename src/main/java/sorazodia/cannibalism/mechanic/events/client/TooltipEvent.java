@@ -11,10 +11,11 @@ public class TooltipEvent
 	@SubscribeEvent()
 	public void tooltipEvent (ItemTooltipEvent event)
 	{
+		String ownerName = "";
 		if (event.getItemStack().getTagCompound() != null &&
-			event.getItemStack().getTagCompound().getCompoundTag(Cannibalism.MODID).getInteger(InteractionEvent.NBT_TAG) > 0) 
+				(ownerName = event.getItemStack().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG)).length() > 0) 
 		{
-			event.getToolTip().add(I18n.format("hierloom.lore1", event.getEntityPlayer().getDisplayName().getFormattedText()));
+			event.getToolTip().add(I18n.format("hierloom.lore1", ownerName));
 			event.getToolTip().add(I18n.format("hierloom.lore2"));
 		}
 	}

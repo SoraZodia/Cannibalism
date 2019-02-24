@@ -15,7 +15,8 @@ item.witchflesh.name=Witch Flesh
 item.wendigoheart.name=Wendigo's Heart
 item.groundedplayerheart.name=Tethered Heart
 
-item.playerFleshOwner.name=%s's Flesh
+item.info.playerFleshOwner=%s's Flesh
+item.info.playerHeartOwner=%s's Heart
 
 item.villagerpoptart.name=Villager Poptart
 item.playerpoptart.name=Player Poptart

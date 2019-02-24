@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,7 +35,13 @@ public class EntityNBTEvents
 			}
 
 			if (!event.player.world.isRemote)
-				addServerEffect(player, wendigoLevel, nbt);;
+			{
+				addServerEffect(player, wendigoLevel, nbt);
+				boolean holdingHeirloom = (player.getHeldItemOffhand().getTagCompound() != null && player.getHeldItemOffhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG).length() > 0)
+						                  || (player.getHeldItemMainhand().getTagCompound() != null && player.getHeldItemMainhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG).length() > 0);
+				if (nbt.hasHeart() && holdingHeirloom)
+					player.attackEntityFrom(DamageSource.WITHER, 1);
+			}
 		}
 	}
 	
@@ -46,7 +53,7 @@ public class EntityNBTEvents
 			EntityPlayer player = event.getPlayer().get();
 			if (!player.getEntityWorld().isRemote &&
 				player.getHeldItemOffhand().getTagCompound() != null &&
-				player.getHeldItemOffhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getInteger(InteractionEvent.NBT_TAG) == 1) 
+				player.getHeldItemOffhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG).length() > 0) 
 			{
 				event.setCanceled(true);
 			}
@@ -87,7 +94,7 @@ public class EntityNBTEvents
 			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));
 			player.setAbsorptionAmount(10);
 		}
-		if (wendigoLevel >= WENDIGO_LEVEL_CAP)
+		if (wendigoLevel >= WENDIGO_LEVEL_CAP && !nbt.hasHeart())
 		{
 			if (player.ticksExisted % 600 == 0 && nbt.wendigoSpawned() == false && nbt.getSpawnChance() > Math.random()) {
 				EntityNBTEvents.spawnWendigo(player);
