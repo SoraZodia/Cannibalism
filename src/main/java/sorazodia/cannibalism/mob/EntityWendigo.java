@@ -59,6 +59,7 @@ public class EntityWendigo extends EntityMob
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityWitch.class, true));
 		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityZombie.class, true));
+		this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<>(this, EntityTurnedVillager.class, true));
     }
 	
 
