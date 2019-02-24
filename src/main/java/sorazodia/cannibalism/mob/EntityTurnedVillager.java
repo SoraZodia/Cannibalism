@@ -1,6 +1,7 @@
 package sorazodia.cannibalism.mob;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -14,8 +15,10 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.main.Cannibalism;
@@ -26,7 +29,7 @@ public class EntityTurnedVillager extends EntityMob
 	private EntityLivingBase attacker;
 	private final SoundEvent hurtSound = SoundEvents.ENTITY_VILLAGER_HURT;
 	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
-	
+	private int growth = 0;
 
 	public EntityTurnedVillager(World world)
 	{
@@ -91,6 +94,20 @@ public class EntityTurnedVillager extends EntityMob
 		
 		super.setDead();
 	}
+	
+	@Override
+	public void onEntityUpdate()
+	{
+		super.onEntityUpdate();
+		if (this.growth >= 10)
+		{
+			this.world.playSound(null, this.getPosition(), SoundEvents.ENTITY_WOLF_HOWL, SoundCategory.HOSTILE, 1, 0.5F);
+			EntityWendigo wendigo = (EntityWendigo) EntityList.createEntityByIDFromName(new ResourceLocation(Cannibalism.MODID + ":wendigo"), this.world);
+			wendigo.setLocationAndAngles(this.posX, this.posY, this.posZ, 0, 0);
+			this.world.spawnEntity(wendigo);
+			this.setDead();
+		}
+	}
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
@@ -106,18 +123,38 @@ public class EntityTurnedVillager extends EntityMob
 				target.setHealth(target.getHealth()*0.8f);
 
 				if (target.getHealth() <= 0.01F)
+				{
+					NBTTagCompound nbt = this.getEntityData();
+					
+					this.growth++;
+					nbt.setInteger(EntityWendigo.nbtKey, growth);
 					target.onDeath(DamageSource.causeMobDamage(this).setDamageBypassesArmor());
+				}
 			}
 
 		}
 
 		return super.attackEntityAsMob(entity);
 	}
+	
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbt) {
+		super.writeEntityToNBT(nbt);
+		
+		nbt.setInteger(EntityWendigo.nbtKey, this.growth);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbt) {
+		super.readEntityFromNBT(nbt);
+		
+		this.growth = nbt.getInteger(EntityWendigo.nbtKey);
+	}
 
 	@Override
 	public boolean canDespawn()
 	{
-		return false;
+		return this.growth >= 5 ?  false : true;
 	}
 
 	@Override
