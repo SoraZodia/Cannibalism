@@ -33,6 +33,8 @@ public class DeathEvent
 				ItemStack playerFlesh = new ItemStack(ItemRegistry.playerFlesh, amount);
 				setMeatName(playerFlesh, I18n.translateToLocalFormatted("item.info.playerFleshOwner", entity.getName()));
 				
+				boolean hasHeart = stats.hasHeart();
+				
 				EntityItem drops = new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, playerFlesh);	
 				
 				entity.world.spawnEntity(drops);
@@ -42,12 +44,13 @@ public class DeathEvent
 					setMeatName(heart, I18n.translateToLocalFormatted("item.info.playerHeartOwner", entity.getName()));
 					
 					stats.setHeart(false);
+					stats.setWendigoValue(0);
 					entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY + 2, entity.posZ, heart));
 				}
 				
 				if (event.getSource().getTrueSource() instanceof EntityPlayer)
 					possessKiller((EntityPlayer) event.getSource().getTrueSource(), stats);
-				else if (stats.getWendigoValue() >= 500)
+				else if (stats.getWendigoValue() >= 500 && !hasHeart)
 					EntityNBTEvents.spawnWendigo((EntityPlayer) entity);
 			}
 			
