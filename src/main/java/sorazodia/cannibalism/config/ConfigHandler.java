@@ -8,18 +8,23 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Optional;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import sorazodia.cannibalism.main.Cannibalism;
+import sorazodia.cannibalism.server.CommandWendigoLevel;
 
 public class ConfigHandler
 {
 	public static Configuration configFile;
+	private static HashMap<String, Float> externalFleshMappings = new HashMap<>();
 	private static boolean scream;
 	private static boolean myth = false;
 	private static float screamPinch;
 	private static int bloodAmount;
+	private static String[] defaultFleshMappings = {"cannibalism:wendigoheart,10"};
 
 	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
 	{
@@ -32,12 +37,28 @@ public class ConfigHandler
 
 	public static void syncConfig()
 	{
+		processStringList(configFile.getStringList("Valid Flesh Items", Configuration.CATEGORY_GENERAL, defaultFleshMappings, "Listed items will be considered as human flesh. Format: [<unlocatizated name>, <wendigo level increase by>]"));
 		scream = configFile.getBoolean("Use Scream Sound", Configuration.CATEGORY_GENERAL, false, "Set true if you want to hear... PAIN");
 		myth = configFile.getBoolean("Enable Mythological Mode", Configuration.CATEGORY_GENERAL, false, "Set true cause myths about cannibalism to become real.");
 		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
 		if (configFile.hasChanged())
 			configFile.save();
+	}
+	
+	private static void processStringList(String list[]) 
+	{
+		for (String entry: list)
+		{
+			String[] mapping = entry.split(",");
+			if (CommandWendigoLevel.isFloat(mapping[1], true))
+				externalFleshMappings.put(mapping[0], Float.valueOf(mapping[1]));
+		}
+	}
+	
+	public static Optional<Float> processAsFlesh(String itemName)
+	{
+		return Optional.ofNullable(externalFleshMappings.get(itemName));
 	}
 
 	public static boolean doScream()
