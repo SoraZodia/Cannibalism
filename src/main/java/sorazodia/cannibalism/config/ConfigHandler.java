@@ -84,9 +84,9 @@ public class ConfigHandler
 		}
 	}
 	
-	public static boolean isKnifeEnabled(KnifeType type)
+	public static ArrayList<KnifeType> getEnabledKnifeList()
 	{
-		return activeKnifes.contains(type);
+		return activeKnifes;
 	}
 	
 	public static Optional<Float> processAsFlesh(String itemName)

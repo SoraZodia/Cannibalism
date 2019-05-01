@@ -2,32 +2,20 @@ package sorazodia.cannibalism.main;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.registries.IForgeRegistry;
+import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.items.ItemDevKnife;
 import sorazodia.cannibalism.items.ItemFlesh;
 import sorazodia.cannibalism.items.ItemHeart;
 import sorazodia.cannibalism.items.ItemKnife;
+import sorazodia.cannibalism.items.KnifeType;
 
 public class ItemRegistry
 {
-	private static final ToolMaterial FLINT = EnumHelper.addToolMaterial("FLINT", 1, 100, 3.0F, 2.5F, 5);
-
-	// Knife variables + names
-	public static ItemKnife woodenKnife = (ItemKnife) new ItemKnife("woodenknife", Item.ToolMaterial.WOOD);
-
-	public static ItemKnife flintKnife = (ItemKnife) new ItemKnife("flintknife", FLINT);
-
-	public static ItemKnife stoneKnife = (ItemKnife) new ItemKnife("stoneknife", Item.ToolMaterial.STONE);
-
-	public static ItemKnife goldKnife = (ItemKnife) new ItemKnife("goldknife", Item.ToolMaterial.GOLD);
-
-	public static ItemKnife ironKnife = (ItemKnife) new ItemKnife("ironknife", Item.ToolMaterial.IRON);
-
-	public static ItemKnife diamondKnife = (ItemKnife) new ItemKnife("diamondknife", Item.ToolMaterial.DIAMOND);
-
+	
+	// Developer's item
 	public static ItemKnife devKnife = (ItemDevKnife) new ItemDevKnife();
 
 	// Flesh variables + names
@@ -44,15 +32,30 @@ public class ItemRegistry
 	public static ItemHeart heart = new ItemHeart("wendigoheart");
 	
 	public static ItemHeart groundedheart = new ItemHeart("groundedplayerheart");
+	
+	public static void register(IForgeRegistry<Item> registry)
+	{
+		ItemRegistry.addSelectedKnifes(registry);
+		ItemRegistry.addOtherItems(registry);		
+	}
 
-	public static void addAllTexture() {
-		ItemRegistry.addTexture(woodenKnife);
-		ItemRegistry.addTexture(flintKnife);
-		ItemRegistry.addTexture(stoneKnife);
-		ItemRegistry.addTexture(goldKnife);
-		ItemRegistry.addTexture(ironKnife);
-		ItemRegistry.addTexture(diamondKnife);
+	private static void addSelectedKnifes(IForgeRegistry<Item> registry)
+	{
+		// devKnife will always be enable
+		registry.register(devKnife);
 		ItemRegistry.addTexture(devKnife);
+		
+		for(KnifeType type : ConfigHandler.getEnabledKnifeList()) 
+		{
+			ItemKnife knife = type.getKnife();
+			registry.register(knife);
+			ItemRegistry.addTexture(knife);
+		}
+	}
+	
+	private static void addOtherItems(IForgeRegistry<Item> registry)
+	{
+		registry.registerAll(playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked, heart , groundedheart);
 		ItemRegistry.addTexture(playerFlesh);
 		ItemRegistry.addTexture(villagerFlesh);
 		ItemRegistry.addTexture(witchFlesh);
@@ -61,6 +64,7 @@ public class ItemRegistry
 		ItemRegistry.addTexture(heart);
 		ItemRegistry.addTexture(groundedheart);
 	}
+	
 	
 	public static void addTexture(Item item) {
 		 ItemRegistry.addTexture(item, item.getRegistryName().toString());

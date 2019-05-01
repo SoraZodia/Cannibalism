@@ -1,7 +1,5 @@
 package sorazodia.cannibalism.main;
 
-import static sorazodia.cannibalism.main.ItemRegistry.*;
-
 import java.io.IOException;
 
 import org.apache.logging.log4j.Logger;
@@ -103,8 +101,7 @@ public class Cannibalism
 	@SubscribeEvent
 	public void register(RegistryEvent.Register<Item> event)
 	{
-		event.getRegistry().registerAll(woodenKnife, flintKnife, stoneKnife, goldKnife, ironKnife, diamondKnife, devKnife, playerFlesh, villagerFlesh, witchFlesh, playerFleshCooked, villagerFleshCooked, heart , groundedheart);
-		ItemRegistry.addAllTexture();
+		ItemRegistry.register(event.getRegistry());
 	}
 
 	@EventHandler
