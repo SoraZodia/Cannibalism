@@ -65,12 +65,12 @@ public class EntityNBTEvents
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 10));
+			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 4));
 			player.addExhaustion(0.02F);
 		}
 		if (wendigoLevel >= 50)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 10, 1));
+			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 6, 1));
 			player.addExhaustion(0.04F);
 		}
 		if (wendigoLevel >= 100)
@@ -86,12 +86,12 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 150)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10, (int)(wendigoLevel > 300 ? wendigoLevel - 300 + 2 : 2)));
+			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 8, (int)(wendigoLevel > 300 ? wendigoLevel - 300 + 2 : 2)));
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 10, 1));
+			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6, 1));
 			player.setAbsorptionAmount(10);
 		}
 		if (wendigoLevel >= WENDIGO_LEVEL_CAP && !nbt.hasHeart())
