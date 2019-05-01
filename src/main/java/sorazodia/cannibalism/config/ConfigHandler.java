@@ -8,23 +8,32 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import sorazodia.cannibalism.items.KnifeType;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.server.CommandWendigoLevel;
 
 public class ConfigHandler
 {
 	public static Configuration configFile;
+	private static final String CATEGORY_STARTUP = "startup";
 	private static HashMap<String, Float> externalFleshMappings = new HashMap<>();
 	private static boolean scream;
 	private static boolean myth = false;
 	private static float screamPinch;
 	private static int bloodAmount;
 	private static String[] defaultFleshMappings = {"cannibalism:wendigoheart,10"};
+	private static String[] knifes = {"wood", "flint", "stone", "gold", "iron", "diamond"};
+	private static ArrayList<KnifeType> activeKnifes = new ArrayList<>();
+	
 
 	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
 	{
@@ -32,18 +41,37 @@ public class ConfigHandler
 			Cannibalism.getLogger().info("Failed to remove old config");
 
 		configFile = new Configuration(event.getSuggestedConfigurationFile());
+		configFile.setCategoryRequiresMcRestart(CATEGORY_STARTUP, true);
 		syncConfig();
 	}
 
 	public static void syncConfig()
 	{
-		processStringList(configFile.getStringList("Valid Flesh Items", Configuration.CATEGORY_GENERAL, defaultFleshMappings, "Listed items will be considered as human flesh. Format: [<unlocatizated name>, <wendigo level increase by>]"));
+		processStringList(configFile.getStringList("Valid Flesh Items", Configuration.CATEGORY_GENERAL, defaultFleshMappings, "Listed items will be considered as human flesh. Format: [<unlocatizated name>, <wendigo level increase by>]"));		
 		scream = configFile.getBoolean("Use Scream Sound", Configuration.CATEGORY_GENERAL, false, "Set true if you want to hear... PAIN");
 		myth = configFile.getBoolean("Enable Mythological Mode", Configuration.CATEGORY_GENERAL, false, "Set true cause myths about cannibalism to become real.");
 		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
+		
+		processKnifeList(configFile.getStringList("Active Knife List", CATEGORY_STARTUP, knifes, "Knife items that will be loaded on startup. Remove them from this list to disable them. Requires MC to restart."));
 		if (configFile.hasChanged())
 			configFile.save();
+	}
+	
+	private static void processKnifeList(String list[]) 
+	{
+		activeKnifes.clear();
+		try 
+		{
+			for (String knife: list) 
+			{
+				activeKnifes.add(KnifeType.valueOf(knife.trim().toUpperCase()));
+			}
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			Cannibalism.getLogger().error("Invalid knife type");
+		}
 	}
 	
 	private static void processStringList(String list[]) 
@@ -54,6 +82,11 @@ public class ConfigHandler
 			if (CommandWendigoLevel.isFloat(mapping[1], true))
 				externalFleshMappings.put(mapping[0], Float.valueOf(mapping[1]));
 		}
+	}
+	
+	public static boolean isKnifeEnabled(KnifeType type)
+	{
+		return activeKnifes.contains(type);
 	}
 	
 	public static Optional<Float> processAsFlesh(String itemName)
@@ -79,6 +112,15 @@ public class ConfigHandler
 	public static boolean allowMyth()
 	{
 		return myth;
+	}
+	
+	public static List<IConfigElement> getConfigElements() 
+	{
+		List<IConfigElement> configElements= new ConfigElement(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements();
+		
+		configElements.addAll(new ConfigElement(ConfigHandler.configFile.getCategory(ConfigHandler.CATEGORY_STARTUP)).getChildElements());
+		
+		return configElements;
 	}
 
 	public static boolean updateOldConfig(String dirPath)
