@@ -79,8 +79,10 @@ public class ConfigHandler
 		for (String entry: list)
 		{
 			String[] mapping = entry.split(",");
-			if (CommandWendigoLevel.isFloat(mapping[1], true))
+			if (mapping.length > 1 && CommandWendigoLevel.isFloat(mapping[1], true))
 				externalFleshMappings.put(mapping[0], Float.valueOf(mapping[1]));
+			else
+				externalFleshMappings.put(mapping[0], 10.0F);
 		}
 	}
 	
