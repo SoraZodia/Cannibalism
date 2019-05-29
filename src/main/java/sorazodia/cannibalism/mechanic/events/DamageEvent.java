@@ -16,6 +16,10 @@ public class DamageEvent
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			CannibalismNBT playerData = CannibalismNBT.getNBT(player);
 			
+			if (player.getFoodStats().getFoodLevel() <= 1 && playerData.getWendigoValue() >= 150) {
+				event.setAmount(event.getAmount() * 3.0f);
+			}
+			
 			if (event.getSource().getTrueSource() instanceof EntityPlayer) 
 			{
 				EntityPlayer attacker = (EntityPlayer) event.getSource().getTrueSource();
@@ -29,6 +33,7 @@ public class DamageEvent
 				}
 						
 			}
+			
 			if (event.getSource().isFireDamage())
 			{
 				if (playerData.getWendigoValue() >= 100)

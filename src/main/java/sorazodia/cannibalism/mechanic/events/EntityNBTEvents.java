@@ -1,6 +1,7 @@
 package sorazodia.cannibalism.mechanic.events;
 
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -41,6 +42,10 @@ public class EntityNBTEvents
 						                  || (player.getHeldItemMainhand().getTagCompound() != null && player.getHeldItemMainhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG).length() > 0);
 				if (nbt.hasHeart() && holdingHeirloom)
 					player.attackEntityFrom(DamageSource.WITHER, 1);
+				
+				if (player.getFoodStats().getFoodLevel() <= 0 && nbt.getWendigoValue() >= 150) {
+					player.getFoodStats().setFoodLevel(1);
+				}
 			}
 		}
 	}
@@ -66,6 +71,7 @@ public class EntityNBTEvents
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 4));
+			player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 4));
 			player.addExhaustion(0.02F);
 		}
 		if (wendigoLevel >= 50)
@@ -86,13 +92,14 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 150)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 8, (int)(wendigoLevel > 300 ? wendigoLevel - 300 + 2 : 2)));
+			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 8, (wendigoLevel < 240) ? 1 : 2));
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6, 1));
-			player.setAbsorptionAmount(10);
+			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6));
+			player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 6));
+			player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0);
 		}
 		if (wendigoLevel >= WENDIGO_LEVEL_CAP && !nbt.hasHeart())
 		{
