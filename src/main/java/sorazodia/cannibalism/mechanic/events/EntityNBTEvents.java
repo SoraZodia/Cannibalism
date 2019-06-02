@@ -70,21 +70,21 @@ public class EntityNBTEvents
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 4));
-			player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 4));
+			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 250));
 			player.addExhaustion(0.02F);
 		}
 		if (wendigoLevel >= 50)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 6, 1));
+			player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 250, (wendigoLevel >= 100) ? 2 : 1));
+			player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 250));
 			player.addExhaustion(0.04F);
 		}
 		if (wendigoLevel >= 100)
 		{
 			if (nbt.doWarningEffect())
 			{
-				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100));
-				player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100));
+				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 250));
+				player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 250));
 				nbt.setWarningEffect(false);
 			}	
 			
@@ -92,18 +92,19 @@ public class EntityNBTEvents
 		}
 		if (wendigoLevel >= 150)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 8, (wendigoLevel < 240) ? 1 : 2));
+			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 250, (wendigoLevel < 240) ? 1 : 2));
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
-			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6));
-			player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 6));
+			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 250));
+			player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 250));
 			player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0);
+			player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 250));
 		}
-		if (wendigoLevel >= WENDIGO_LEVEL_CAP && !nbt.hasHeart())
+		if (wendigoLevel >= WENDIGO_LEVEL_CAP)
 		{
-			if (player.ticksExisted % 600 == 0 && nbt.wendigoSpawned() == false && nbt.getSpawnChance() > Math.random()) {
+			if (!nbt.hasHeart() && player.ticksExisted % 600 == 0 && nbt.wendigoSpawned() == false && nbt.getSpawnChance() > Math.random()) {
 				EntityNBTEvents.spawnWendigo(player);
 			}	
 		}
