@@ -31,9 +31,9 @@ public class JSONConfig
 	private final String overwriteFiles[] = {"overwrite.json", "overwrite.txt"};
 	private String fileName;
 	private static Logger log = Cannibalism.getLogger();
-
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
+	private static EntityData playerData = new EntityData("player", new String[0], 5.0F, 5.5F);
 	private static boolean isWildCard = false;
 	private static final String MODID = "modID";
 	private static final String ENTITYID = "entityID";
@@ -141,7 +141,12 @@ public class JSONConfig
 
 		entityName.append(entityID);
 
-		if (isWildCard)
+		if (entityName.toString().equals("player"))
+		{
+			playerData.setMinDamage(min);
+			playerData.setMaxDamage(max);
+		}
+		else if (isWildCard)
 			wildcardMap.add(new EntityData(entityName.toString(), drop, min, max));
 		else
 			entityMap.put(entityName.toString(), new EntityData(drop, min, max));
@@ -182,6 +187,11 @@ public class JSONConfig
 	public ArrayList<EntityData> getWildcardMap()
 	{
 		return wildcardMap;
+	}
+	
+	public EntityData getPlayerData()
+	{
+		return playerData;
 	}
 
 	public boolean checkEntity(EntityLivingBase entity)
