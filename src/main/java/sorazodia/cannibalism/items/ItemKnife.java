@@ -58,7 +58,8 @@ public class ItemKnife extends Item
 			player.swingArm(hand);
 			if (!world.isRemote)
 			{
-				cutPlayer(player, getDamage(5.0F, 5.5F), player.getName(), ItemRegistry.playerFlesh);
+				EntityData playerData = json.getPlayerData();
+				cutPlayer(player, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), player.getName(), ItemRegistry.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}

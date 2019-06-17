@@ -141,7 +141,7 @@ public class JSONConfig
 
 		entityName.append(entityID);
 
-		if (entityName.toString().equals("player"))
+		if (entityName.toString().toLowerCase().equals("player"))
 		{
 			playerData.setMinDamage(min);
 			playerData.setMaxDamage(max);

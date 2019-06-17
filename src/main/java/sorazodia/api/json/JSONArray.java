@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
-import sorazodia.cannibalism.main.Cannibalism;
+import java.util.Optional;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import sorazodia.cannibalism.main.Cannibalism;
 
 public class JSONArray
 {
@@ -40,8 +42,8 @@ public class JSONArray
 
 	public String getString(int index, String key)
 	{
-		JsonObject jObj = (JsonObject) jArray.get(index);
-		return jObj.get(key).toString();
+		Optional<JsonElement> element = Optional.ofNullable(((JsonObject) jArray.get(index)).get(key));
+		return element.isPresent() ? element.get().toString() : "";
 	}
 
 }
