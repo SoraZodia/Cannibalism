@@ -5,6 +5,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -66,6 +68,15 @@ public class EntityNBTEvents
 		}
 	}
 	
+	private void removeArmor(EntityPlayer player, EntityEquipmentSlot armorSlot) 
+	{
+		if (player.getItemStackFromSlot(armorSlot) != ItemStack.EMPTY)
+		{
+			player.inventory.addItemStackToInventory(player.getItemStackFromSlot(armorSlot));
+			player.inventory.armorInventory.set(armorSlot.getIndex(), ItemStack.EMPTY);
+		}
+	}
+	
 	private void addServerEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
@@ -89,24 +100,30 @@ public class EntityNBTEvents
 			}	
 			
 			player.getCooldownTracker().setCooldown(player.getHeldItem(player.getActiveHand()).getItem(), 0);
+
+			removeArmor(player, EntityEquipmentSlot.LEGS);
 		}
 		if (wendigoLevel >= 150)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 250, (wendigoLevel < 240) ? 1 : 2));
+			removeArmor(player, EntityEquipmentSlot.HEAD);
+			removeArmor(player, EntityEquipmentSlot.FEET);
 			player.addExhaustion(0.08F);
 		}
 		if (wendigoLevel >= 240)
 		{
 			player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 250));
-			player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 250));
-			player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0);
 			player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 250));
+			removeArmor(player, EntityEquipmentSlot.CHEST);
 		}
 		if (wendigoLevel >= WENDIGO_LEVEL_CAP)
 		{
 			if (!nbt.hasHeart() && player.ticksExisted % 600 == 0 && nbt.wendigoSpawned() == false && nbt.getSpawnChance() > Math.random()) {
 				EntityNBTEvents.spawnWendigo(player);
-			}	
+			}
+			
+			if (nbt.hasHeart())
+				player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0);
 		}
 	}
 	
