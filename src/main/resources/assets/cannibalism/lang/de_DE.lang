@@ -13,7 +13,7 @@ item.villagerfleshcooked.name=Gekochtes Dorfbewohnerfleisch
 item.playerfleshcooked.name=Gekochtes Spielerfleisch
 item.witchflesh.name=Hexenfleisch
 
-item.playerFleshOwner.name=Fleisch von %s
+item.info.playerFleshOwner=Fleisch von %s
 
 item.villagerpoptart.name=Dorfbewohner-Pop-Tart
 item.playerpoptart.name=Spieler-Pop-Tart

@@ -139,7 +139,7 @@ public class ItemKnife extends Item
 	private void cutPlayer(EntityPlayer player, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
-		String name = I18n.translateToLocalFormatted("item.playerFleshOwner.name", owner);
+		String name = I18n.translateToLocalFormatted("item.info.playerFleshOwner", owner);
 
 		if (!player.world.isRemote)
 		{
