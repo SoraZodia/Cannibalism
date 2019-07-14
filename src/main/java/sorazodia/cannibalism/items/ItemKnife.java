@@ -14,7 +14,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.api.EntityData;
@@ -30,6 +32,8 @@ public class ItemKnife extends Item
 
 	private boolean interact = false;
 	private JSONConfig json = Cannibalism.getJson();
+	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "item.knife.hurt"));
+	private final SoundEvent screamSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "item.knife.scream"));
 
 	public ItemKnife(String name, ToolMaterial material)
 	{
@@ -76,10 +80,13 @@ public class ItemKnife extends Item
 
 	private void spookyEffect(World world, EntityPlayer player)
 	{
-		if (ConfigHandler.doScream())
-			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GHAST_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
-		if (!ConfigHandler.doScream())
-			world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+		if (!ConfigHandler.muteScream()) 
+		{
+			if (ConfigHandler.doScream())
+				world.playSound(null, player.getPosition(), ConfigHandler.useCustomScream() ? this.screamSound : SoundEvents.ENTITY_GHAST_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+			if (!ConfigHandler.doScream())
+				world.playSound(null, player.getPosition(),  ConfigHandler.useCustomScream() ?  this.hurtSound : SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+		}
 		spawnBlood(player, world, 1);
 	}
 

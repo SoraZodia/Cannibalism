@@ -30,8 +30,8 @@ public class EntityWendigo extends EntityMob
 {
 	
 	private EntityLivingBase attacker;
-	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.hurt"));
-	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID + ":mob.wendigo.grr"));
+	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "mob.wendigo.hurt"));
+	private final SoundEvent livingSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "mob.wendigo.grr"));
 	public static final String nbtKey = "wendigoStrength";
 	private int addictionalDamage = 0;
 	

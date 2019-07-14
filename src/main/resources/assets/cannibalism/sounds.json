@@ -22,5 +22,21 @@
 		 [
 			 "cannibalism:mob/wendigo/wendigo_sreen"
 	     ]
+    },  
+   "item.knife.hurt":
+   {
+         "category":"player",
+		 "sounds":
+		 [
+			 "cannibalism:item/knife/player_hurt"
+	     ]
+    },  
+   "item.knife.scream":
+   {
+         "category":"player",
+		 "sounds":
+		 [
+			 "cannibalism:item/knife/player_scream"
+	     ]
     }
 }

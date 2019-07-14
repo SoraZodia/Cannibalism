@@ -27,6 +27,8 @@ public class ConfigHandler
 	private static final String CATEGORY_STARTUP = "startup";
 	private static HashMap<String, Float> externalFleshMappings = new HashMap<>();
 	private static boolean scream;
+	private static boolean muteScream;
+	private static boolean useCustomScream;
 	private static boolean myth = false;
 	private static float screamPinch;
 	private static int bloodAmount;
@@ -50,6 +52,8 @@ public class ConfigHandler
 		processStringList(configFile.getStringList("Valid Flesh Items", Configuration.CATEGORY_GENERAL, defaultFleshMappings, "Listed items will be considered as human flesh. Format: [<unlocatizated name>, <wendigo level increase by>]"));		
 		scream = configFile.getBoolean("Use Scream Sound", Configuration.CATEGORY_GENERAL, false, "Set true if you want to hear... PAIN");
 		myth = configFile.getBoolean("Enable Mythological Mode", Configuration.CATEGORY_GENERAL, false, "Set true cause myths about cannibalism to become real.");
+		muteScream = configFile.getBoolean("Mute Scream Sound", Configuration.CATEGORY_GENERAL, false, "Disable the screaming sound that players makes when the knife is used");
+		useCustomScream = configFile.getBoolean("Use Custom Scream", Configuration.CATEGORY_GENERAL, false, "Replace the default screaming sound with the one provided in a resource pack");
 		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
 		
@@ -116,6 +120,16 @@ public class ConfigHandler
 		return myth;
 	}
 	
+	public static boolean muteScream()
+	{
+		return muteScream;
+	}
+
+	public static boolean useCustomScream()
+	{
+		return useCustomScream;
+	}
+
 	public static List<IConfigElement> getConfigElements() 
 	{
 		List<IConfigElement> configElements= new ConfigElement(ConfigHandler.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements();
