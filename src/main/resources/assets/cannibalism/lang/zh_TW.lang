@@ -1,0 +1,57 @@
+itemGroup.cannibalism=自相殘殺
+
+item.woodenknife.name=木質小刀
+item.diamondknife.name=鑽石小刀
+item.goldknife.name=金製小刀
+item.ironknife.name=鐵製小刀
+item.stoneknife.name=石頭小刀
+item.flintknife.name=燧石小刀
+
+item.villagerflesh.name=生村民肉
+item.playerflesh.name=生玩家肉
+item.villagerfleshcooked.name=熟村民肉
+item.playerfleshcooked.name=熟玩家肉
+item.witchflesh.name=生女巫肉
+item.wendigoheart.name=食人魔之心
+item.groundedplayerheart.name=束縛之心
+
+item.info.playerFleshOwner=%s'的肉
+item.info.playerHeartOwner=%s'之心
+
+item.villagerpoptart.name=Villager Poptart
+item.playerpoptart.name=Player Poptart
+item.villagerpoptartcooked.name=Cooked Villager Poptart
+item.playerpoptartcooked.name=Cooked Player Poptart
+
+item.devKnife.format=[Format] "modID.name" or "name" if mob is part of vanilla
+item.devKnife.mobName=[Name] %s
+item.devKnife.superName=Extends from %s
+
+item.devKnife.reload=Reloading JSON configs and clearing entity drops mappings
+item.devKnife.reloadFinish=JSON reloaded. Entity drops remapped.
+item.devKnife.reloadFail=Failed to read JSON! Falling back to default configs.
+item.devKnife.reloadFailCheck=%s is misformatted!
+item.devKnife.errorCharacter=There's a missing/extra element in your JSON that's causing the parser trouble
+item.devKnife.errorUnknown=Something not accounted for caused the parser to fail
+
+item.devKnife.lore1=Dev Knife
+item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
+
+command.wendigolevelchange=Changed
+command.error.player=Cannot find player
+command.error.number=Third argument is not a floating point number or fourth arugument is not a integer
+command.set=/cannibalism set <username>: set the target's wendigo level
+command.stat=/cannibalism stat <username>: check the target wendigo level
+
+command.stat.wendigo=目前食人等級: %f
+command.stat.spawnchance=目前誕生的食人魔: %f
+command.stat.applyWarningEffect=觸發預警: %s
+command.stat.wendigoExist=產生了食人魔: %s
+command.stat.embeddedHeart=可嵌入的心: %s
+command.stat.heirloomCount=分配的遺物數量: %f
+
+hierloom.lore1=珍貴物品 %s
+hierloom.lore2=你不禁感覺到被什麼束縛住了
+
+entity.wendigo.name=食人魔
+entity.wendigo_villager.name=食人村民
