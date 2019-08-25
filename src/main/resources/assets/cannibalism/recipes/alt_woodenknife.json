@@ -16,5 +16,12 @@
 	  "type": "forge:ore_dict",
         "ore": "stickWood"
 	}
-  }
+  },
+  "conditions": [
+	{
+		"type":"cannibalism:use_recipe",
+		"id": "wood",
+		"modid": "cannibalism"
+	}
+  ]
 }
