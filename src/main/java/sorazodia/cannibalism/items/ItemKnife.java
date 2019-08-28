@@ -128,7 +128,7 @@ public class ItemKnife extends Item
 			if (target instanceof EntityPlayerMP)
 			{
 				EntityData playerData = json.getPlayerData();
-				cutPlayer(player, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), target.getName(), ItemRegistry.playerFlesh);
+				cutPlayer((EntityPlayer) target, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), target.getName(), ItemRegistry.playerFlesh);
 			}
 
 		}
