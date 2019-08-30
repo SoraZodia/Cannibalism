@@ -1,5 +1,5 @@
 {
     "conditions": {
-        "use_recipe": "sorazodia.cannibalism.main.RecipeManager"
+        "use_recipe": "sorazodia.cannibalism.managers.RecipeManager"
     }
 }

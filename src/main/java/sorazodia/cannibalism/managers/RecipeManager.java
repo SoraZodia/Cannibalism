@@ -1,4 +1,4 @@
-package sorazodia.cannibalism.main;
+package sorazodia.cannibalism.managers;
 
 import java.util.function.BooleanSupplier;
 
@@ -8,6 +8,7 @@ import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.items.KnifeType;
+import sorazodia.cannibalism.main.Cannibalism;
 
 public class RecipeManager implements IConditionFactory
 {
