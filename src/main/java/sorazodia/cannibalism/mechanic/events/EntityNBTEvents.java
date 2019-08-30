@@ -26,6 +26,7 @@ public class EntityNBTEvents
 	@SubscribeEvent
 	public void playerUpdate(PlayerTickEvent event)
 	{
+
 		if (ConfigHandler.allowMyth())
 		{
 			EntityPlayer player = event.player;
@@ -36,8 +37,12 @@ public class EntityNBTEvents
 				nbt.setWarningEffect(true);
 				nbt.setWedigoSpawn(false);
 			}
-
-			if (!event.player.world.isRemote)
+			
+			if (event.player.world.isRemote) // client side
+			{
+				addClientEffect(player, wendigoLevel, nbt);
+			}
+			else // server side
 			{
 				addServerEffect(player, wendigoLevel, nbt);
 				boolean holdingHeirloom = (player.getHeldItemOffhand().getTagCompound() != null && player.getHeldItemOffhand().getTagCompound().getCompoundTag(Cannibalism.MODID).getString(InteractionEvent.HEIRLOOM_NBT_TAG).length() > 0)
@@ -77,6 +82,14 @@ public class EntityNBTEvents
 		}
 	}
 	
+	private void addClientEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
+	{
+		if (wendigoLevel >= 100)
+		{
+			player.stepHeight = 1;
+		}
+	}
+	
 	private void addServerEffect(EntityPlayer player, float wendigoLevel, CannibalismNBT nbt)
 	{
 		if (wendigoLevel >= 25 && wendigoLevel < 100)
@@ -100,7 +113,6 @@ public class EntityNBTEvents
 			}	
 			
 			player.getCooldownTracker().setCooldown(player.getHeldItem(player.getActiveHand()).getItem(), 0);
-
 			removeArmor(player, EntityEquipmentSlot.LEGS);
 		}
 		if (wendigoLevel >= 150)
