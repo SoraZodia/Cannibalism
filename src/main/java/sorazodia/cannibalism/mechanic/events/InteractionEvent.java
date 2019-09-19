@@ -25,7 +25,7 @@ public class InteractionEvent
 
 		if (ConfigHandler.allowMyth() == true)
 		{
-			if(player.isSneaking() && !world.isRemote) 
+			if(player.isSneaking() && player.isAirBorne && !world.isRemote ) 
 			{
 				CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 				if (nbt.getWendigoValue() <= 0 && nbt.getHeirloomCount() <= 3) 

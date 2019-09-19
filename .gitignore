@@ -11,14 +11,19 @@ $RECYCLE.BIN/
 #Workspace Stuff
 .gradle/*
 .settings/*
+.idea/*
 bin/*
 build/*
+libs/*
 eclipse/*
 .classpath
 .project
 *.launch
 *.bat
 *.log.txt
+*.iml
+*.ipr
+*.iws
 
 # Windows Installer files
 *.cab

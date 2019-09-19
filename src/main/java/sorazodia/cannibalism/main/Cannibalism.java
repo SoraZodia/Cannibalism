@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -24,6 +25,7 @@ import sorazodia.api.nbt.Database;
 import sorazodia.api.nbt.IO;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.config.JSONConfig;
+import sorazodia.cannibalism.integration.toughasnails.TemperatureEvent;
 import sorazodia.cannibalism.main.proxy.ServerProxy;
 import sorazodia.cannibalism.mechanic.events.ConfigEvent;
 import sorazodia.cannibalism.mechanic.events.DamageEvent;
@@ -96,6 +98,8 @@ public class Cannibalism
 		MinecraftForge.EVENT_BUS.register(new ConfigEvent());
 		MinecraftForge.EVENT_BUS.register(new InteractionEvent());
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		if (Loader.isModLoaded("toughasnails")) MinecraftForge.EVENT_BUS.register(new TemperatureEvent());
 	}
 	
 	@SubscribeEvent
