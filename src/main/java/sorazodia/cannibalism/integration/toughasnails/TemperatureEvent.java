@@ -1,6 +1,7 @@
 package sorazodia.cannibalism.integration.toughasnails;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
@@ -18,7 +19,7 @@ public class TemperatureEvent
 			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
 			if (wendigoLevel >= 100 && player.isPotionActive(TANPotions.hypothermia))
 			{
-				player.removeActivePotionEffect(TANPotions.hypothermia);
+				player.addPotionEffect(new PotionEffect(TANPotions.cold_resistance, 250));
 			}
 		}
 	}

@@ -50,7 +50,7 @@ public class EntityNBTEvents
 				if (nbt.hasHeart() && holdingHeirloom)
 					player.attackEntityFrom(DamageSource.WITHER, 1);
 				
-				if (player.getFoodStats().getFoodLevel() <= 0 && nbt.getWendigoValue() >= 150) {
+				if (player.getFoodStats().getFoodLevel() <= 0 && nbt.getWendigoValue() >= 100) {
 					player.getFoodStats().setFoodLevel(1);
 				}
 			}
