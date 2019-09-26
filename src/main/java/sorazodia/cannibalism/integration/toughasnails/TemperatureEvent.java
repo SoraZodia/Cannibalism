@@ -1,12 +1,14 @@
 package sorazodia.cannibalism.integration.toughasnails;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
-import toughasnails.api.TANPotions;
+import toughasnails.api.stat.capability.ITemperature;
+import toughasnails.api.temperature.Temperature;
+import toughasnails.api.temperature.TemperatureHelper;
+import toughasnails.api.temperature.TemperatureScale.TemperatureRange;
 
 public class TemperatureEvent
 {
@@ -17,9 +19,11 @@ public class TemperatureEvent
 		{
 			EntityPlayer player = event.player;
 			float wendigoLevel = CannibalismNBT.getNBT(player).getWendigoValue();
-			if (wendigoLevel >= 100 && player.isPotionActive(TANPotions.hypothermia))
+			ITemperature playerTemperature = TemperatureHelper.getTemperatureData(player);
+			
+			if (wendigoLevel >= 100 && playerTemperature.getTemperature().getRange() == TemperatureRange.ICY )
 			{
-				player.addPotionEffect(new PotionEffect(TANPotions.cold_resistance, 250));
+				playerTemperature.setTemperature(new Temperature(TemperatureRange.COOL.getRangeSize()));
 			}
 		}
 	}
