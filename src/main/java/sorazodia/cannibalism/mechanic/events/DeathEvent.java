@@ -20,7 +20,7 @@ public class DeathEvent
 {
 	private Random rand = new Random();
 
-	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.NORMAL)
+	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOWEST)
 	public void onDeath(LivingDeathEvent event)
 	{
 		int amount = rand.nextInt(3) + 1;
