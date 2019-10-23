@@ -35,6 +35,8 @@ public class ConfigHandler
 	private static String[] defaultFleshMappings = {"cannibalism:wendigoheart,10"};
 	private static String[] knifes = {"wood", "flint", "stone", "gold", "iron", "diamond"};
 	private static ArrayList<KnifeType> activeKnifes = new ArrayList<>();
+	private static boolean useGravity = false;
+	private static float wendigoStrength = 7;
 	
 
 	public ConfigHandler(FMLPreInitializationEvent event, JSONConfig json)
@@ -56,6 +58,8 @@ public class ConfigHandler
 		useCustomScream = configFile.getBoolean("Use Custom Scream", Configuration.CATEGORY_GENERAL, false, "Replace the default screaming sound with the one provided in a resource pack");
 		screamPinch = configFile.getFloat("Scream Pitch", Configuration.CATEGORY_GENERAL, 0.7F, -10.0F, 10F, "High Pinch or Low Pinch, up to you ;)");
 		bloodAmount = configFile.getInt("Blood Spawn Amount", Configuration.CATEGORY_GENERAL, 36, 0, 100, "Higher value = More blood, Lower value = Less blood. A value of 0 will disable it");
+		useGravity = configFile.getBoolean("Enable Wendigo Gravity", Configuration.CATEGORY_GENERAL, false, "Have the damage inflicted by a wendigo be a percentage of the player's max health");
+		wendigoStrength = configFile.getFloat("Wendigo Might Value", Configuration.CATEGORY_GENERAL, 7, 0, 100, "How much damage the wendigo can inflict on a player. If Gravity is enabled, then this will be used as the percentage of health to take.");
 		
 		processKnifeList(configFile.getStringList("Active Knife List", CATEGORY_STARTUP, knifes, "Knife items that will be loaded on startup. Remove them from this list to disable them. Requires MC to restart."));
 		if (configFile.hasChanged())
@@ -128,6 +132,16 @@ public class ConfigHandler
 	public static boolean useCustomScream()
 	{
 		return useCustomScream;
+	}
+
+	public static boolean useGravity()
+	{
+		return useGravity;
+	}
+
+	public static float getWendigoStrength()
+	{
+		return wendigoStrength;
 	}
 
 	public static List<IConfigElement> getConfigElements() 

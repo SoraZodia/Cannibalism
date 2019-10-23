@@ -23,6 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import sorazodia.cannibalism.config.ConfigHandler;
 import sorazodia.cannibalism.main.Cannibalism;
 import sorazodia.cannibalism.mechanic.nbt.CannibalismNBT;
 
@@ -119,7 +120,8 @@ public class EntityWendigo extends EntityMob
 		{
 			EntityLivingBase target = (EntityLivingBase) entity;
 			NBTTagCompound nbt = this.getEntityData();
-			float postDamageHealth = target.getHealth() - (7 + this.addictionalDamage);
+			float damage = (ConfigHandler.useGravity() ? target.getMaxHealth() * (ConfigHandler.getWendigoStrength() / 100) : ConfigHandler.getWendigoStrength()) + this.addictionalDamage;								
+			float postDamageHealth = target.getHealth() - damage;
 
 			if (postDamageHealth <= 0) {
 				this.addictionalDamage++;
