@@ -68,7 +68,7 @@ public class EntityTurnedVillager extends EntityMob
 	@Override 
 	public boolean attackEntityFrom(DamageSource source, float damage)
     {
-		if (source.getTrueSource() instanceof Entity)
+		if (source.getTrueSource() instanceof EntityLivingBase)
 		{
 			attacker = (EntityLivingBase) source.getTrueSource();
 			this.setRevengeTarget(attacker);

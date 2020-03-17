@@ -79,7 +79,7 @@ public class EntityWendigo extends EntityMob
 	@Override 
 	public boolean attackEntityFrom(DamageSource source, float damage)
     {
-		if (source.getTrueSource() instanceof Entity)
+		if (source.getTrueSource() instanceof EntityLivingBase)
 		{
 			this.attacker = (EntityLivingBase) source.getTrueSource();
 			this.setRevengeTarget(this.attacker);
