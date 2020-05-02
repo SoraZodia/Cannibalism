@@ -1,8 +1,12 @@
 package sorazodia.cannibalism.items;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
@@ -17,6 +21,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import sorazodia.cannibalism.api.EntityData;
@@ -40,6 +45,7 @@ public class ItemKnife extends Item
 		super();
 		this.setUnlocalizedName(name);
 		this.setRegistryName(name);
+		this.setMaxDamage(material.getMaxUses());
 		this.setCreativeTab(Cannibalism.cannibalismTab);
 	}
 
@@ -48,9 +54,51 @@ public class ItemKnife extends Item
 	{
 		return EnumAction.BLOCK;
 	}
+	
+	@Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        stack.damageItem(1, attacker);
+        return true;
+    }
+	
+	@Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState blockState, BlockPos position, EntityLivingBase entityLiving)
+    {
+		if (this.canHarvestBlock(blockState)) 
+		{
+			stack.damageItem(1, entityLiving);
+		}
+		else if (blockState.getBlockHardness(world, position) != 0)
+        {
+            stack.damageItem(2, entityLiving);
+        }
 
-	
-	
+        return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState blockState)
+    {
+        return blockState.getBlock() == Blocks.WEB || blockState.getBlock() == Blocks.LEAVES || blockState.getBlock() == Blocks.LEAVES2;
+    }
+    
+    @Override
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
+    {
+        Block block = state.getBlock();
+        Material material = state.getMaterial();
+        
+        if (block == Blocks.WEB || material == Material.PLANTS)
+        {
+            return 15.0F;
+        }
+        else
+        {
+            return 1.5F;
+        }
+    }
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
