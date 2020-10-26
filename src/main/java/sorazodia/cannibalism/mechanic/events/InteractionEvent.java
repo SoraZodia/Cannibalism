@@ -22,10 +22,11 @@ public class InteractionEvent
 		EntityPlayer player = event.getEntityPlayer();
 		World world = event.getWorld();
 		ItemStack heldStack = event.getItemStack();
-
+		boolean isJumping = !(player.onGround || player.isOnLadder() || player.isInWater() || player.isRiding());
+		
 		if (ConfigHandler.allowMyth() == true)
 		{
-			if(player.isSneaking() && player.isAirBorne && !world.isRemote ) 
+			if(player.isSneaking() && isJumping && !world.isRemote ) 
 			{
 				CannibalismNBT nbt = CannibalismNBT.getNBT(player);
 				if (nbt.getWendigoValue() <= 0 && nbt.getHeirloomCount() <= 3) 
