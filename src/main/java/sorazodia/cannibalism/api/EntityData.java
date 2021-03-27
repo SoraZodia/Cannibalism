@@ -15,11 +15,6 @@ public class EntityData implements Comparable<EntityData>
 	private float maxDamage;
 	private String name;
 
-	public EntityData(String[] drop, float min, float max)
-	{
-		this("", drop, min, max);
-	}
-
 	public EntityData(String entityName, String[] drop, float min, float max)
 	{
 		drops = covertString(drop);

@@ -23,7 +23,7 @@ item.playerpoptart.name=Player Poptart
 item.villagerpoptartcooked.name=Cooked Villager Poptart
 item.playerpoptartcooked.name=Cooked Player Poptart
 
-item.devKnife.format=[Format] "modID.name" or "name" if mob is part of vanilla
+item.devKnife.format=[Format] <modID>:<entityID>, these two fields corresponds to their respective fields in the JSON
 item.devKnife.mobName=[Name] %s
 item.devKnife.superName=Extends from %s
 

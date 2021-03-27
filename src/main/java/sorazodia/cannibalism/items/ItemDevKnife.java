@@ -128,8 +128,8 @@ public class ItemDevKnife extends ItemKnife
 			if (!player.isSneaking())
 			{
 				Chat.displayLocalizatedChat(player, "item.devKnife.format");
-				Chat.displayLocalizatedChat(player, "item.devKnife.mobName", EntityList.getEntityString(target));
-				Chat.displayLocalizatedChat(player, "item.devKnife.superName", EntityList.getEntityString(getSuperEntity(target)));
+				Chat.displayLocalizatedChat(player, "item.devKnife.mobName", EntityList.getKey(target).toString());
+				Chat.displayLocalizatedChat(player, "item.devKnife.superName", EntityList.getKey(getSuperEntity(target)).toString());
 			}
 			else
 			{
