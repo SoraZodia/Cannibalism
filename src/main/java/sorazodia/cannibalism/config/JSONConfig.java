@@ -10,6 +10,7 @@ import java.util.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -196,10 +197,19 @@ public class JSONConfig
 
 	public boolean checkEntity(EntityLivingBase entity)
 	{
-		String modKey = EntityList.getKey(entity).toString();
-		String modID = modKey.split(":")[0];
+		ResourceLocation entityData = EntityList.getKey(entity);
 		
-		return entityMap.containsKey(modKey) || entityMap.containsKey(modID + ":" + EntityList.getEntityString(entity));
+		if (entityData != null) 
+		{
+			String modKey = entityData.toString();
+			String modID = modKey.split(":")[0];
+			
+			return entityMap.containsKey(modKey) || entityMap.containsKey(modID + ":" + EntityList.getEntityString(entity));
+		}
+		else // EntityPlayer will normally trigger this case
+		{
+			return false;
+		}
 	}
 
 	public int getWildCardIndex(EntityLivingBase entity, World world)

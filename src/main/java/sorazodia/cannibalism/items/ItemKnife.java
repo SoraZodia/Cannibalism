@@ -39,7 +39,8 @@ public class ItemKnife extends Item
 	private JSONConfig json = Cannibalism.getJson();
 	private final SoundEvent hurtSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "item.knife.hurt"));
 	private final SoundEvent screamSound = new SoundEvent(new ResourceLocation(Cannibalism.MODID, "item.knife.scream"));
-
+	private final ToolMaterial material;
+	
 	public ItemKnife(String name, ToolMaterial material)
 	{
 		super();
@@ -47,6 +48,7 @@ public class ItemKnife extends Item
 		this.setRegistryName(name);
 		this.setMaxDamage(material.getMaxUses());
 		this.setCreativeTab(Cannibalism.cannibalismTab);
+		this.material = material;
 	}
 
 	@Override
@@ -58,7 +60,14 @@ public class ItemKnife extends Item
 	@Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
+		float attackDamage = 1.5F + (material.getAttackDamage()/2);
+		
         stack.damageItem(1, attacker);
+        if (attacker instanceof EntityPlayer)
+        	target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)attacker), attackDamage);
+        else
+        	target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage);
+        
         return true;
     }
 	
@@ -111,7 +120,7 @@ public class ItemKnife extends Item
 			if (!world.isRemote)
 			{
 				EntityData playerData = json.getPlayerData();
-				cutPlayer(player, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), player.getName(), ItemRegistry.playerFlesh);
+				cutPlayer(player, player, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), player.getName(), ItemRegistry.playerFlesh);
 				stack.damageItem(1, player);
 			}
 		}
@@ -131,9 +140,9 @@ public class ItemKnife extends Item
 		if (!ConfigHandler.muteScream()) 
 		{
 			if (ConfigHandler.doScream())
-				world.playSound(null, player.getPosition(), ConfigHandler.useCustomScream() ? this.screamSound : SoundEvents.ENTITY_GHAST_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+				world.playSound(player, player.getPosition(), ConfigHandler.useCustomScream() ? this.screamSound : SoundEvents.ENTITY_GHAST_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 			if (!ConfigHandler.doScream())
-				world.playSound(null, player.getPosition(),  ConfigHandler.useCustomScream() ?  this.hurtSound : SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
+				world.playSound(player, player.getPosition(),  ConfigHandler.useCustomScream() ?  this.hurtSound : SoundEvents.ENTITY_PLAYER_HURT, SoundCategory.PLAYERS, 1.0F, ConfigHandler.getPinch());
 		}
 		spawnBlood(player, world, 1);
 	}
@@ -149,34 +158,31 @@ public class ItemKnife extends Item
 			{
 				ItemArmor armor = (ItemArmor) target.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 				player.swingArm(hand);
-				player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+				player.world.playSound(player, player.getPosition(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
 				stack.damageItem(15 * armor.damageReduceAmount, player);
 				return true;
 			}
-
-			if (json.checkEntity(target))
+			
+			if (target instanceof EntityPlayer)
+			{
+				EntityData playerData = json.getPlayerData();
+				cutPlayer(player, (EntityPlayer) target, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), target.getName(), ItemRegistry.playerFlesh);
+			}
+			else if (json.checkEntity(target))
 			{
 				EntityData data = json.getData(target);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-
 			else if (json.getWildCardIndex(target, player.world) >= 0)
 			{
 				EntityData data = json.getData(target, player.world);
 				cutEntity(player, target, getDamage(data.getMinDamage(), data.getMaxDamage()), data.getDrops());
 			}
-
 			else if (target instanceof ICutable)
 			{
 				interact = true;
 				ICutable cutable = (ICutable) target;
 				cutable.cut(player);
-			}
-
-			if (target instanceof EntityPlayerMP)
-			{
-				EntityData playerData = json.getPlayerData();
-				cutPlayer((EntityPlayer) target, getDamage(playerData.getMinDamage(), playerData.getMaxDamage()), target.getName(), ItemRegistry.playerFlesh);
 			}
 
 		}
@@ -191,17 +197,17 @@ public class ItemKnife extends Item
 		return interact;
 	}
 
-	private void cutPlayer(EntityPlayer player, float damage, String owner, ItemFlesh flesh)
+	private void cutPlayer(EntityPlayer source, EntityPlayer target, float damage, String owner, ItemFlesh flesh)
 	{
 		interact = true;
 		String name = I18n.translateToLocalFormatted("item.info.playerFleshOwner", owner);
 
-		if (!player.world.isRemote)
+		if (!source.world.isRemote)
 		{
 			ItemStack meat = new ItemStack(flesh);
 			setMeatName(meat, name);
-			cutDamage(player, player, damage);
-			player.entityDropItem(meat, 0.0F);
+			cutDamage(source, target, damage);
+			target.entityDropItem(meat, 0.0F);
 		}
 	}
 
@@ -220,12 +226,13 @@ public class ItemKnife extends Item
 
 	private void cutDamage(EntityPlayer player, EntityLivingBase entity, float damage)
 	{
-		if (!(entity instanceof EntityPlayer))
-			entity.attackEntityFrom(DamageSource.causePlayerDamage(player).setDamageBypassesArmor(), damage);
-
-		if (!player.capabilities.isCreativeMode)
+		if (!(entity instanceof EntityPlayer)) 
 		{
-			if (entity instanceof EntityPlayerMP)
+			entity.attackEntityFrom(DamageSource.causePlayerDamage(player).setDamageBypassesArmor(), damage);
+		}
+		else
+		{
+			if (!((EntityPlayer) entity).capabilities.isCreativeMode)
 			{
 				entity.setHealth(entity.getHealth() - damage);
 				entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.01F);
@@ -233,16 +240,6 @@ public class ItemKnife extends Item
 				if (entity.getHealth() < 0.01F)
 				{
 					entity.onDeath(DamageSource.causePlayerDamage(player));
-				}
-			}
-			else if (entity instanceof EntityPlayer)
-			{
-				player.setHealth(entity.getHealth() - damage);
-				entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.01F);
-				player.limbSwingAmount = 1.5F;
-				if (player.getHealth() < 0.01F)
-				{
-					player.onDeath(DamageSource.causePlayerDamage(player));
 				}
 			}
 		}

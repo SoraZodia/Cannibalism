@@ -26,6 +26,7 @@ item.playerpoptartcooked.name=Cooked Player Poptart
 item.devKnife.format=[Format] <modID>:<entityID>, these two fields corresponds to their respective fields in the JSON
 item.devKnife.mobName=[Name] %s
 item.devKnife.superName=Extends from %s
+item.devKnife.noextract=Cannot extract data
 
 item.devKnife.reload=Reloading JSON configs and clearing entity drops mappings
 item.devKnife.reloadFinish=JSON reloaded. Entity drops remapped.
