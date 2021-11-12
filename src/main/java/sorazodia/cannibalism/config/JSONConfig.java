@@ -36,13 +36,11 @@ public class JSONConfig
 	private static HashMap<String, EntityData> entityMap = new HashMap<>();
 	private static ArrayList<EntityData> wildcardMap = new ArrayList<>();
 	private static EntityData playerData = new EntityData("player", new String[0], 5.0F, 5.5F);
-	private static boolean isWildCard = false;
 	private static final String MODID = "modID";
 	private static final String ENTITYID = "entityID";
 	private static final String DROPS = "drops";
 	private static final String MIN = "minDamage";
 	private static final String MAX = "maxDamage";
-	private static final String MINECRAFT = "\"minecraft\"";
 	private static String regEx = "[\"+]";
 
 	public JSONConfig(FMLPreInitializationEvent preEvent)
@@ -121,16 +119,17 @@ public class JSONConfig
 		wildcardMap.sort((firstData, secordData) -> firstData.compareTo(secordData));
 	}
 
+	/*
+	 * Get all the information from the JSON and process the data into
+	 * strings that the class can uses
+	 */
 	private void parseEntity(int index)
 	{
-		/*
-		 * Get all the information from the JSON and process the data into
-		 * strings that the class can uses
-		 */
 		String entityID = json.getString(index, ENTITYID).replaceAll(regEx, "").trim();
 		String[] drop = json.getString(index, DROPS).replaceAll(regEx, "").split(",+");
 		float min = Float.parseFloat(json.getString(index, MIN).replaceAll(regEx, ""));
 		float max = Float.parseFloat(json.getString(index, MAX).replaceAll(regEx, ""));
+		boolean isWildCard = false;
 
 		entityName.append(json.getString(index, MODID).replaceAll(regEx, "")).append(":");
 
@@ -159,25 +158,25 @@ public class JSONConfig
 		write = new JSONWriter(filePath);
 
 		write.writeStart();
-		addEntity("Cow*", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
-		addEntity("Chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
-		addEntity("Pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
-		addEntity("Sheep", "minecraft", new String[] { "minecraft:wool", "minecraft:mutton" }, "2.5", "3.0");
-		addEntity("Villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
-		addEntity("Witch", "minecraft", new String[] { "cannibalism:witchFlesh" }, "5.0", "6.0");
-		addEntity("Zombie*", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
+		addEntity("cow*", "minecraft", new String[] { "minecraft:leather", "minecraft:beef" }, "2.5", "3.0");
+		addEntity("chicken", "minecraft", new String[] { "" }, "10.0", "10.0");
+		addEntity("pig", "minecraft", new String[] { "minecraft:porkchop" }, "2.5", "3.0");
+		addEntity("sheep", "minecraft", new String[] { "minecraft:wool", "minecraft:mutton" }, "2.5", "3.0");
+		addEntity("villager*", "minecraft", new String[] { "cannibalism:villagerFlesh" }, "5.0", "6.0");
+		addEntity("witch", "minecraft", new String[] { "cannibalism:witchFlesh" }, "5.0", "6.0");
+		addEntity("zombie*", "minecraft", new String[] { "minecraft:rotten_flesh" }, "2.5", "3.0");
 		write.write();
 	}
 
 	public void loadMapData()
 	{
-		entityMap.put("Chicken", new EntityData("minecraft:chicken",new String[] { "" }, 10.0F, 10.0F));
-		entityMap.put("Pig", new EntityData("minecraft:pig",new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
-		entityMap.put("Sheep", new EntityData("minecraft:sheep",new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
-		entityMap.put("Witch", new EntityData("minecraft:witch",new String[] { "cannibalism:witchFlesh" }, 5.0F, 6.0F));
-		wildcardMap.add(new EntityData("Cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
-		wildcardMap.add(new EntityData("Zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
+		entityMap.put("minecraft:chicken", new EntityData("minecraft:chicken",new String[] { "" }, 10.0F, 10.0F));
+		entityMap.put("minecraft:pig", new EntityData("minecraft:pig",new String[] { "minecraft:porkchop" }, 2.3F, 3.0F));
+		entityMap.put("minecraft:sheep", new EntityData("minecraft:sheep",new String[] { "minecraft:wool", "minecraft:mutton" }, 2.3F, 3.0F));
+		entityMap.put("minecraft:witch", new EntityData("minecraft:witch",new String[] { "cannibalism:witchFlesh" }, 5.0F, 6.0F));
+		wildcardMap.add(new EntityData("cow", new String[] { "minecraft:leather", "minecraft:beef" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("villager", new String[] { "cannibalism:villagerFlesh" }, 2.3F, 3.0F));
+		wildcardMap.add(new EntityData("zombie", new String[] { "minecraft:rotten_flesh" }, 2.3F, 3.0F));
 	}
 
 	public HashMap<String, EntityData> getEntityMap()
