@@ -1,10 +1,10 @@
-itemGroup.cannibalism=自相残杀
+itemGroup.cannibalism=割肉小刀
 
 item.woodenknife.name=木质小刀
 item.diamondknife.name=钻石小刀
-item.goldknife.name=金制小刀
-item.ironknife.name=铁制小刀
-item.stoneknife.name=石头小刀
+item.goldknife.name=金质小刀
+item.ironknife.name=铁质小刀
+item.stoneknife.name=石质小刀
 item.flintknife.name=燧石小刀
 
 item.villagerflesh.name=生村民肉
@@ -18,12 +18,12 @@ item.groundedplayerheart.name=束缚之心
 item.info.playerFleshOwner=%s'的肉
 item.info.playerHeartOwner=%s'之心
 
-item.villagerpoptart.name=Villager Poptart
-item.playerpoptart.name=Player Poptart
-item.villagerpoptartcooked.name=Cooked Villager Poptart
-item.playerpoptartcooked.name=Cooked Player Poptart
+item.villagerpoptart.name=村民肉夹馍
+item.playerpoptart.name=玩家肉夹馍
+item.villagerpoptartcooked.name=烹饪的村民肉夹馍
+item.playerpoptartcooked.name=烹饪的玩家肉夹馍
 
-item.devKnife.format=[Format] "modID.name" or "name" if mob is part of vanilla
+item.devKnife.format=[格式] "modID.name" 或者 "name" ，如果生物是原版的一部分
 item.devKnife.mobName=[Name] %s
 item.devKnife.superName=Extends from %s
 
@@ -37,11 +37,11 @@ item.devKnife.errorUnknown=Something not accounted for caused the parser to fail
 item.devKnife.lore1=Dev Knife
 item.devKnife.lore2=[Right Click] Can be used to get entity name for JSON
 
-command.wendigolevelchange=Changed
-command.error.player=Cannot find player
-command.error.number=Third argument is not a floating point number or fourth arugument is not a integer
-command.set=/cannibalism set <username>: set the target's wendigo level
-command.stat=/cannibalism stat <username>: check the target wendigo level
+command.wendigolevelchange=已注入疯狂
+command.error.player=无法找到玩家
+command.error.number=第三个参数不是浮点数或第四个参数不是整数
+command.set=/cannibalism set <username>: 设置目标的食人魔等级
+command.stat=/cannibalism stat <username>: 检查目标的食人魔等级
 
 command.stat.wendigo=目前食人等级: %f
 command.stat.spawnchance=目前诞生的食人魔: %f
